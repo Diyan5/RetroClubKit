@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <title>Home</title>
+</head>
+<body>
+<header class="header">
+    <div class="header-inner">
+        <nav class="nav">
+            <a th:href="@{/login}" class="button login">Login</a>
+            <a th:href="@{/register}" class="button register">Sign up</a>
+        </nav>
+    </div>
+
+</header>
+<main>
+    <div class="logo-container">
+        <a th:href="@{/}" class="logo-big">
+            <img src="/images/th.jpg" alt="Football Logo" class="logo">
+        </a>
+        <h1>Welcome to Retro Football Kits</h1>
+        <p>Where passion for football and styles meet</p>
+    </div>
+</main>
+
+<p>&copy; 2025 Retro Club Kit. All Rights Reserved.</p>
+</body>
+</html>
