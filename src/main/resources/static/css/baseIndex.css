@@ -1,0 +1,163 @@
+
+
+
+.section.full-height {
+    display: flex;
+    flex-direction: column;
+    margin-top: -46px;
+}
+
+.section.full-height .container {
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 28px auto;
+    padding: 0 16px;
+}
+
+.section {
+    padding: 50px 0;
+}
+
+.section.full-height .container .logo {
+    margin: auto 0;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+}
+
+form {
+    height: auto;
+    width: 400px;
+    background-color: rgba(100, 91, 240, 0.11);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.31);
+    padding: 36px 35px;
+    align-self: center;
+}
+
+form *{
+    font-family: 'Poppins', sans-serif;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    outline: none;
+    border: none;
+}
+
+form h3 {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 42px;
+    text-align: center;
+    margin: auto;
+}
+
+label {
+    display: block;
+    margin-top: 30px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+input, select {
+    display: block;
+    height: 50px;
+    width: 95%;
+    background-color: rgba(255, 255, 255, 0.07);
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 8px;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+button {
+    margin-top: 50px;
+    width: 100%;
+    background: radial-gradient(
+            circle at 90% top,
+            #c8f4d2 0%, /* Светло зелено */
+            #bbecc4 10%, /* По-меко зелено */
+            #aed2b7 20%, /* Приглушено зелено */
+            #a1d9aa 30%, /* Нежно зелено */
+            #94d09d 40%, /* Естествено зелено */
+            #87c890 50%, /* Уравновесено зелено */
+            #7bbc83 60%, /* Светло сивкаво зелено */
+            #6fb076 70%, /* Меко индигово зелено */
+            #63a469 80%, /* Приглушено морско зелено */
+            #57985c 90%, /* Дълбоко зелено */
+            #4c8c4f 100% /* Богато зелено */
+    );
+    color: #ffffff;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-already a {
+    text-decoration: none;
+    transition: 0.5s ease-out;
+    background: radial-gradient(circle at 90% top,
+    #6ab074 0%, /* Светло зелено */
+    #9be6a0 10%, /* Леко зелено */
+    #d9f9c5 20%, /* Светъл лимонов оттенък */
+    #c5ffc0 30%, /* Много светло зелено */
+    #98e291 40%, /* Естествен зелен */
+    #71d17e 50%, /* Балансиран зелен */
+    #62e081 60%, /* Меко пастелно зелено */
+    #74ec99 70%, /* Освежаващо зелено */
+    #83f0a5 80%, /* Тропическо зелено */
+    #91f5ad 90%, /* Наситено зелено */
+    #52ba73 100% /* Тъмно зелено */
+    );
+    background-size: 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+button:hover {
+    box-shadow: inset 0 1px 9px rgba(255, 255, 255, 0.5); /* Inset shadow with transparency */
+}
+
+input, select {
+    transition: all .2s;
+}
+
+input:hover, select:hover {
+    box-shadow: 0 1px 12px rgba(255, 255, 255, 0.5); /* Inset shadow with transparency */
+}
+
+.alert-warning {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    background: linear-gradient(to left, #f88e8e, #f56767, #f53b3b);
+    background-size: 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+p.alert-warning {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    background: linear-gradient(to left, #f88e8e, #f56767, #f53b3b);
+    background-size: 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 5px 0 0;
+}

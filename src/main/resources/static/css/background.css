@@ -1,0 +1,27 @@
+/*fon*/
+body {
+    margin: 0;
+    background-size: cover;
+    background: radial-gradient(circle at 90% top,
+    #2b572a 0%,
+    #264e27 10%,
+    #224622 20%,
+    #1d3d1e 30%,
+    #193419 40%,
+    #152c16 50%,
+    #112311 60%,
+    #0d1a0d 70%,
+    #081108 80%,
+    #040904 90%,
+    #000000 100%) no-repeat fixed; /* Черен завършек */
+    font-style: normal;
+    font-family: 'Poppins', sans-serif;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+
+

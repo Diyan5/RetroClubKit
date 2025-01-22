@@ -1,57 +1,4 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-style: normal;
-    font-family: 'Poppins', sans-serif;
-    color: #ffffff;
-    letter-spacing: 0.5px;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    position: relative; /* Това е необходимо за псевдоелемента */
-}
-
-body::before {
-    content: ''; /* Създава празен елемент */
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('/images/fon.jpg'); /* Задава изображението */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    filter: brightness(40%); /* Затъмнява изображението */
-    z-index: -1; /* Поставя псевдоелемента под съдържанието на страницата */
-}
-
-/* Логото */
-.logo {
-    width: 200px; /* Може да промениш размера на логото */
-    height: auto;
-    background-color: transparent; /* Премахва белия фон около логото */
-    border-radius: 8px;
-}
-
-/* Заглавие и параграф */
-h1 {
-    color: azure;
-    font-family: "Baskerville Old Face", Arial;
-    font-size: 50px;
-    margin: 20px 0;
-    text-align: center;
-}
-
-p {
-    color: azure;
-    font-family: "Baskerville Old Face", Arial;
-    font-size: 24px;
-    text-align: center;
-    margin: 20px 0;
-}
-
-/* Навигация в хедъра */
+/* header navigation*/
 .header {
     padding: 2% 6%;
 }
@@ -69,7 +16,6 @@ p {
 .header-inner .nav {
     margin-left: auto;
 }
-
 .button {
     display: inline-block;
     text-decoration: none;
@@ -86,44 +32,69 @@ p {
     border-radius: 5px;
     border: 1px solid white;
     transition: box-shadow 0.2s ease;
-    box-shadow: inset 0 1px 9px rgba(255, 255, 255, 0.5);
-    font-family: "Baskerville Old Face", Arial;/* Inset shadow with transparency */
+    box-shadow: inset 0 1px 9px rgba(255, 255, 255, 0.5); /* Inset shadow with transparency */
 }
 
 .button.login:hover, .button.register:hover {
-
-    background:  rgb(212, 206, 15);;
-    color: azure;
-    box-shadow: inset 0 1px 9px rgba(255, 255, 255, 0.8); /* Inset shadow with transparency */
+    background: radial-gradient(circle at 90% top,
+    #6ab074 0%,   /* Светъл зелен */
+    #61a46a 10%,  /* По-тъмен зелен */
+    #589960 20%,  /* По-тъмен зелен */
+    #508d56 30%,  /* По-тъмен зелен */
+    #477f4c 40%,  /* По-тъмен зелен */
+    #3f7342 50%,  /* По-тъмен зелен */
+    #366638 60%,  /* По-тъмен зелен */
+    #2d5a2e 70%,  /* По-тъмен зелен */
+    #244d24 80%,  /* По-тъмен зелен */
+    #1a411a 90%,  /* По-тъмен зелен */
+    #103510 100% /* Най-тъмен зелен */
+    );
+    color: white;
+    box-shadow: inset 0 1px 9px rgba(255, 255, 255, 0.8); /* Вътрешна сянка с прозрачност */
 }
 
-
-/* Логото */
-.logo-big {
-    display: inline-block;
-    max-width: 700px;
-}
-
-.logo-big img {
-    display: inline-block;
-    width: 100%;
-    height: auto;
-}
-
-/* Footer */
-.footer {
-    color: rgba(255, 255, 255, 0.69);
-    text-align: center;
-    margin-top: auto;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 300;
-    letter-spacing: 0.5px;
-}
+/* Контейнер за логото */
 .logo-container {
     height: 80vh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Поставя логото в горната част */
+    justify-content: center;
     align-items: center;
-     /* Можеш да добавиш марж ако искаш разстояние от горния ръб */
 }
+
+/* Логото */
+.logo {
+    width: 200px; /* Може да промениш размера на логото */
+    height: auto;
+    background-color: transparent; /* Премахва белия фон около логото */
+    border-radius: 8px;
+    margin-top: -150px;
+}
+
+h1{
+    font-family:  'Poppins', sans-serif;
+    font-size: 50px;
+}
+
+p {
+    font-family:  'Poppins', sans-serif;
+    font-size: 30px;
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Footer */
+footer {
+    position: fixed; /* Заковава футъра в долната част */
+    bottom: 0; /* Разполага футъра точно в долния край на страницата */
+    left: 50%; /* Премества го в средата по хоризонтал */
+    transform: translateX(-50%); /* Центрира футъра спрямо неговата ширина */
+    text-align: center; /* Центрира текста вътре във футъра */
+    width: 100%; /* Задава ширината на футъра, за да покрие цялата страница */
+    color: #fff; /* Задава цвета на текста */
+    padding: 10px 0; /* Добавя вертикално вътрешно отстояние */
+    font-size: 20px; /* Размер на текста */
+    font-family: 'Poppins', sans-serif; /* Шрифт */
+}
+
+
