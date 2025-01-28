@@ -1,17 +1,12 @@
 package org.retroclubkit.domainException;
 
-import lombok.Getter;
-import org.springframework.http.HttpStatus;
+public class DomainException extends RuntimeException{
 
-@Getter
-public class DomainException extends RuntimeException {
-
-    private final String message;
-    private final HttpStatus status;
-
-    public DomainException(String message, HttpStatus status) {
+    public DomainException(String message) {
         super(message);
-        this.message = message;
-        this.status = status;
+    }
+
+    public DomainException(String message, Throwable cause) {
+        super(message, cause);
     }
 }
