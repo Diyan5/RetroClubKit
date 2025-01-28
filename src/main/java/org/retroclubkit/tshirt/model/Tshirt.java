@@ -26,6 +26,9 @@ public class Tshirt {
     private double price; // Цена на тениската
 
     @Column
+    private String image;
+
+    @Column
     private String description; // Описание на тениската
 
     @Enumerated(EnumType.STRING)
@@ -45,7 +48,7 @@ public class Tshirt {
     private Team team; // Свързано с отбора, към който принадлежи тениската
 
     @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
+    @JoinColumn(name = "order_id", nullable = true)
     private Order order;
 
 }
