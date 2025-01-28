@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/background.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Резултати от търсенето за: <span th:text="${teamName}">Отбор</span></h1>
+
+    <!-- Грешка, ако няма продукти -->
+    <div th:if="${error}">
+        <div class="no-products" th:text="${error}"></div>
+    </div>
+
+    <!-- Показване на продуктите, ако има резултати -->
+    <div th:if="${products}">
+        <h2>Намерени <span th:text="${#lists.size(products)}"></span> продукта:</h2>
+        <div class="products">
+            <div th:each="product : ${products}" class="product-card">
+                <img th:src="@{'/images/' + ${product.image}}" th:alt="${product.name}">
+                <h3 th:text="${product.name}"></h3>
+                <p th:text="'Цена: $' + ${product.price}"></p>
+                <div class="rating">Рейтинг: ⭐⭐⭐⭐☆</div>
+                <a href="#" class="btn">Добави в количка</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

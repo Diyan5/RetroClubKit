@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ретро Тениски</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/background.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/category.css}">
+</head>
+<body>
+<header>
+    <a href="index.html" class="logo">
+        <img src="/images/th.png" alt="Retro Football Logo" style="height: 48px;">
+        Newest T-shirts:
+    </a>
+    <div class="nav">
+        <ul>
+            <li><a th:href="@{/home}">Home</a></li>
+            <li>
+                <a href="#">Category</a>
+                <ul>
+                    <li><a th:href="@{/national}">National</a></li>
+                    <li><a th:href="@{/retro}">Retro</a></li>
+                    <li><a th:href="@{/new}">New</a></li>
+                </ul>
+            </li>
+            <li><a href="orders.html">My Account</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <form id="searchForm" action="search-results.html" method="GET" class="search-bar">
+            <input type="text" name="team" placeholder="Search team...">
+            <button type="submit">Search</button>
+        </form>
+        <div class="cart">
+            <a th:href="@{checkout}">🛒 <span class="cart-count">0</span></a>
+        </div>
+        <a href="index.html" class="exit">Logout</a>
+    </div>
+</header>
+
+<div class="content">
+    <!-- Ретро Тениски Section -->
+    <div class="filters-container">
+        <button class="filters-button" onclick="toggleFilters()">Филтри</button>
+        <div class="filters-options" id="filtersOptions">
+            <button onclick="sortProducts('price-asc')">Цена (възходящ)</button>
+            <button onclick="sortProducts('price-desc')">Цена (низходящ)</button>
+            <button onclick="sortProducts('name-asc')">Име (А-Я)</button>
+            <button onclick="sortProducts('name-desc')">Име (Я-А)</button>
+        </div>
+    </div>
+    <section id="retro-shirts" class="product-section">
+        <h2>Ретро Тениски</h2>
+        <div class="product-list">
+            <!-- Извеждаме динамично продуктите -->
+            <div th:each="tshirt : ${newTshirts}" class="product-card">
+                <img th:src="@{${tshirt.image}}" alt="Product Image">
+                <h3 th:text="${tshirt.name}">Тениска</h3>
+                <p th:text="'Price: ' + ${tshirt.price}">Цена</p>
+                <label for="size">Размер:</label>
+                <select id="size" name="size">
+                    <option value="XS">XS</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                </select>
+                <a href="#" class="btn">Добави в количка</a>
+            </div>
+        </div>
+    </section>
+</div>
+
+<footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>
+<script th:src="@{/js/category.js}"></script>
+</body>
+</html>

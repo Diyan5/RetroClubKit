@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Хоум страница</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/background.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}">
+</head>
+<body>
+<header>
+    <a href="index.html" class="logo">
+        <img src="/images/th.png" alt="Retro Football Logo" style="height: 48px;">
+        Retro Football Shirts
+    </a>
+    <div class="nav">
+        <ul>
+            <li><a th:href="@{/home}">Home</a></li>
+            <li>
+                <a href="#">Category</a>
+                <ul>
+                    <li><a th:href="@{/national}">National</a></li>
+                    <li><a th:href="@{/retro}">Retro</a></li>
+                    <li><a th:href="@{/new}">New</a></li>
+                </ul>
+            </li>
+            <li><a href="orders.html">My Account</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <!-- TODO about search -->
+        <form id="searchForm" action="/search/{teamName}" method="GET" class="search-bar">
+            <label>
+                <input type="text" name="team" placeholder="Search team...">
+            </label>
+            <button type="submit">Search</button>
+        </form>
+        <div class="cart">
+            <a th:href="@{checkout}">🛒 <span class="cart-count">0</span></a>
+        </div>
+        <a th:href="@{/}" class="exit" >Logout</a>
+    </div>
+</header>
+
+<div class="content">
+
+    <!-- Popular Models Section -->
+    <section id="popular-models" class="product-section">
+        <h2 class="welcome-message">Welcome, <span th:text="${user.username}"></span>!</h2>
+        <h2 class="welcome-message">Great to have you here! Check out the latest updates and get started on your journey.</h2>
+        <h2>See the most popular:</h2>
+        <div class="product-list">
+            <div class="product-card">
+                <img src="/images/ch.png" alt="Popular Model 1">
+                <h3>Chelsea retro kit 2005</h3>
+                <p>Price: 140$</p>
+                <div class="rating"></div>
+                <label for="size1">Размер:</label>
+                <select id="size1" name="size">
+                    <option value="XS">XS</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                </select>
+                <a class="btn">Добави в количка</a>
+            </div>
+            <div class="product-card">
+                <img src="/images/ast.png" alt="Popular Model 2">
+                <h3>Aston Villa retro kit 1990</h3>
+                <p>Price: 130$</p>
+                <div class="rating">⭐⭐⭐⭐⭐</div>
+                <label for="size1">Размер:</label>
+                <select id="size2" name="size">
+                    <option value="XS">XS</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                </select>
+                <a class="btn">Добави в количка</a>
+            </div>
+            <div class="product-card">
+                <img src="/images/rea.png" alt="Popular Model 3">
+                <h3>Real Madrid 1998</h3>
+                <p>Price: 100$</p>
+                <div class="rating">⭐⭐⭐⭐</div>
+                <label for="size1">Размер:</label>
+                <select id="size3" name="size">
+                    <option value="XS">XS</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                </select>
+                <a class="btn">Добави в количка</a>
+            </div>
+            <div class="product-card">
+                <img src="/images/rea.png" alt="Popular Model 4">
+                <h3>Real Madrid 1998</h3>
+                <p>Price: 100$</p>
+                <div class="rating">⭐⭐⭐⭐</div>
+                <label for="size1">Размер:</label>
+                <select id="size4" name="size">
+                    <option value="XS">XS</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                </select>
+                <a  class="btn">Добави в количка</a>
+            </div>
+            <div class="product-card">
+                <img src="/images/rea.png" alt="Popular Model 5">
+                <h3>Real Madrid 1998</h3>
+                <p>Price: 100$</p>
+                <div class="rating">⭐⭐⭐⭐</div>
+                <label for="size1">Размер:</label>
+                <select id="size5" name="size">
+                    <option value="XS">XS</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                </select>
+                <a class="btn">Добави в количка</a>
+            </div>
+            <div class="product-card">
+                <img src="/images/rea.png" alt="Popular Model 6">
+                <h3>Real Madrid 1998</h3>
+                <p>Price: 100$</p>
+                <div class="rating">⭐⭐⭐⭐</div>
+                <label for="size1">Размер:</label>
+                <select id="size6" name="size">
+                    <option value="XS">XS</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                </select>
+                <a class="btn">Добави в количка</a>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+
+<footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>
+<script th:src="@{/js/category.js}"></script>
+
+</body>
+</html>
