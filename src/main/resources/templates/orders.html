@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/background.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}">
+</head>
+<body>
+
+<header>
+    <a th:href="@{/home}" class="logo">
+        <img th:src="@{/images/th.png}" alt="Retro Football Logo" style="height: 48px;">
+        Retro Football Shirts
+    </a>
+    <div class="nav">
+        <ul>
+            <li><a th:href="@{/home}">Home</a></li>
+            <li><a th:href="@{/my-account}">My Account</a></li>
+            <li><a th:href="@{/contact}">Contact</a></li>
+        </ul>
+        <a th:href="@{/logout}" class="exit">Logout</a>
+    </div>
+</header>
+
+<main>
+    <h1>My Orders</h1>
+
+    <section id="order-history">
+        <h2>Order History</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Total Price</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${orders}">
+                <td th:text="${order.id}"></td>
+                <td th:text="${order.totalPrice} + ' $'"></td>
+                <td th:text="${order.status}"></td>
+                <td th:text="${#temporals.format(order.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
+                <td>
+                    <a th:href="@{/order-details/{orderId}(orderId=${order.id})}" class="btn">View Details</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <p th:if="${#lists.isEmpty(orders)}">You have no orders yet.</p>
+    </section>
+
+</main>
+
+</body>
+</html>

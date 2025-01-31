@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.retroclubkit.order.model.Order;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ public class Payment {
     private Order order; // Връзка към поръчката, за която е извършено плащането
 
     @Column(nullable = false)
-    private double amount; // Сума на плащането
+    private BigDecimal amount; // Сума на плащането
 
     @Column(nullable = false)
     private PaymentMethod paymentMethod; // Метод на плащане (например: "Credit Card", "Cash on Delivery")

@@ -2,9 +2,9 @@ package org.retroclubkit.order.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.retroclubkit.tshirt.model.Tshirt;
 import org.retroclubkit.user.model.User;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -27,19 +27,23 @@ public class Order {
     private User user; // Връзка към потребителя, който е направил поръчката
 
     @Column(nullable = false)
-    private double totalPrice; // Общата цена на поръчката
+    private String fullName; // Име на получателя
 
     @Column(nullable = false)
-    private String status; // Статус на поръчката (например: Pending, Completed)
+    private String phoneNumber; // Телефон за доставка
+
+    @Column(nullable = false)
+    private BigDecimal totalPrice; // Общата цена на поръчката
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Status status; // Статус на поръчката (например: Pending, Completed)
 
     @Column(nullable = false)
     private LocalDateTime createdAt; // Дата на създаване на поръчката
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
-    private List<Tshirt> items; // Продукти в поръчката (OrderItems)
-
-    @Column
-    private LocalDateTime updatedAt; // Дата на последната актуализация на поръчката (по избор)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<OrderItem> items; // Продукти в поръчката с количество
 
     @Column(nullable = false)
     private String deliveryAddress; // Адрес на доставка (например: София, бул. Витоша 15)

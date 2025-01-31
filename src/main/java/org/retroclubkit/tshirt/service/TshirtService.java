@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TshirtService {
@@ -19,7 +20,18 @@ public class TshirtService {
     }
 
 
-    public List<Tshirt> getTshirtsByCategory(Category category) {
-        return tshirtRepository.findAllByCategory(category);
+    public List<Tshirt> getTshirtsByCategoryAndAvailable(Category category) {
+        return tshirtRepository.getTshirtsByCategoryAndIsAvailableTrue(category);
+    }
+    public List<Tshirt> getAllTshirtsLimit() {
+        return tshirtRepository.getAllTshirtsLimit(10);
+    }
+
+    public List<Tshirt> getAllTshirts() {
+        return tshirtRepository.findAll();
+    }
+
+    public Tshirt getById(UUID id) {
+        return tshirtRepository.findById(id).orElse(null);
     }
 }
