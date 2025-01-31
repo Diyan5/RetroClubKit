@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/background.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}">
+</head>
+<body>
+
+<header>
+    <a th:href="@{/home}" class="logo">
+        <img th:src="@{/images/th.png}" alt="Retro Football Logo" style="height: 48px;">
+        Retro Football Shirts
+    </a>
+    <div class="nav">
+        <ul>
+            <li><a th:href="@{/home}">Home</a></li>
+            <li><a th:href="@{/my-account}">My Account</a></li>
+            <li><a th:href="@{/orders}">My Orders</a></li>
+        </ul>
+        <a th:href="@{/logout}" class="exit">Logout</a>
+    </div>
+</header>
+
+<main>
+    <h1>Order Details</h1>
+
+    <section id="order-info">
+        <h2>Order Information</h2>
+        <p><strong>Order ID:</strong> <span th:text="${order.id}"></span></p>
+        <p><strong>Total Price:</strong> <span th:text="${order.totalPrice} + ' $'"></span></p>
+        <p><strong>Status:</strong> <span th:text="${order.status}"></span></p>
+        <p><strong>Order Date:</strong> <span th:text="${#temporals.format(order.createdAt, 'dd-MM-yyyy HH:mm')}"></span></p>
+        <p><strong>Delivery Address:</strong> <span th:text="${order.deliveryAddress}"></span></p>
+    </section>
+
+    <section id="order-items">
+        <h2>Items in Order</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Product</th>
+                <th>Size</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${orderItems}">
+                <td th:text="${item.tshirt.name}"></td>
+                <td th:text="${item.size}"></td> <!-- ✅ Използва поръчания размер -->
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${item.tshirt.price} + ' $'"></td>
+                <td th:text="${item.quantity * item.tshirt.price} + ' $'"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+</main>
+
+</body>
+</html>
