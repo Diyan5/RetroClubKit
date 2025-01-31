@@ -164,36 +164,27 @@ footer {
 }
 
 /* Стилове за секцията с продукти */
+/* Стил за секцията с продукти */
 .product-section {
     padding: 20px;
 }
 
 .product-section h2 {
-    text-align: center;
+    text-align: center; /* Центрираме заглавието */
     margin-bottom: 20px;
     font-size: 24px;
     color: #fff;
 }
 
+/* Секция за продукти (подредени хоризонтално) */
 .product-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Автоматично разпределение на колоните */
+    display: flex;
+    flex-wrap: wrap; /* Продуктите ще преминават на нов ред при достигане на края */
+    justify-content: space-between; /* Разстояние между продуктите, разпределени от двете страни */
     gap: 20px; /* Разстояние между продуктите (хоризонтално и вертикално) */
-    justify-content: space-between; /* Подравняване към двете краища на реда */
-    padding: 0 20px; /* Премахнато разстояние отгоре */
 }
 
-.product {
-    background: #f9f9f9; /* Цвят на фона */
-    border: 1px solid #ddd; /* Рамка */
-    border-radius: 10px; /* Заоблени ъгли */
-    padding: 15px; /* Вътрешно отстояние */
-    text-align: center; /* Центриране на съдържанието */
-    box-sizing: border-box; /* Коректно изчисляване на padding и рамка */
-}
-
-
-/* Карта за всеки продукт */
+/* Стил за всяка продуктова карта */
 .product-card {
     background: #1d1d1d; /* Тъмен фон за картата */
     color: #fff; /* Бял текст */
@@ -201,13 +192,17 @@ footer {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center; /* Центрира текста */
-    width: 300px; /* Ширина на картата */
+    width: 100%; /* Ширината на картата ще е 100% от родителския контейнер */
+    max-width: 300px; /* Максималната ширина на картата */
+    margin-bottom: 20px; /* Разстояние между редовете */
+    flex-basis: 300px; /* Определя основната ширина на картите */
 }
 
+/* Снимка на продукта */
 .product-card img {
     width: 100%; /* Снимката заема цялата ширина на контейнера */
-    height: 250px; /* Фиксирана височина на снимките */
-    object-fit: cover; /* Подрязване на изображението, за да запази пропорции */
+    height: 250px; /* Фиксирана височина на снимката */
+    object-fit: cover; /* Подрязване на изображението, за да запази пропорциите */
     border-radius: 8px; /* Овални ръбове */
     margin-bottom: 15px; /* Разстояние под снимката */
 }
@@ -216,24 +211,224 @@ footer {
 .product-card h3 {
     margin: 10px 0;
     font-size: 18px;
+}* {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
+
+body {
+    font-family: Arial, sans-serif;
 }
 
-/* Цена */
+header {
+    background-color: black;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.logo img {
+    height: 30px;
+    margin-right: 8px;
+}
+
+.logo span {
+    position: relative;
+    top: 2px; /* Премества текста 2 пиксела надолу */
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+}
+
+.nav ul {
+    list-style: none;
+    display: flex;
+}
+
+.nav ul li {
+    position: relative;
+}
+
+.nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+    transition: background 0.3s;
+}
+
+.nav ul li a:hover {
+    background-color: #444;
+}
+
+.nav ul li ul {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: black;
+    list-style: none;
+    padding: 0;
+    display: none;
+    min-width: 150px;
+    z-index: 1000;
+}
+
+.nav ul li:hover ul {
+    display: block;
+}
+
+.nav ul li ul li a {
+    padding: 10px;
+    white-space: nowrap;
+}
+
+.search-bar {
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.search-bar input {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc; /* Добавена рамка */
+    border-radius: 4px;
+    flex: 1; /* Разширяване на полето за търсене */
+}
+
+.search-bar button {
+    padding: 5px 10px;
+    margin-left: 5px;
+    font-size: 14px;
+    border: none;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+.search-bar button:hover {
+    background-color: #666;
+}
+
+.cart {
+    color: white;
+    margin-left: 6px; /* Преместено 2px наляво */
+    position: relative;
+}
+
+.cart a {
+    color: white;
+    text-decoration: none;
+    position: relative;
+}
+
+.cart a:hover {
+    text-decoration: none;
+}
+
+.exit {
+    margin-left: auto;
+    text-decoration: none;
+    color: white;
+    padding: 10px 15px;
+}
+
+.exit:hover {
+    background-color: #444;
+}
+
+footer {
+    text-align: center; /* Центрира текста вътре във футъра */
+    width: 100%; /* Задава ширината на футъра, за да покрие цялата страница */
+    color: #fff; /* Задава цвета на текста */
+    padding: 10px 0; /* Добавя вертикално вътрешно отстояние */
+    font-size: 20px; /* Размер на текста */
+    font-family: 'Poppins', sans-serif; /* Шрифт */
+}
+
+
+/* Стилове за продуктовите карти */
+.product-section {
+    padding: 20px;
+}
+
+.product-section h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: #fff;
+}
+
+.product-section h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #fff;
+}
+
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 колони на ред */
+    gap: 20px; /* Разстояние между продуктите */
+    padding: 0 20px;
+    justify-items: center;
+}
+
+.product-card {
+    background: #1d1d1d;
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 20px;
+}
+
+.product-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.product-card h3 {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
 .product-card p {
     margin: 10px 0;
     font-size: 16px;
     font-weight: bold;
-    color: #ffcc00; /* Жълт цвят за цената */
+    color: #ffcc00;
 }
 
-/* Рейтинг */
-.product-card .rating {
+.product-card select {
+    padding: 5px;
+    font-size: 14px;
     margin: 10px 0;
-    font-size: 16px;
-    color: #ffa500; /* Оранжев цвят за звездите */
+    border-radius: 4px;
 }
 
-/* Бутон */
+/* Бутон за добавяне в количката */
 .product-card .btn {
     display: inline-block;
     padding: 10px 20px;
@@ -249,8 +444,7 @@ footer {
 }
 
 .product-card .btn:hover {
-    background-color: #0056b3; /* По-тъмен син цвят при ховър */
+    background-color: #0056b3;
 }
-.btn {
-    margin-top: 10px;
-}
+
+

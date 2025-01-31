@@ -38,66 +38,60 @@ function sortProducts(criteria) {
     products.forEach(product => productList.appendChild(product));
 }
 
-// Примерни данни за продуктите
-const products = [
-    { id: 1, name: 'Chelsea retro kit 2005', price: 140, size: 'M', img: '/images/ch.png' },
-    { id: 2, name: 'Aston Villa retro kit 1990', price: 130, size: 'L', img: '/images/ast.png' },
-    { id: 3, name: 'Real Madrid 1998', price: 100, size: 'S', img: '/images/rea.png' },
-    { id: 4, name: 'Real Madrid 1998', price: 100, size: 'S', img: '/images/rea.png' },
-    { id: 5, name: 'Real Madrid 1998', price: 100, size: 'S', img: '/images/rea.png' },
-    { id: 6, name: 'Real Madrid 1998', price: 100, size: 'S', img: '/images/rea.png' },
-];
 
-// Взимане на количката от LocalStorage (или създаване на празна, ако не съществува)
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
+function addToCart(event) {
 
-// Функция за обновяване на брояча на количката
-const updateCartCount = () => {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const button = event.target; // Получаваме бутона
+    const productId = button.getAttribute('data-id');
+    const productName = button.getAttribute('data-name');
+    const productPrice = parseFloat(button.getAttribute('data-price'));
+
+    // Извличаме избрания размер от селектора
+    const sizeSelect = button.closest('.product-card').querySelector('select[name="size"]');
+    const selectedSize = sizeSelect ? sizeSelect.value : 'M'; // Ако няма избран размер, вземаме M по подразбиране
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Проверяваме дали този продукт със съответния размер вече съществува в количката
+    const existingProduct = cart.find(item => item.id === productId && item.size === selectedSize);
+
+    if (existingProduct) {
+        // Ако продуктът със същия размер вече съществува, увеличаваме количеството само с 1
+        existingProduct.quantity += 1;
+    } else {
+        // Ако продуктът не съществува в количката, добавяме нов
+        cart.push({
+            id: productId,
+            name: productName,
+            price: productPrice,
+            size: selectedSize,
+            quantity: 1,
+            img: 'path_to_image.jpg' // Задайте пътя към изображението тук
+        });
+    }
+
+    // Записваме количката в localStorage
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    // Обновяване на броя на продуктите в количката
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    localStorage.setItem('cartCount', totalItems);
+
+    // Обновяване на брояча в UI
     const cartCount = document.querySelector('.cart-count');
     if (cartCount) {
-        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        cartCount.textContent = totalItems; // Обновяване на брояча
+        cartCount.textContent = totalItems;
     }
-};
+}
 
-// Обновяване на брояча при зареждане на страницата
-document.addEventListener('DOMContentLoaded', updateCartCount);
-
-// Слушане за промени в LocalStorage (например изчистване на количката от "Checkout")
-window.addEventListener('storage', (event) => {
-    if (event.key === 'cartUpdated') {
-        updateCartCount(); // Обновяване на брояча при промяна
-    }
-});
-
-
-// Функция за обновяване на LocalStorage
-const updateLocalStorage = () => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartCount(); // Синхронизация на брояча след обновяване на LocalStorage
-};
-
-// Добавяне на обработчик за всички бутони "Добави в количка"
 document.addEventListener('DOMContentLoaded', () => {
-    const addToCartButtons = document.querySelectorAll('.btn'); // Намиране на бутоните
-    addToCartButtons.forEach((button, index) => {
-        button.addEventListener('click', () => {
-            // Добавяне на продукта в количката
-            const product = products[index];
-            const existingProduct = cart.find(item => item.id === product.id);
+    const cartCount = document.querySelector('.cart-count');
 
-            if (existingProduct) {
-                existingProduct.quantity += 1; // Увеличаване на количеството
-            } else {
-                cart.push({ ...product, quantity: 1 }); // Добавяне на нов продукт
-            }
+    // Вземаме стойността на cartCount от localStorage (по подразбиране 0, ако няма)
+    const totalItems = localStorage.getItem('cartCount') || 0;
 
-            // Обновяване на LocalStorage и брояча
-            updateLocalStorage();
-        });
-    });
-
-    // Обновяване на брояча при зареждане на страницата
-    updateCartCount();
+    // Обновяваме брояча в UI
+    if (cartCount) {
+        cartCount.textContent = totalItems;
+    }
 });

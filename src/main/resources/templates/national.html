@@ -7,15 +7,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ретро Тениски</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/background.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/category.css}">
+    <link rel="stylesheet" type="text/css" href="/css/background.css">
+    <link rel="stylesheet" type="text/css" href="/css/home.css">
+    <link rel="stylesheet" type="text/css" href="/css/category.css">
 </head>
 <body>
 <header>
-    <a href="index.html" class="logo">
+    <a th:href="@{/home}" class="logo">
         <img src="/images/th.png" alt="Retro Football Logo" style="height: 48px;">
-        National T-shirts:
+        Retro T-shirts:
     </a>
     <div class="nav">
         <ul>
@@ -28,7 +28,7 @@
                     <li><a th:href="@{/new}">New</a></li>
                 </ul>
             </li>
-            <li><a href="orders.html">My Account</a></li>
+            <li><a th:href="@{/my-account}">My Account</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
         <form id="searchForm" action="search-results.html" method="GET" class="search-bar">
@@ -38,7 +38,7 @@
         <div class="cart">
             <a th:href="@{checkout}">🛒 <span class="cart-count">0</span></a>
         </div>
-        <a href="index.html" class="exit">Logout</a>
+        <a th:href="@{/}" class="exit">Logout</a>
     </div>
 </header>
 
@@ -54,22 +54,26 @@
         </div>
     </div>
     <section id="retro-shirts" class="product-section">
-        <h2>Ретро Тениски</h2>
+        <h2>National T-shirts:</h2>
         <div class="product-list">
-            <!-- Извеждаме динамично продуктите -->
             <div th:each="tshirt : ${nationalTshirts}" class="product-card">
+                <!-- Изображение на продукта -->
                 <img th:src="@{${tshirt.image}}" alt="Product Image">
                 <h3 th:text="${tshirt.name}">Тениска</h3>
                 <p th:text="'Price: ' + ${tshirt.price}">Цена</p>
+
+                <!-- Размер (показване само на наличните размери) -->
                 <label for="size">Размер:</label>
                 <select id="size" name="size">
-                    <option value="XS">XS</option>
-                    <option value="S">S</option>
-                    <option value="M">M</option>
-                    <option value="L">L</option>
-                    <option value="XL">XL</option>
+                    <option th:each="size : ${tshirt.sizes}" th:value="${size}" th:text="${size}">Размер</option>
                 </select>
-                <a href="#" class="btn">Добави в количка</a>
+
+                <a class="btn"
+                   th:data-id="${tshirt.id}"
+                   th:data-name="${tshirt.name}"
+                   th:data-price="${tshirt.price}"
+                   onclick="addToCart(event)">Добави в количка</a>
+
             </div>
         </div>
     </section>

@@ -1,15 +1,133 @@
 package org.retroclubkit.web;
 
+import jakarta.servlet.http.HttpSession;
+import org.retroclubkit.order.model.Order;
+import org.retroclubkit.order.model.Status;
+import org.retroclubkit.order.service.OrderService;
+import org.retroclubkit.order.model.OrderItem;
+import org.retroclubkit.payment.model.Payment;
+import org.retroclubkit.payment.model.PaymentMethod;
+import org.retroclubkit.payment.service.PaymentService;
+import org.retroclubkit.tshirt.model.Tshirt;
+import org.retroclubkit.tshirt.service.TshirtService;
+import org.retroclubkit.user.model.User;
+import org.retroclubkit.user.service.UserService;
+import org.retroclubkit.web.dto.OrderRequest;
+import org.retroclubkit.web.dto.TshirtOrderRequest;
+import org.retroclubkit.web.dto.UpdateProfileRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class HomeController {
 
+    private final UserService userService;
+    private final OrderService orderService;
+    private final TshirtService tshirtService;
+    private final PaymentService paymentService;
+
+    public HomeController(UserService userService, OrderService orderService, TshirtService tshirtService, PaymentService paymentService) {
+        this.userService = userService;
+        this.orderService = orderService;
+        this.tshirtService = tshirtService;
+        this.paymentService = paymentService;
+    }
+
+
     @GetMapping("/checkout")
     public String checkout() {
         return "checkout";
+    }
+
+    @PostMapping("/checkout")
+    public String submitOrder(@RequestBody OrderRequest orderRequest, HttpSession session, RedirectAttributes redirectAttributes) {
+        UUID userId = (UUID) session.getAttribute("user_id");
+        if (userId == null) {
+            redirectAttributes.addFlashAttribute("error", "You must be logged in to place an order.");
+            return "redirect:/checkout";
+        }
+
+        User user = userService.getById(userId);
+        Order order = orderService.createOrder(user, orderRequest);
+        PaymentMethod paymentMethod = PaymentMethod.valueOf(orderRequest.getPaymentMethod());
+        paymentService.processPayment(order, paymentMethod);
+
+        // ✅ Добавяме Flash атрибут за успех
+        redirectAttributes.addFlashAttribute("success", "Your order has been placed successfully!");
+
+        return "redirect:/home";
+    }
+
+    @GetMapping("/my-account")
+    public ModelAndView getUserAccount(HttpSession session) {
+        UUID userId = (UUID) session.getAttribute("user_id");
+
+        if (userId == null) {
+            return new ModelAndView("redirect:/login"); // Ако не е логнат, пращаме към логина
+        }
+
+        User user = userService.getById(userId);
+        List<Order> orders = orderService.getOrdersByUserCreatedAtDesc(userId);
+
+        ModelAndView modelAndView = new ModelAndView("my-account"); // ✅ Указваме Thymeleaf изгледа
+        modelAndView.addObject("user", user);
+        modelAndView.addObject("orders", orders); // ✅ Добавяме поръчките в модела
+
+        return modelAndView;
+    }
+
+    @PostMapping("/my-account")
+    public ResponseEntity<String> updateProfile(@RequestBody UpdateProfileRequest request, HttpSession session) {
+        UUID userId = (UUID) session.getAttribute("user_id");
+
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in");
+        }
+
+        User user = userService.getById(userId);
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setEmail(request.getEmail());
+
+        userService.save(user); // Запазваме промените
+
+        return ResponseEntity.ok("Profile updated successfully");
+    }
+
+    @GetMapping("/orders")
+    public ModelAndView getOrders(HttpSession session) {
+        UUID userId = (UUID) session.getAttribute("user_id");
+
+        List<Order> orders = orderService.getOrdersByUserCreatedAtDesc(userId); // Взимаме поръчките на потребителя
+
+        ModelAndView modelAndView = new ModelAndView("orders");
+        modelAndView.addObject("orders", orders); // Добавяме поръчките в модела
+
+        return modelAndView;
+    }
+    @GetMapping("/order-details/{orderId}")
+    public ModelAndView getOrderDetails(@PathVariable UUID orderId, HttpSession session) {
+        UUID userId = (UUID) session.getAttribute("user_id");
+
+        Order order = orderService.getById(orderId);
+
+        ModelAndView modelAndView = new ModelAndView("order-details");
+        modelAndView.addObject("order", order);
+        modelAndView.addObject("orderItems", order.getItems());
+
+        return modelAndView;
     }
 }

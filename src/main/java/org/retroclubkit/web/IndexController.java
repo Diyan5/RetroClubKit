@@ -2,7 +2,10 @@ package org.retroclubkit.web;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.retroclubkit.tshirt.model.Tshirt;
+import org.retroclubkit.tshirt.service.TshirtService;
 import org.retroclubkit.user.model.User;
+import org.retroclubkit.user.model.UserRole;
 import org.retroclubkit.user.service.UserService;
 import org.retroclubkit.web.dto.LoginRequest;
 import org.retroclubkit.web.dto.RegisterRequest;
@@ -14,16 +17,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.UUID;
 
 
 @Controller
 public class IndexController {
 
+    private final TshirtService tshirtService;
     private final UserService userService;
 
     @Autowired
-    public IndexController(UserService userService) {
+    public IndexController(TshirtService tshirtService, UserService userService) {
+        this.tshirtService = tshirtService;
         this.userService = userService;
     }
 
@@ -43,13 +49,20 @@ public class IndexController {
     }
 
     @PostMapping("/login")
-    public ModelAndView login(@Valid @ModelAttribute("loginRequest") LoginRequest loginRequest, BindingResult bindingResult) {
+    public ModelAndView login(@Valid @ModelAttribute("loginRequest") LoginRequest loginRequest, BindingResult bindingResult, HttpSession session) {
 
         if (bindingResult.hasErrors()) {
             return new ModelAndView("login");
         }
 
-        userService.login(loginRequest);
+        User loginUser = userService.login(loginRequest);
+        session.setAttribute("user_id", loginUser.getId());
+
+        //TODO should use spring security
+        if(loginUser.getRole() == UserRole.ADMIN){
+            return new ModelAndView("redirect:/admin");
+        }
+
         return new ModelAndView("redirect:/home");
     }
 
@@ -75,14 +88,38 @@ public class IndexController {
     }
 
     @GetMapping("/home")
-    public ModelAndView getHomePage() {
+    public ModelAndView getHomePage(HttpSession session) {
 
-        User user = userService.getById(UUID.fromString("73a7031c-e70c-4b0e-870c-78fa038d867f"));
+        UUID userId = (UUID) session.getAttribute("user_id");
+
+        User user = userService.getById(userId);
+
+        List<Tshirt> tshirtsLimit = tshirtService.getAllTshirtsLimit();
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("home");
         modelAndView.addObject("user", user);
+        modelAndView.addObject("tshirts", tshirtsLimit);
+
 
         return modelAndView;
+    }
+
+    @GetMapping("/admin")
+    public ModelAndView getAdminPage(HttpSession session) {
+        UUID userId = (UUID) session.getAttribute("user_id");
+
+        User user = userService.getById(userId);
+        ModelAndView modelAndView = new ModelAndView("admin");
+
+        modelAndView.addObject("user", user);
+        return modelAndView;
+    }
+
+    @GetMapping("/logout")
+    public String getLogout(HttpSession session) {
+
+        session.invalidate();
+        return "redirect:/";
     }
 }

@@ -89,4 +89,8 @@ public class UserService {
 
         return userRepository.findById(id).orElseThrow(() -> new DomainException("User with id [%s] does not exist.".formatted(id)));
     }
+
+    public void save(User user) {
+        userRepository.save(user);
+    }
 }
