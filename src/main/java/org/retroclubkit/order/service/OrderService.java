@@ -1,13 +1,11 @@
 package org.retroclubkit.order.service;
 
 import org.retroclubkit.order.model.Order;
-import org.retroclubkit.order.model.OrderItem;
+import org.retroclubkit.orderItem.model.OrderItem;
 import org.retroclubkit.order.model.Status;
-import org.retroclubkit.order.repository.OrderItemRepository;
+import org.retroclubkit.orderItem.repository.OrderItemRepository;
 import org.retroclubkit.order.repository.OrderRepository;
-import org.retroclubkit.payment.service.PaymentService;
 import org.retroclubkit.tshirt.model.Tshirt;
-import org.retroclubkit.tshirt.repository.TshirtRepository;
 import org.retroclubkit.tshirt.service.TshirtService;
 import org.retroclubkit.user.model.User;
 import org.retroclubkit.web.dto.OrderRequest;
@@ -37,8 +35,6 @@ public class OrderService {
         this.orderItemRepository = orderItemRepository;
     }
 
-
-    //TODO orderItem link to Order
     public Order createOrder(User user, OrderRequest orderRequest) {
         BigDecimal totalPrice = BigDecimal.ZERO;
         List<OrderItem> orderItems = new ArrayList<>();

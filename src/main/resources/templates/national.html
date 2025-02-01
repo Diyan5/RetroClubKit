@@ -15,13 +15,13 @@
 <header>
     <a th:href="@{/home}" class="logo">
         <img src="/images/th.png" alt="Retro Football Logo" style="height: 48px;">
-        Retro T-shirts:
+        Retro Football Shirts
     </a>
     <div class="nav">
         <ul>
             <li><a th:href="@{/home}">Home</a></li>
             <li>
-                <a href="#">Category</a>
+                <a>Category</a>
                 <ul>
                     <li><a th:href="@{/national}">National</a></li>
                     <li><a th:href="@{/retro}">Retro</a></li>
@@ -29,16 +29,18 @@
                 </ul>
             </li>
             <li><a th:href="@{/my-account}">My Account</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a th:href="@{/contact}">Contact</a></li>
         </ul>
-        <form id="searchForm" action="search-results.html" method="GET" class="search-bar">
-            <input type="text" name="team" placeholder="Search team...">
+        <form id="searchForm" action="/search/{teamName}" method="GET" class="search-bar">
+            <label>
+                <input type="text" name="team" placeholder="Search team...">
+            </label>
             <button type="submit">Search</button>
         </form>
         <div class="cart">
             <a th:href="@{checkout}">🛒 <span class="cart-count">0</span></a>
         </div>
-        <a th:href="@{/}" class="exit">Logout</a>
+        <a th:href="@{/logout}" class="exit" >Logout</a>
     </div>
 </header>
 

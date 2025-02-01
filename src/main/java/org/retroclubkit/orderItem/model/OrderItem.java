@@ -1,7 +1,8 @@
-package org.retroclubkit.order.model;
+package org.retroclubkit.orderItem.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.retroclubkit.order.model.Order;
 import org.retroclubkit.tshirt.model.Tshirt;
 
 import java.util.UUID;

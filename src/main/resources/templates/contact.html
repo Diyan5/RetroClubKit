@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Orders</title>
     <link rel="stylesheet" type="text/css" href="/css/background.css">
     <link rel="stylesheet" type="text/css" href="/css/home.css">
-    <link rel="stylesheet" type="text/css" href="/css/orders.css">
+    <link rel="stylesheet" type="text/css" href="/css/contact.css">
+    <title>Document</title>
 </head>
 <body>
-
 <header>
     <a th:href="@{/home}" class="logo">
         <img src="/images/th.png" alt="Retro Football Logo" style="height: 48px;">
@@ -27,7 +26,7 @@
                 </ul>
             </li>
             <li><a th:href="@{/my-account}">My Account</a></li>
-            <li><a th:href="@{/contact}">Contact</a></li>
+            <li><a th:href="@{/contact.html}">Contact</a></li>
         </ul>
         <form id="searchForm" action="/search/{teamName}" method="GET" class="search-bar">
             <label>
@@ -43,36 +42,28 @@
 </header>
 
 <main>
-    <h1>My Orders</h1>
+    <h1>Contact Us</h1>
+    <form th:action="@{/contact}" th:object="${contactRequest}" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" th:field="*{name}" required>
 
-    <section id="order-history">
-        <h2>Order History</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>Total Price</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="order : ${orders}">
-                <td th:text="${order.id}"></td>
-                <td th:text="${order.totalPrice} + ' $'"></td>
-                <td th:text="${order.status}"></td>
-                <td th:text="${#temporals.format(order.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
-                <td>
-                    <a th:href="@{/order-details/{orderId}(orderId=${order.id})}" class="btn">View Details</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <p th:if="${#lists.isEmpty(orders)}">You have no orders yet.</p>
-    </section>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" th:field="*{email}" required>
 
+        <label for="subject">Subject:</label>
+        <select id="subject" name="subject" th:field="*{subject}">
+            <option value="General Inquiry">General Inquiry</option>
+            <option value="Order Issue">Order Issue</option>
+            <option value="Return Request">Return Request</option>
+        </select>
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" th:field="*{message}" required></textarea>
+
+        <button type="submit">Send Message</button>
+    </form>
 </main>
-<footer>&copy 2025 Retro Club Kit. All Rights Reserved.</footer>
+
+<footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>
 </body>
 </html>

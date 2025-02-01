@@ -11,7 +11,7 @@
 <body>
 
 <header>
-    <a href="index.html" class="logo">
+    <a th:href="@{/home}" class="logo">
         <img src="/images/th.png" alt="Retro Football Logo" style="height: 48px;">
         Retro Football Shirts
     </a>
@@ -19,7 +19,7 @@
         <ul>
             <li><a th:href="@{/home}">Home</a></li>
             <li>
-                <a href="#">Category</a>
+                <a>Category</a>
                 <ul>
                     <li><a th:href="@{/national}">National</a></li>
                     <li><a th:href="@{/retro}">Retro</a></li>
@@ -27,7 +27,7 @@
                 </ul>
             </li>
             <li><a th:href="@{/my-account}">My Account</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a th:href="@{/contact}">Contact</a></li>
         </ul>
         <form id="searchForm" action="/search/{teamName}" method="GET" class="search-bar">
             <label>
