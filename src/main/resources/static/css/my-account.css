@@ -1,0 +1,135 @@
+/* Главен контейнер */
+main {
+    max-width: 700px;
+    margin: 40px auto;
+    background: rgba(20, 35, 20, 0.95);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+/* Заглавия */
+h1, h2 {
+    text-align: center;
+    color: white;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+/* Стил за секция "Profile Information" */
+#user-info {
+    padding: 20px;
+    background: rgba(25, 40, 25, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+/* Формат на input полетата */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #c2e5c2;
+    margin-bottom: 5px;
+}
+
+input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 127, 0.5);
+    color: #fff;
+    font-size: 1rem;
+    padding: 8px;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 5px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #00cc66;
+    box-shadow: 0 0 8px rgba(0, 255, 127, 0.8);
+}
+
+/* Бутоните */
+.btn, button {
+    display: inline-block;
+    background: #008f4c;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background 0.3s;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.btn:hover, button:hover {
+    background: #006f3a;
+}
+
+/* "My Orders" бутон */
+#orders-button {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Съобщения за грешки */
+.alert-warning {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    color: #ff4d4d;
+    margin-top: 5px;
+}
+
+.search-bar {
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.search-bar input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px; /* Удължено поле за търсене */
+    background-color: white; /* Фон на полето */
+    color: #666; /* Сив текст */
+}
+
+.search-bar input::placeholder {
+    color: #999; /* По-светъл сив текст за placeholder */
+}
+
+.search-bar button {
+    padding: 5px 10px;
+    margin-top: -1px;
+    font-size: 14px;
+    border: none;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+.search-bar button:hover {
+    background-color: #666; /* По-тъмен сив при hover */
+}
+
+
+

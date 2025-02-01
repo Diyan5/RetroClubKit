@@ -53,24 +53,20 @@ public class OrderService {
             int quantity = itemRequest.getQuantity();
             String size = itemRequest.getSize();
 
-            // ✅ Преобразуваме double -> BigDecimal и умножаваме
             BigDecimal itemPrice = BigDecimal.valueOf(tshirt.getPrice()).multiply(BigDecimal.valueOf(quantity));
-
-            // ✅ Добавяме цената към totalPrice
             totalPrice = totalPrice.add(itemPrice);
 
             OrderItem orderItem = OrderItem.builder()
                     .tshirt(tshirt)
                     .quantity(quantity)
-                    .size(String.valueOf(size))
-                    .order(null) // Свързваме по-късно
-                    .build();
+                    .size(size)
+                    .build(); // ❌ НЕ сетваме Order тук (ще го сетнем след Order-а)
             orderItems.add(orderItem);
         }
 
-        // ✅ Закръгляме до 2 знака
         totalPrice = totalPrice.setScale(2, RoundingMode.HALF_UP);
 
+        // ✅ Първо запазваме Order, без да има items
         Order order = Order.builder()
                 .user(user)
                 .fullName(orderRequest.getName())
@@ -79,23 +75,25 @@ public class OrderService {
                 .status(Status.PENDING)
                 .createdAt(LocalDateTime.now())
                 .deliveryAddress(orderRequest.getAddress() + ", " + orderRequest.getCity() + ", " + orderRequest.getCountry())
-                .items(orderItems)
+                .items(new ArrayList<>()) // ❌ Празен списък засега
                 .build();
-        // ✅ Запазваме Order в базата първо
+
+        // ✅ Запазваме Order, за да има ID
         Order savedOrder = orderRepository.save(order);
 
-        // ✅ След това сетваме OrderItem обектите към този Order
+        // ✅ Сега сетваме order_id на OrderItem обектите
         for (OrderItem item : orderItems) {
-            item.setOrder(savedOrder);
+            item.setOrder(savedOrder); // ✅ Вече има order_id
         }
 
-        // ✅ Запазваме OrderItem-ите
+        // ✅ Запазваме OrderItem обектите
         orderItemRepository.saveAll(orderItems);
 
-        // ✅ Сетваме вече свързаните items към Order и го обновяваме
+        // ✅ Обновяваме Order с OrderItem обектите и го запазваме отново
         savedOrder.setItems(orderItems);
-        return orderRepository.save(savedOrder); // Обновяваме Order с items
+        return orderRepository.save(savedOrder);
     }
+
 
     public List<Order> getOrdersByUserCreatedAtDesc(UUID userId) {
         return orderRepository.findByUserIdOrderByCreatedAtDesc(userId);

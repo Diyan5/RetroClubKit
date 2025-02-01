@@ -41,10 +41,12 @@ function sortProducts(criteria) {
 
 function addToCart(event) {
 
-    const button = event.target; // Получаваме бутона
+    const button = event.target;
+    const productCard = button.closest('.product-card'); // Получаваме бутона
     const productId = button.getAttribute('data-id');
     const productName = button.getAttribute('data-name');
     const productPrice = parseFloat(button.getAttribute('data-price'));
+    const productImage = productCard.querySelector('img').getAttribute('src');
 
     // Извличаме избрания размер от селектора
     const sizeSelect = button.closest('.product-card').querySelector('select[name="size"]');
@@ -66,7 +68,7 @@ function addToCart(event) {
             price: productPrice,
             size: selectedSize,
             quantity: 1,
-            img: 'path_to_image.jpg' // Задайте пътя към изображението тук
+            img: productImage // Задайте пътя към изображението тук
         });
     }
 

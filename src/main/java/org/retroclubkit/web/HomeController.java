@@ -1,6 +1,7 @@
 package org.retroclubkit.web;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.retroclubkit.order.model.Order;
 import org.retroclubkit.order.model.Status;
 import org.retroclubkit.order.service.OrderService;
@@ -19,10 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -75,36 +74,49 @@ public class HomeController {
     public ModelAndView getUserAccount(HttpSession session) {
         UUID userId = (UUID) session.getAttribute("user_id");
 
-        if (userId == null) {
-            return new ModelAndView("redirect:/login"); // Ако не е логнат, пращаме към логина
-        }
-
         User user = userService.getById(userId);
-        List<Order> orders = orderService.getOrdersByUserCreatedAtDesc(userId);
 
-        ModelAndView modelAndView = new ModelAndView("my-account"); // ✅ Указваме Thymeleaf изгледа
+        // ✅ Създаваме UpdateProfileRequest и попълваме с текущите данни на потребителя
+        UpdateProfileRequest updateProfileRequest = new UpdateProfileRequest();
+        updateProfileRequest.setUsername(user.getUsername());
+        updateProfileRequest.setFirstName(user.getFirstName());
+        updateProfileRequest.setLastName(user.getLastName());
+        updateProfileRequest.setEmail(user.getEmail());
+
+        ModelAndView modelAndView = new ModelAndView("my-account");
         modelAndView.addObject("user", user);
-        modelAndView.addObject("orders", orders); // ✅ Добавяме поръчките в модела
+        modelAndView.addObject("updateProfileRequest", updateProfileRequest); // ✅ Изпращаме попълнен DTO
 
         return modelAndView;
     }
 
     @PostMapping("/my-account")
-    public ResponseEntity<String> updateProfile(@RequestBody UpdateProfileRequest request, HttpSession session) {
-        UUID userId = (UUID) session.getAttribute("user_id");
+    public ModelAndView updateProfile(
+            @Valid @ModelAttribute("updateProfileRequest") UpdateProfileRequest request,
+            BindingResult bindingResult,
+            HttpSession session) {
 
+        ModelAndView modelAndView = new ModelAndView("my-account");
+
+        UUID userId = (UUID) session.getAttribute("user_id");
         if (userId == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in");
+            return new ModelAndView("redirect:/login");
+        }
+
+        if (bindingResult.hasErrors()) {
+            modelAndView.addObject("updateProfileRequest", request);
+            return modelAndView; // Връщаме обратно страницата с грешките
         }
 
         User user = userService.getById(userId);
+        user.setUsername(request.getUsername());
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
 
-        userService.save(user); // Запазваме промените
+        userService.save(user);
 
-        return ResponseEntity.ok("Profile updated successfully");
+        return new ModelAndView("redirect:/my-account?success");
     }
 
     @GetMapping("/orders")

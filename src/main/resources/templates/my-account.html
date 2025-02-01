@@ -2,25 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/background.css">
+    <link rel="stylesheet" type="text/css" href="/css/my-account.css">
+    <link rel="stylesheet" type="text/css" href="/css/home.css">
     <title>My Account</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/background.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}">
 </head>
 <body>
 
 <header>
-    <a th:href="@{/home}" class="logo">
-        <img th:src="@{/images/th.png}" alt="Retro Football Logo" style="height: 48px;">
+    <a href="index.html" class="logo">
+        <img src="/images/th.png" alt="Retro Football Logo" style="height: 48px;">
         Retro Football Shirts
     </a>
     <div class="nav">
         <ul>
             <li><a th:href="@{/home}">Home</a></li>
+            <li>
+                <a href="#">Category</a>
+                <ul>
+                    <li><a th:href="@{/national}">National</a></li>
+                    <li><a th:href="@{/retro}">Retro</a></li>
+                    <li><a th:href="@{/new}">New</a></li>
+                </ul>
+            </li>
             <li><a th:href="@{/my-account}">My Account</a></li>
-            <li><a th:href="@{/contact}">Contact</a></li>
+            <li><a href="contact.html">Contact</a></li>
         </ul>
-        <a th:href="@{/logout}" class="exit">Logout</a>
+        <form id="searchForm" action="/search/{teamName}" method="GET" class="search-bar">
+            <label>
+                <input type="text" name="team" placeholder="Search team...">
+            </label>
+            <button type="submit">Search</button>
+        </form>
+        <div class="cart">
+            <a th:href="@{checkout}">🛒 <span class="cart-count">0</span></a>
+        </div>
+        <a th:href="@{/logout}" class="exit" >Logout</a>
     </div>
 </header>
 
@@ -29,66 +53,42 @@
 
     <section id="user-info">
         <h2>Profile Information</h2>
-        <p><strong>Username:</strong> <span th:text="${user.username}"></span></p>
 
-        <!-- 🔹 Полетата ще бъдат заменени с input полета при Edit Mode -->
-        <p><strong>First name:</strong> <span id="firstNameDisplay" th:text="${user.firstName}"></span>
-            <input type="text" id="firstNameInput" th:value="${user.firstName}" style="display: none;">
-        </p>
+        <form th:action="@{/my-account}" th:object="${updateProfileRequest}" method="post">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" name="username" id="username" th:field="*{username}">
+                <p class="alert-warning" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+            </div>
 
-        <p><strong>Last name:</strong> <span id="lastNameDisplay" th:text="${user.lastName}"></span>
-            <input type="text" id="lastNameInput" th:value="${user.lastName}" style="display: none;">
-        </p>
+            <div class="form-group">
+                <label for="firstName">First name:</label>
+                <input type="text" name="firstName" id="firstName" th:field="*{firstName}">
+                <p class="alert-warning" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></p>
+            </div>
 
-        <p><strong>Email:</strong> <span id="emailDisplay" th:text="${user.email}"></span>
-            <input type="text" id="emailInput" th:value="${user.email}" style="display: none;">
-        </p>
+            <div class="form-group">
+                <label for="lastName">Last name:</label>
+                <input type="text" name="lastName" id="lastName" th:field="*{lastName}">
+                <p class="alert-warning" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
+            </div>
 
-        <!-- 🔹 Бутон за редакция -->
-        <button id="editProfile">Edit Profile</button>
-        <button id="saveChanges" style="display: none;">Save Changes</button>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="text" name="email" id="email" th:field="*{email}">
+                <p class="alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+            </div>
+
+            <button type="submit">Save Changes</button>
+        </form>
     </section>
 
     <section id="orders-button">
         <a th:href="@{/orders}" class="btn">My Orders</a>
     </section>
 </main>
+<footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>
 
-<script>
-    document.getElementById("editProfile").addEventListener("click", function() {
-        // Скриваме старите стойности и показваме input полетата
-        document.getElementById("firstNameDisplay").style.display = "none";
-        document.getElementById("lastNameDisplay").style.display = "none";
-        document.getElementById("emailDisplay").style.display = "none";
-
-        document.getElementById("firstNameInput").style.display = "inline-block";
-        document.getElementById("lastNameInput").style.display = "inline-block";
-        document.getElementById("emailInput").style.display = "inline-block";
-
-        // Показваме бутона "Save Changes"
-        document.getElementById("saveChanges").style.display = "inline-block";
-        this.style.display = "none"; // Скриваме "Edit Profile"
-    });
-
-    document.getElementById("saveChanges").addEventListener("click", async function() {
-        const firstName = document.getElementById("firstNameInput").value;
-        const lastName = document.getElementById("lastNameInput").value;
-        const email = document.getElementById("emailInput").value;
-
-        const response = await fetch("/my-account", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ firstName, lastName, email })
-        });
-
-        if (response.ok) {
-            alert("Profile updated successfully!");
-            location.reload(); // Презареждаме страницата, за да покажем новите данни
-        } else {
-            alert("Failed to update profile.");
-        }
-    });
-</script>
 
 </body>
 </html>
