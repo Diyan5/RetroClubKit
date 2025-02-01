@@ -3,30 +3,20 @@ package org.retroclubkit.web;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.retroclubkit.order.model.Order;
-import org.retroclubkit.order.model.Status;
 import org.retroclubkit.order.service.OrderService;
-import org.retroclubkit.order.model.OrderItem;
-import org.retroclubkit.payment.model.Payment;
 import org.retroclubkit.payment.model.PaymentMethod;
 import org.retroclubkit.payment.service.PaymentService;
-import org.retroclubkit.tshirt.model.Tshirt;
 import org.retroclubkit.tshirt.service.TshirtService;
 import org.retroclubkit.user.model.User;
 import org.retroclubkit.user.service.UserService;
 import org.retroclubkit.web.dto.OrderRequest;
-import org.retroclubkit.web.dto.TshirtOrderRequest;
 import org.retroclubkit.web.dto.UpdateProfileRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,6 +27,7 @@ public class HomeController {
     private final OrderService orderService;
     private final TshirtService tshirtService;
     private final PaymentService paymentService;
+
 
     public HomeController(UserService userService, OrderService orderService, TshirtService tshirtService, PaymentService paymentService) {
         this.userService = userService;
@@ -54,10 +45,6 @@ public class HomeController {
     @PostMapping("/checkout")
     public String submitOrder(@RequestBody OrderRequest orderRequest, HttpSession session, RedirectAttributes redirectAttributes) {
         UUID userId = (UUID) session.getAttribute("user_id");
-        if (userId == null) {
-            redirectAttributes.addFlashAttribute("error", "You must be logged in to place an order.");
-            return "redirect:/checkout";
-        }
 
         User user = userService.getById(userId);
         Order order = orderService.createOrder(user, orderRequest);
@@ -142,4 +129,6 @@ public class HomeController {
 
         return modelAndView;
     }
+
+
 }

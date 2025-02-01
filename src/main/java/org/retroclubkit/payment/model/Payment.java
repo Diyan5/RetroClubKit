@@ -35,6 +35,6 @@ public class Payment {
     @Column(nullable = false)
     private LocalDateTime paymentDate; // Дата на плащането
 
-    @Column(nullable = false)
+    @Column
     private String transactionId; // Идентификатор на транзакцията (ако е наличен)
 }

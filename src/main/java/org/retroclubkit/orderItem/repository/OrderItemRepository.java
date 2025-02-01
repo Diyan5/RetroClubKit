@@ -1,6 +1,6 @@
-package org.retroclubkit.order.repository;
+package org.retroclubkit.orderItem.repository;
 
-import org.retroclubkit.order.model.OrderItem;
+import org.retroclubkit.orderItem.model.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

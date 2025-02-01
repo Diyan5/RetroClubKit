@@ -2,6 +2,7 @@ package org.retroclubkit.order.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.retroclubkit.orderItem.model.OrderItem;
 import org.retroclubkit.user.model.User;
 
 import java.math.BigDecimal;

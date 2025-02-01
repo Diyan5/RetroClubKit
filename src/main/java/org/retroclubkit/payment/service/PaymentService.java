@@ -27,13 +27,17 @@ public class PaymentService {
     public Payment processPayment(Order order, PaymentMethod paymentMethod) {
         boolean isPaid = paymentMethod != PaymentMethod.CASH_ON_DELIVERY;
 
+        String transactionId = (paymentMethod == PaymentMethod.CASH_ON_DELIVERY)
+                ? "N/A"
+                : UUID.randomUUID().toString();
+
         Payment payment = Payment.builder()
                 .order(order)
                 .amount(order.getTotalPrice())
                 .paymentMethod(paymentMethod)
                 .isPaid(isPaid)
                 .paymentDate(LocalDateTime.now())
-                .transactionId(UUID.randomUUID().toString()) // Симулираме transactionId
+                .transactionId(transactionId)
                 .build();
 
         return paymentRepository.save(payment);
