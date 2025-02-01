@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/background.css">
+    <link rel="stylesheet" type="text/css" href="/css/home.css">
+    <link rel="stylesheet" type="text/css" href="/css/contact.css">
+    <title>Document</title>
+</head>
+<body>
+<header>
+    <a th:href="@{/home}" class="logo">
+        <img src="/images/th.png" alt="Retro Football Logo" style="height: 48px;">
+        Retro Football Shirts
+    </a>
+    <div class="nav">
+        <ul>
+            <li><a th:href="@{/home}">Home</a></li>
+            <li>
+                <a>Category</a>
+                <ul>
+                    <li><a th:href="@{/national}">National</a></li>
+                    <li><a th:href="@{/retro}">Retro</a></li>
+                    <li><a th:href="@{/new}">New</a></li>
+                </ul>
+            </li>
+            <li><a th:href="@{/my-account}">My Account</a></li>
+            <li><a th:href="@{/contact.html}">Contact</a></li>
+        </ul>
+        <form id="searchForm" action="/search/{teamName}" method="GET" class="search-bar">
+            <label>
+                <input type="text" name="team" placeholder="Search team...">
+            </label>
+            <button type="submit">Search</button>
+        </form>
+        <div class="cart">
+            <a th:href="@{checkout}">🛒 <span class="cart-count">0</span></a>
+        </div>
+        <a th:href="@{/logout}" class="exit" >Logout</a>
+    </div>
+</header>
+
+<main>
+    <h1>Contact Us</h1>
+    <form th:action="@{/contact}" th:object="${contactRequest}" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" th:field="*{name}" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" th:field="*{email}" required>
+
+        <label for="subject">Subject:</label>
+        <select id="subject" name="subject" th:field="*{subject}">
+            <option value="General Inquiry">General Inquiry</option>
+            <option value="Order Issue">Order Issue</option>
+            <option value="Return Request">Return Request</option>
+        </select>
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" th:field="*{message}" required></textarea>
+
+        <button type="submit">Send Message</button>
+    </form>
+</main>
+
+<footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>
+</body>
+</html>

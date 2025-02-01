@@ -1,0 +1,111 @@
+main {
+    max-width: 600px;
+    margin: 50px auto;
+    background: rgba(30, 50, 30, 0.9); /* Леко тъмно-зелено, за да контрастира с фона */
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+/* Заглавие */
+h1 {
+    color: white; /* Светло зелено за добра видимост */
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+/* Стил за формата */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 10px;
+    color: white; /* Светло зелено */
+}
+
+input, select, textarea {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid rgba(0, 255, 127, 0.5);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+}
+
+textarea {
+    resize: none;
+    height: 120px;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: #00cc66;
+    box-shadow: 0 0 8px rgba(0, 255, 127, 0.8);
+}
+
+/* Бутон */
+button {
+    background: #008f4c;
+    color: white;
+    padding: 10px 15px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background 0.3s;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    margin-top: 15px;
+    width: 100%;
+    max-width: 500px;
+}
+
+button:hover {
+    background: #006f3a;
+}
+
+/* Стил за селект полето */
+select {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #4a774d; /* Тъмнозелена рамка */
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.15); /* По-неутрален фон */
+    color: #e6e6e6; /* Светъл, но не прекалено бял */
+    font-size: 1rem;
+    appearance: none; /* Премахва стандартния стил на браузъра */
+    cursor: pointer;
+}
+
+/* Ефект при фокус */
+select:focus {
+    outline: none;
+    border-color: #6fbf73; /* По-приятен зелен цвят при фокус */
+    box-shadow: 0 0 8px rgba(111, 191, 115, 0.7);
+}
+
+/* Стил за опциите вътре в селекта */
+option {
+    background: #2b3a2b; /* Тъмно зелено-кафяво, приятно за четене */
+    color: #d1d1d1; /* Светъл, но не прекалено бял текст */
+    padding: 10px;
+    font-size: 1rem;
+}
+
+/* При селектиране на опция */
+option:checked {
+    background: #3e5240; /* Наситен, елегантен зелен нюанс */
+    color: white;
+}
+
+
