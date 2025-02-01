@@ -1,0 +1,175 @@
+/* Главен контейнер */
+main {
+    max-width: 900px;
+    margin: 40px auto;
+    background: rgba(20, 35, 20, 0.95); /* Леко тъмен, но четим фон */
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* По-дискретна сянка */
+}
+
+h1, h2 {
+    text-align: center;
+    color: #00cc66; /* Меко зелено, без прекален неон */
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+/* Стил за секции */
+#order-info, #order-items {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(25, 40, 25, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+p {
+    font-size: 1rem;
+    margin: 8px 0;
+    line-height: 1.6;
+    color: #c2e5c2; /* Светло зелено за четимост */
+}
+
+/* Таблица */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: rgba(30, 50, 30, 0.9);
+    border-radius: 8px;
+    overflow: hidden;
+    color: #ffffff;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+th {
+    background: rgba(0, 150, 80, 0.7); /* По-изтънчено зелено */
+    color: white;
+}
+
+tr:nth-child(even) {
+    background: rgba(40, 60, 40, 0.8);
+}
+
+tr:hover {
+    background: rgba(60, 80, 60, 0.8);
+}
+
+/* Бутон */
+.btn {
+    display: inline-block;
+    background: #008f4c;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background 0.3s;
+    text-align: center;
+}
+
+.btn:hover {
+    background: #006f3a;
+}
+
+
+
+
+/* Главен контейнер */
+main {
+    max-width: 700px;
+    margin: 40px auto;
+    background: rgba(20, 35, 20, 0.95);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #00cc66;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+/* Стил за секция "Profile Information" */
+#user-info {
+    padding: 20px;
+    background: rgba(25, 40, 25, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+#user-info p {
+    font-size: 1rem;
+    margin: 8px 0;
+    line-height: 1.6;
+    color: #c2e5c2;
+}
+
+/* Стилизиране на input полетата */
+input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 127, 0.5);
+    color: #fff;
+    font-size: 1rem;
+    padding: 8px;
+    border-radius: 5px;
+    width: 80%;
+    margin-top: 5px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #00cc66;
+    box-shadow: 0 0 8px rgba(0, 255, 127, 0.8);
+}
+
+/* Бутоните */
+.btn, button {
+    display: inline-block;
+    background: #008f4c;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background 0.3s;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn:hover, button:hover {
+    background: #006f3a;
+}
+
+/* "My Orders" бутон */
+#orders-button {
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+.alert-warning {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    background: linear-gradient(to left, #f88e8e, #f56767, #f53b3b);
+    background-size: 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+

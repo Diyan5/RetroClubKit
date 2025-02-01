@@ -4,23 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/background.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}">
+    <link rel="stylesheet" type="text/css" href="/css/background.css">
+    <link rel="stylesheet" type="text/css" href="/css/home.css">
+    <link rel="stylesheet" type="text/css" href="/css/order-details.css">
 </head>
 <body>
 
 <header>
-    <a th:href="@{/home}" class="logo">
-        <img th:src="@{/images/th.png}" alt="Retro Football Logo" style="height: 48px;">
+    <a href="index.html" class="logo">
+        <img src="/images/th.png" alt="Retro Football Logo" style="height: 48px;">
         Retro Football Shirts
     </a>
     <div class="nav">
         <ul>
             <li><a th:href="@{/home}">Home</a></li>
+            <li>
+                <a href="#">Category</a>
+                <ul>
+                    <li><a th:href="@{/national}">National</a></li>
+                    <li><a th:href="@{/retro}">Retro</a></li>
+                    <li><a th:href="@{/new}">New</a></li>
+                </ul>
+            </li>
             <li><a th:href="@{/my-account}">My Account</a></li>
-            <li><a th:href="@{/orders}">My Orders</a></li>
+            <li><a href="contact.html">Contact</a></li>
         </ul>
-        <a th:href="@{/logout}" class="exit">Logout</a>
+        <form id="searchForm" action="/search/{teamName}" method="GET" class="search-bar">
+            <label>
+                <input type="text" name="team" placeholder="Search team...">
+            </label>
+            <button type="submit">Search</button>
+        </form>
+        <div class="cart">
+            <a th:href="@{checkout}">🛒 <span class="cart-count">0</span></a>
+        </div>
+        <a th:href="@{/logout}" class="exit" >Logout</a>
     </div>
 </header>
 
@@ -53,8 +71,8 @@
                 <td th:text="${item.tshirt.name}"></td>
                 <td th:text="${item.size}"></td> <!-- ✅ Използва поръчания размер -->
                 <td th:text="${item.quantity}"></td>
-                <td th:text="${item.tshirt.price} + ' $'"></td>
-                <td th:text="${item.quantity * item.tshirt.price} + ' $'"></td>
+                <td th:text="${#numbers.formatDecimal(item.tshirt.price, 1, 2)} + ' $'"></td>
+                <td th:text="${#numbers.formatDecimal(item.quantity * item.tshirt.price, 1, 2)} + ' $'"></td>
             </tr>
             </tbody>
         </table>
@@ -62,5 +80,6 @@
 
 </main>
 
+<footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>
 </body>
 </html>
