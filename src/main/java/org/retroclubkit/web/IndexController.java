@@ -58,11 +58,6 @@ public class IndexController {
         User loginUser = userService.login(loginRequest);
         session.setAttribute("user_id", loginUser.getId());
 
-        //TODO should use spring security
-        if(loginUser.getRole() == UserRole.ADMIN){
-            return new ModelAndView("redirect:/admin");
-        }
-
         return new ModelAndView("redirect:/home");
     }
 
@@ -84,7 +79,7 @@ public class IndexController {
 
         userService.register(registerRequest);
 
-        return new ModelAndView("redirect:/home");
+        return new ModelAndView("redirect:/login");
     }
 
     @GetMapping("/home")
@@ -94,7 +89,7 @@ public class IndexController {
 
         User user = userService.getById(userId);
 
-        List<Tshirt> tshirtsLimit = tshirtService.getAllTshirtsLimit();
+        List<Tshirt> tshirtsLimit = tshirtService.getAllTshirtsLimitAndAvailableTrue();
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("home");

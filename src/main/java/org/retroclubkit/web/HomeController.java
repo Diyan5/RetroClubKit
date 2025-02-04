@@ -11,13 +11,17 @@ import org.retroclubkit.user.model.User;
 import org.retroclubkit.user.service.UserService;
 import org.retroclubkit.web.dto.OrderRequest;
 import org.retroclubkit.web.dto.UpdateProfileRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -43,19 +47,28 @@ public class HomeController {
     }
 
     @PostMapping("/checkout")
-    public String submitOrder(@RequestBody OrderRequest orderRequest, HttpSession session, RedirectAttributes redirectAttributes) {
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> submitOrder(@RequestBody OrderRequest orderRequest, HttpSession session) {
         UUID userId = (UUID) session.getAttribute("user_id");
-
         User user = userService.getById(userId);
+
+        Map<String, String> response = new HashMap<>();
+
+        // ✅ Проверка дали потребителят е активен
+        if (!user.isActive()) {
+            response.put("error", "Your account is inactive. You cannot place orders.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+        }
+
+        // ✅ Ако е активен, продължаваме с поръчката
         Order order = orderService.createOrder(user, orderRequest);
         PaymentMethod paymentMethod = PaymentMethod.valueOf(orderRequest.getPaymentMethod());
         paymentService.processPayment(order, paymentMethod);
 
-        // ✅ Добавяме Flash атрибут за успех
-        redirectAttributes.addFlashAttribute("success", "Your order has been placed successfully!");
-
-        return "redirect:/home";
+        response.put("success", "Your order has been placed successfully!");
+        return ResponseEntity.ok(response);
     }
+
 
     @GetMapping("/my-account")
     public ModelAndView getUserAccount(HttpSession session) {

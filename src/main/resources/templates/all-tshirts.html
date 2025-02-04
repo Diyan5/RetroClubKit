@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Products</title>
+    <link rel="stylesheet" type="text/css" href="/css/admin.css">
+</head>
+<body>
+<header>
+    <h1>Admin - Products</h1>
+    <nav>
+        <a th:href="@{/all-tshirts}">All Products</a>
+        <a href="/admin/products/available">Available</a>
+        <a href="/admin/products/unavailable">Unavailable</a>
+        <a th:href="@{/admin/tshirts/add}" class="add-button">➕ Add New Tshirt</a>
+    </nav>
+</header>
+
+<table>
+    <thead>
+    <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Category</th>
+        <th>Sizes</th>
+        <th>Available</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="tshirt : ${tshirts}">
+        <td><img th:src="${tshirt.image}" alt="Tshirt Image" style="width:50px;"></td>
+        <td th:text="${tshirt.name}"></td>
+        <td th:text="${tshirt.price}"></td>
+        <td th:text="${tshirt.category}"></td>
+        <td th:text="${tshirt.sizes}"></td>
+        <td th:text="${tshirt.isAvailable ? 'Yes' : 'No'}"></td>
+        <td>
+            <!-- Бутон за изтриване -->
+            <form th:action="@{/admin/products/delete/{id}(id=${tshirt.id})}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+
+            <!-- Бутон за редакция на размера -->
+            <a th:href="@{/admin/products/edit/{id}(id=${tshirt.id})}">
+                <button type="button">Edit Sizes</button>
+            </a>
+
+            <!-- Бутон за промяна на наличността -->
+            <form th:action="@{/admin/products/toggle-availability/{id}(id=${tshirt.id})}" method="post">
+                <button type="submit" th:text="${tshirt.isAvailable ? 'Set Unavailable' : 'Set Available'}"></button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

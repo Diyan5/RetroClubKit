@@ -5,6 +5,7 @@ import org.retroclubkit.orderItem.model.OrderItem;
 import org.retroclubkit.order.model.Status;
 import org.retroclubkit.orderItem.repository.OrderItemRepository;
 import org.retroclubkit.order.repository.OrderRepository;
+import org.retroclubkit.orderItem.service.OrderItemService;
 import org.retroclubkit.tshirt.model.Tshirt;
 import org.retroclubkit.tshirt.service.TshirtService;
 import org.retroclubkit.user.model.User;
@@ -26,14 +27,18 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final TshirtService tshirtService;
-    private final OrderItemRepository orderItemRepository;
+    private final OrderItemService orderItemService;
+
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, TshirtService tshirtService, OrderItemRepository orderItemRepository) {
+    public OrderService(OrderRepository orderRepository, TshirtService tshirtService, OrderItemService orderItemService) {
         this.orderRepository = orderRepository;
         this.tshirtService = tshirtService;
-        this.orderItemRepository = orderItemRepository;
+        this.orderItemService = orderItemService;
     }
+
+
+
 
     public Order createOrder(User user, OrderRequest orderRequest) {
         BigDecimal totalPrice = BigDecimal.ZERO;
@@ -49,7 +54,7 @@ public class OrderService {
             int quantity = itemRequest.getQuantity();
             String size = itemRequest.getSize();
 
-            BigDecimal itemPrice = BigDecimal.valueOf(tshirt.getPrice()).multiply(BigDecimal.valueOf(quantity));
+            BigDecimal itemPrice = tshirt.getPrice().multiply(BigDecimal.valueOf(quantity));
             totalPrice = totalPrice.add(itemPrice);
 
             OrderItem orderItem = OrderItem.builder()
@@ -83,7 +88,7 @@ public class OrderService {
         }
 
         // ✅ Запазваме OrderItem обектите
-        orderItemRepository.saveAll(orderItems);
+        orderItemService.saveAll(orderItems);
 
         // ✅ Обновяваме Order с OrderItem обектите и го запазваме отново
         savedOrder.setItems(orderItems);
@@ -97,5 +102,9 @@ public class OrderService {
 
     public Order getById(UUID orderId) {
         return orderRepository.findById(orderId).orElse(null);
+    }
+
+    public List<Order> getOrdersByUser(User user) {
+        return orderRepository.findByUser(user);
     }
 }
