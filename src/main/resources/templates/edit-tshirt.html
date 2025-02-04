@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Tshirt</title>
+    <link rel="stylesheet" type="text/css" href="/css/admin.css">
+</head>
+<body>
+<header>
+    <h1>Edit Tshirt</h1>
+</header>
+
+<form th:action="@{/admin/products/update}" method="post">
+    <input type="hidden" name="id" th:value="${tshirt.id}">
+
+    <label>Name:</label>
+    <input type="text" th:value="${tshirt.name}" readonly>
+
+    <label>Price:</label>
+    <input type="number" th:field="*{tshirt.price}" step="0.01" required>
+
+    <label>Available Sizes:</label>
+    <div>
+        <span th:each="size : ${allSizes}">
+            <input type="checkbox" name="sizes" th:value="${size}" th:checked="${tshirt.sizes.contains(size)}">
+            <label th:text="${size}"></label>
+        </span>
+    </div>
+
+    <button type="submit">Save Changes</button>
+</form>
+
+</body>
+</html>

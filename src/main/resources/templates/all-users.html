@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Users</title>
+    <link rel="stylesheet" type="text/css" href="/css/background.css">
+    <link rel="stylesheet" type="text/css" href="/css/admin.css">
+</head>
+<style>
+    .btn {
+        display: inline-block;
+        padding: 8px 16px; /* Увеличава вътрешния отстъп */
+        font-size: 16px; /* Увеличава текста */
+        background-color: #007bff; /* Син цвят */
+        color: white; /* Бял текст */
+        text-decoration: none; /* Премахва подчертаването */
+        border-radius: 5px; /* Закръглени ръбове */
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s ease-in-out;
+    }
+
+    .btn:hover {
+        background-color: #0056b3; /* По-тъмен син при hover */
+    }
+
+
+    .actions {
+        display: flex;
+        gap: 8px; /* Разстояние между бутоните */
+    }
+
+    .inline-form {
+        display: inline-block;
+        margin: 0;
+    }
+
+    .btn-small {
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .status-btn {
+        background-color: #dc3545; /* Червен бутон за деактивиране */
+        color: white;
+    }
+
+    .role-btn {
+        background-color: #28a745; /* Зелен бутон за промяна на роля */
+        color: white;
+    }
+
+    .btn-view {
+        background-color: #007bff; /* Син бутон за поръчки */
+        color: white;
+    }
+
+    .btn-small:hover {
+        opacity: 0.8;
+    }
+
+</style>
+<body>
+
+<header>
+    <a href="/admin" class="logo">
+        <img src="/images/th.png" alt="Retro Football Logo" style="height: 48px;">
+        Retro Football Shirts
+    </a>
+</header>
+
+<main>
+    <h1>All Users</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Role</th>
+            <th>Orders</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.email}"></td>
+
+            <!-- Статус и бутон за активиране/деактивиране -->
+            <td>
+                <span th:text="${user.active} ? 'Активен' : 'Деактивиран'"
+                      th:id="'status-' + ${user.id}"></span>
+                <form th:action="@{/toggle-user-status/{id}(id=${user.id})}" method="post" class="status-form">
+                    <button type="submit"
+                            th:text="${user.active} ? 'Деактивирай' : 'Активирай'"
+                            th:attr="data-user-id=${user.id}"
+                            class="status-btn"></button>
+                </form>
+            </td>
+
+            <!-- Роля и бутон за промяна -->
+            <td>
+                <span th:text="${user.role == 'ADMIN'} ? 'Админ' : 'Потребител'"
+                      th:id="'role-' + ${user.id}"></span>
+                <form th:action="@{/change-user-role/{id}(id=${user.id})}" method="post" class="role-form">
+                    <button type="submit"
+                            th:text="${user.role == 'ADMIN'} ? 'Направи Потребител' : 'Направи Админ'"
+                            th:attr="data-user-id=${user.id}"
+                            class="role-btn"></button>
+                </form>
+            </td>
+
+            <td>
+                <a th:href="@{/user-orders/{id}(id=${user.id})}" class="btn">View Orders</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<!-- JavaScript за обновяване без презареждане -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".status-form").forEach(form => {
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                let button = form.querySelector(".status-btn");
+                let userId = button.getAttribute("data-user-id");
+                let statusText = document.getElementById("status-" + userId);
+
+                fetch(form.action, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        if (button.textContent === "Деактивирай") {
+                            button.textContent = "Активирай";
+                            statusText.textContent = "Деактивиран";
+                        } else {
+                            button.textContent = "Деактивирай";
+                            statusText.textContent = "Активен";
+                        }
+                    }
+                });
+            });
+        });
+
+        document.querySelectorAll(".role-form").forEach(form => {
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                let button = form.querySelector(".role-btn");
+                let userId = button.getAttribute("data-user-id");
+                let roleText = document.getElementById("role-" + userId);
+
+                fetch(form.action, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        if (button.textContent === "Направи Админ") {
+                            button.textContent = "Направи Потребител";
+                            roleText.textContent = "Админ";
+                        } else {
+                            button.textContent = "Направи Админ";
+                            roleText.textContent = "Потребител";
+                        }
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

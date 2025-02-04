@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Orders</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/admin.css}">
+</head>
+<body>
+<header>
+    <a th:href="@{/admin}" class="logo">Admin Panel</a>
+    <nav>
+        <a th:href="@{/all-users}">Users</a>
+        <a th:href="@{/admin/orders}">Orders</a>
+        <a th:href="@{/admin/products}">Products</a>
+        <a th:href="@{/admin/messages}">Messages</a>
+    </nav>
+</header>
+
+<main>
+    <h1>Orders for <span th:text="${user.username}"></span></h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Total Price</th>
+            <th>Status</th>
+            <th>Details</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}"></td>
+            <td th:text="${order.createdAt}"></td>
+            <td th:text="${order.totalPrice} + ' $'"></td>
+            <td th:text="${order.status}"></td>
+            <td>
+                <a th:href="@{/admin/order-details/{id}(id=${order.id})}" class="btn">View Details</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/all-users}" class="btn">Back to Users</a>
+</main>
+
+<footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>
+</body>
+</html>

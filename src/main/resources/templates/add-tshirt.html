@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Tshirt</title>
+    <link rel="stylesheet" type="text/css" href="/css/admin.css">
+</head>
+<body>
+<header>
+    <h1>Add New Tshirt</h1>
+</header>
+
+<form th:action="@{/admin/tshirts/save}" method="post" th:object="${tshirt}">
+    <label>Name:</label>
+    <input type="text" th:field="*{name}" required>
+
+    <label>Price:</label>
+    <input type="number" th:field="*{price}" step="0.01" required>
+
+    <label>Image URL:</label>
+    <input type="text" th:field="*{image}" required>
+
+    <label>Description:</label>
+    <textarea th:field="*{description}" required></textarea>
+
+    <label for="teamId">Select Team:</label>
+    <select id="teamId" th:field="*{teamId}" required>
+        <option value="">-- Select a Team --</option>
+        <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"></option>
+    </select>
+
+    <label>Category:</label>
+    <select th:field="*{category}">
+        <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}"></option>
+    </select>
+
+    <label>Available Sizes:</label>
+    <div>
+        <span th:each="size : ${sizes}">
+            <input type="checkbox" th:field="*{sizes}" th:value="${size}">
+            <label th:text="${size}"></label>
+        </span>
+    </div>
+
+    <button type="submit">Save Tshirt</button>
+</form>
+
+</body>
+</html>

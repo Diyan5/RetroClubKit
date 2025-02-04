@@ -57,6 +57,13 @@
 </head>
 <body>
 <h1>Checkout</h1>
+<div th:if="${error}" class="alert alert-danger">
+    <p th:text="${error}"></p>
+</div>
+
+<div th:if="${success}" class="alert alert-success">
+    <p th:text="${success}"></p>
+</div>
 <table>
     <thead>
     <tr>
@@ -255,21 +262,22 @@
                 body: JSON.stringify(orderData)
             });
 
-            if (response.ok) {
-                alert("Your order has been placed successfully!");
+            const responseData = await response.json();
 
-                // Изчистваме количката
+            if (response.ok && responseData.success) {
+                alert(responseData.success); // Показваме успешното съобщение от бекенда
+
                 localStorage.removeItem('cart');
                 localStorage.setItem('cartCount', 0);
 
-                // Обновяваме брояча в UI
                 const cartCountElement = document.querySelector('.cart-count');
                 if (cartCountElement) {
                     cartCountElement.textContent = "0";
                 }
 
-                // Пренасочваме към home
                 window.location.href = '/home';
+            } else if (responseData.error) {
+                alert(responseData.error); // Ако има грешка, показваме грешката
             }
         } catch (error) {
             console.error("Error submitting order:", error);

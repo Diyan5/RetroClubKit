@@ -1,0 +1,75 @@
+main {
+    max-width: 900px;
+    margin: 40px auto;
+    background: rgba(20, 35, 20, 0.95);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+h1 {
+    color: white;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(30, 50, 30, 0.9);
+    border-radius: 8px;
+    overflow: hidden;
+    color: #ffffff;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+th {
+    background: rgba(0, 150, 80, 0.7);
+    color: white;
+}
+
+tr:nth-child(even) {
+    background: rgba(40, 60, 40, 0.8);
+}
+
+.status-active {
+    color: #00cc66;
+    font-weight: bold;
+}
+
+.status-inactive {
+    color: #ff4d4d;
+    font-weight: bold;
+}
+
+.toggle-status-btn {
+    padding: 10px;
+    background: #008f4c;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.toggle-status-btn:hover {
+    background: #006f3a;
+}
+
+.btn {
+    padding: 8px 15px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn:hover {
+    background: #0056b3;
+}

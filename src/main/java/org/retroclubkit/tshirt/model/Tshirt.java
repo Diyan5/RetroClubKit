@@ -5,6 +5,7 @@ import lombok.*;
 import org.retroclubkit.order.model.Order;
 import org.retroclubkit.team.model.Team;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public class Tshirt {
     private String name; // Име на тениската (например "Real Madrid 2004")
 
     @Column(nullable = false)
-    private double price; // Цена на тениската
+    private BigDecimal price; // Цена на тениската
 
     @Column
     private String image;

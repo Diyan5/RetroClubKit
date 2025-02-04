@@ -18,6 +18,14 @@
     </a>
     <div class="nav">
         <ul>
+            <li th:if="${user.role.name() == 'ADMIN'}">
+                <a>Admin</a>
+                <ul>
+                    <li><a th:href="@{/all-users}">Manage Users</a></li>
+                    <li><a th:href="@{/all-tshirts}">Manage Products</a></li>
+                </ul>
+            </li>
+
             <li><a th:href="@{/home}">Home</a></li>
             <li>
                 <a>Category</a>

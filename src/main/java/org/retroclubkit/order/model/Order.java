@@ -3,6 +3,7 @@ package org.retroclubkit.order.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.retroclubkit.orderItem.model.OrderItem;
+import org.retroclubkit.payment.model.Payment;
 import org.retroclubkit.user.model.User;
 
 import java.math.BigDecimal;
@@ -48,5 +49,8 @@ public class Order {
 
     @Column(nullable = false)
     private String deliveryAddress; // Адрес на доставка (например: София, бул. Витоша 15)
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
 
 }

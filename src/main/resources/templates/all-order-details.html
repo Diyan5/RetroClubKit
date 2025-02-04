@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/admin.css}">
+</head>
+<body>
+
+<header>
+    <a th:href="@{/admin}" class="logo">Admin Panel</a>
+    <nav>
+        <a th:href="@{/all-users}">Users</a>
+        <a th:href="@{/admin/orders}">Orders</a>
+        <a th:href="@{/admin/products}">Products</a>
+        <a th:href="@{/admin/messages}">Messages</a>
+    </nav>
+</header>
+
+<main>
+    <h1>Order Details</h1>
+
+    <div class="order-info">
+        <p><strong>Order ID:</strong> <span th:text="${order.id}"></span></p>
+        <p><strong>User:</strong> <span th:text="${user.username}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+        <p><strong>Total Price:</strong> <span th:text="${order.totalPrice} + ' $'"></span></p>
+        <p><strong>Status:</strong> <span th:text="${order.status}"></span></p>
+        <p><strong>Payment Method:</strong> <span th:text="${order.payment}"></span></p>
+    </div>
+
+    <h2>Order Items</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Product</th>
+            <th>Size</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${items}">
+            <td th:text="${item.tshirt.name}"></td>
+            <td th:text="${item.size}"></td>
+            <td th:text="${item.tshirt.price} + ' $'"></td>
+            <td th:text="${item.quantity}"></td>
+            <td th:text="${#numbers.formatDecimal(item.tshirt.price * item.quantity, 1, 2)} + ' $'"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/user-orders/{id}(id=${user.id})}" class="btn">Back to Orders</a>
+</main>
+
+<footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>
+
+</body>
+</html>
