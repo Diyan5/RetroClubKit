@@ -9,6 +9,7 @@ import org.retroclubkit.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.util.Set;
@@ -59,7 +60,8 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
         }
 
 
-        if (ADMIN_ENDPOINTS.contains(endpoint) && user.getRole() != UserRole.ADMIN) {
+        HandlerMethod handlerMethod = (HandlerMethod) handler;
+        if (handlerMethod.hasMethodAnnotation(RequireAdminRole.class) && user.getRole() != UserRole.ADMIN) {
 
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.getWriter().write("Access denied, you don't have the necessary permissions!");

@@ -174,4 +174,20 @@ public class AdminController {
 //        return "redirect:/all-users";
 //    }
 
+    @PutMapping("/users/{id}/status") // PUT /users/{id}/status
+    public String switchUserStatus(@PathVariable UUID id) {
+
+        userService.switchStatus(id);
+
+        return "redirect:/all-users";
+    }
+
+    @PutMapping("/users/{id}/role") // PUT /users/{id}/role
+    public String switchUserRole(@PathVariable UUID id) {
+
+        userService.switchRole(id);
+
+        return "redirect:/all-users";
+    }
+
 }
