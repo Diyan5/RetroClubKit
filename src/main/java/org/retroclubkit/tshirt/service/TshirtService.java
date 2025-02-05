@@ -70,7 +70,6 @@ public class TshirtService {
                 tshirt.getName(),
                 tshirt.getPrice(),
                 tshirt.getImage(),
-                tshirt.getDescription(),
                 tshirt.getCategory(),
                 tshirt.getSizes(),
                 tshirt.isAvailable(),
@@ -88,7 +87,6 @@ public class TshirtService {
                 dto.getName(),
                 dto.getPrice(),
                 dto.getImage(),
-                dto.getDescription(),
                 dto.getCategory(),
                 dto.getSizes(),
                 dto.isAvailable(),
@@ -100,6 +98,7 @@ public class TshirtService {
     public List<Tshirt> getTshirtsByCategoryAndAvailable(Category category) {
         return tshirtRepository.getTshirtsByCategoryAndIsAvailableTrue(category);
     }
+
     public List<Tshirt> getAllTshirtsLimitAndAvailableTrue() {
         return tshirtRepository.getAllTshirtsLimitAvailableTrue(10);
     }
@@ -133,5 +132,9 @@ public class TshirtService {
 
     public List<Tshirt> findTshirtsByTeam(String teamName) {
         return tshirtRepository.findByTeamNameIgnoreCase(teamName);
+    }
+
+    public boolean existsByName(String name) {
+        return tshirtRepository.existsByNameIgnoreCase(name);
     }
 }

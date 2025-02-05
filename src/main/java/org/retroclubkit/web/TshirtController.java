@@ -27,54 +27,64 @@ public class TshirtController {
     }
 
     @GetMapping("/retro")
-    public ModelAndView getRetroTshirts() {
-        // Извличаме всички ретро тениски от сървиса
+    public ModelAndView getRetroTshirts(HttpSession session) {
+
+        UUID userId = (UUID) session.getAttribute("user_id");
+        User user = userService.getById(userId);
+
         List<Tshirt> retroTshirts = tshirtService.getTshirtsByCategoryAndAvailable(Category.RETRO);
 
-        // Създаваме обект ModelAndView
-        ModelAndView modelAndView = new ModelAndView("retro"); // Указваме изгледа
-        modelAndView.addObject("retroTshirts", retroTshirts); // Добавяме данните в модела
+        ModelAndView modelAndView = new ModelAndView("retro");
+        modelAndView.addObject("retroTshirts", retroTshirts);
+        modelAndView.addObject("user", user);
 
-        return modelAndView; // Връщаме ModelAndView
+        return modelAndView;
     }
 
     @GetMapping("/national")
-    public ModelAndView getNationalTshirts() {
-        // Извличаме всички ретро тениски от сървиса
+    public ModelAndView getNationalTshirts(HttpSession session) {
+
+        UUID userId = (UUID) session.getAttribute("user_id");
+        User user = userService.getById(userId);
+
         List<Tshirt> nationalTshirts = tshirtService.getTshirtsByCategoryAndAvailable(Category.NATIONAL);
 
-        // Създаваме обект ModelAndView
-        ModelAndView modelAndView = new ModelAndView("national"); // Указваме изгледа
-        modelAndView.addObject("nationalTshirts", nationalTshirts); // Добавяме данните в модела
+        ModelAndView modelAndView = new ModelAndView("national");
+        modelAndView.addObject("nationalTshirts", nationalTshirts);
+        modelAndView.addObject("user", user);
 
-        return modelAndView; // Връщаме ModelAndView
+        return modelAndView;
     }
 
     @GetMapping("/new")
-    public ModelAndView getNewTshirts() {
-        // Извличаме всички ретро тениски от сървиса
+    public ModelAndView getNewTshirts(HttpSession session) {
+
+        UUID userId = (UUID) session.getAttribute("user_id");
+        User user = userService.getById(userId);
+
         List<Tshirt> newTshirts = tshirtService.getTshirtsByCategoryAndAvailable(Category.NEW);
 
-        // Създаваме обект ModelAndView
-        ModelAndView modelAndView = new ModelAndView("new"); // Указваме изгледа
-        modelAndView.addObject("newTshirts", newTshirts); // Добавяме данните в модела
+        ModelAndView modelAndView = new ModelAndView("new");
+        modelAndView.addObject("newTshirts", newTshirts);
+        modelAndView.addObject("user", user);
 
-        return modelAndView; // Връщаме ModelAndView
+        return modelAndView;
     }
 
     @GetMapping("/search")
     public ModelAndView searchTshirts(@RequestParam("team") String teamName,HttpSession session) {
-        List<Tshirt> tshirts = tshirtService.findTshirtsByTeam(teamName);
 
         UUID userId = (UUID) session.getAttribute("user_id");
-
         User user = userService.getById(userId);
+
+        List<Tshirt> tshirts = tshirtService.findTshirtsByTeam(teamName);
 
         ModelAndView modelAndView = new ModelAndView("search-results");
         modelAndView.addObject("teamName", teamName);
         modelAndView.addObject("tshirts", tshirts);
         modelAndView.addObject("user", user);
-        return modelAndView; // Returns the search results page
+
+        return modelAndView;
     }
 
 }

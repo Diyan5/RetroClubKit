@@ -3,32 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Tshirt</title>
-    <link rel="stylesheet" type="text/css" href="/css/admin.css">
+    <link rel="stylesheet" type="text/css" href="/css/background.css">
+    <link rel="stylesheet" type="text/css" href="/css/home.css">
+    <link rel="stylesheet" type="text/css" href="/css/edit-tshirt.css">
 </head>
 <body>
 <header>
-    <h1>Edit Tshirt</h1>
+    <a th:href="@{/home}" class="logo">
+        <img src="/images/th.png" alt="Retro Football Logo" style="height: 48px;">
+        Retro Football Shirts
+    </a>
+    <div class="nav">
+        <ul>
+            <li th:if="${user.role.name() == 'ADMIN'}">
+                <a>Admin</a>
+                <ul>
+                    <li><a th:href="@{/all-users}">Manage Users</a></li>
+                    <li><a th:href="@{/all-tshirts}">Manage Products</a></li>
+                </ul>
+            </li>
+
+            <li><a th:href="@{/home}">Home</a></li>
+            <li>
+                <a>Category</a>
+                <ul>
+                    <li><a th:href="@{/national}">National</a></li>
+                    <li><a th:href="@{/retro}">Retro</a></li>
+                    <li><a th:href="@{/new}">New</a></li>
+                </ul>
+            </li>
+            <li><a th:href="@{/my-account}">My Account</a></li>
+            <li><a th:href="@{/contact}">Contact</a></li>
+        </ul>
+        <form th:action="@{/search}" method="get" class="search-bar">
+            <label>
+                <input type="text" name="team" placeholder="Search team..." required>
+            </label>
+            <button type="submit">Search</button>
+        </form>
+
+        <div class="cart">
+            <a th:href="@{checkout}">🛒 <span class="cart-count">0</span></a>
+        </div>
+        <a th:href="@{/logout}" class="exit" >Logout</a>
+    </div>
 </header>
 
-<form th:action="@{/admin/products/update}" method="post">
-    <input type="hidden" name="id" th:value="${tshirt.id}">
+<div class="edit-tshirt-container">
+    <form th:action="@{/admin/products/update}" method="post">
+        <input type="hidden" name="id" th:value="${tshirt.id}">
 
-    <label>Name:</label>
-    <input type="text" th:value="${tshirt.name}" readonly>
+        <label>Name:</label>
+        <input type="text" th:value="${tshirt.name}" readonly>
 
-    <label>Price:</label>
-    <input type="number" th:field="*{tshirt.price}" step="0.01" required>
+        <label>Price:</label>
+        <input type="number" th:field="*{tshirt.price}" step="0.01" required>
 
-    <label>Available Sizes:</label>
-    <div>
-        <span th:each="size : ${allSizes}">
-            <input type="checkbox" name="sizes" th:value="${size}" th:checked="${tshirt.sizes.contains(size)}">
-            <label th:text="${size}"></label>
-        </span>
-    </div>
+        <label>Available Sizes:</label>
+        <div class="sizes-container">
+            <span th:each="size : ${allSizes}">
+                <input type="checkbox" name="sizes" th:value="${size}" th:checked="${tshirt.sizes.contains(size)}">
+                <label th:text="${size}"></label>
+            </span>
+        </div>
 
-    <button type="submit">Save Changes</button>
-</form>
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
 
+<footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>
 </body>
 </html>

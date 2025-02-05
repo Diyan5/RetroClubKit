@@ -50,9 +50,9 @@
     </div>
 </header>
 
-<main>
+<main class="contact-container">
     <h1>Contact Us</h1>
-    <form th:action="@{/contact}" th:object="${contactRequest}" method="post">
+    <form th:action="@{/contact}" th:object="${contactRequest}" method="post" class="contact-form">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" th:field="*{name}" required>
 

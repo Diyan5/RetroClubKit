@@ -31,4 +31,5 @@ public class Team {
 
     @OneToMany(mappedBy = "team",fetch = FetchType.EAGER)
     private List<Tshirt> tshirts; // Тениски на отбора
+
 }

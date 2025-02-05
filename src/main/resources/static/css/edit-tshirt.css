@@ -1,0 +1,83 @@
+/* ====== Edit Tshirt Page Styling (Dark Green Theme) ====== */
+.edit-tshirt-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 100px);
+    padding-top: 50px;
+}
+
+/* Centered form */
+.edit-tshirt-container form {
+    background: rgba(34, 70, 34, 0.9); /* Dark green overlay for contrast */
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+/* Form labels */
+.edit-tshirt-container label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 15px;
+    color: white; /* Soft green accent */
+    text-align: left;
+}
+
+/* Inputs & Checkbox */
+.edit-tshirt-container input[type="text"],
+.edit-tshirt-container input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #28a745; /* Green border */
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #e8f5e9; /* Light green text */
+    font-size: 16px;
+}
+
+.edit-tshirt-container input:focus {
+    outline: none;
+    border-color: #28a745;
+    box-shadow: 0 0 8px #28a745;
+}
+
+/* Sizes container */
+.sizes-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+/* Checkbox styling */
+.sizes-container input[type="checkbox"] {
+    transform: scale(1.2);
+    margin-right: 5px;
+    accent-color: #28a745; /* Green checkbox */
+}
+
+/* Submit button */
+.edit-tshirt-container button {
+    background: #28a745; /* Vibrant green */
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.edit-tshirt-container button:hover {
+    background: #1d6120; /* Darker green on hover */
+}

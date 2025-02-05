@@ -1,0 +1,57 @@
+
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.inline-form {
+    display: inline-block;
+    margin: 0;
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.status-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.role-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-view {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-small:hover {
+    opacity: 0.8;
+}

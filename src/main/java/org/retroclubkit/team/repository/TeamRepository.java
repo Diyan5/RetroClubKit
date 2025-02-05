@@ -8,4 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface TeamRepository extends JpaRepository<Team, UUID> {
+    boolean existsByNameIgnoreCase(String name);
 }

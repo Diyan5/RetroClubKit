@@ -86,7 +86,6 @@ public class IndexController {
     public ModelAndView getHomePage(HttpSession session) {
 
         UUID userId = (UUID) session.getAttribute("user_id");
-
         User user = userService.getById(userId);
 
         List<Tshirt> tshirtsLimit = tshirtService.getAllTshirtsLimitAndAvailableTrue();

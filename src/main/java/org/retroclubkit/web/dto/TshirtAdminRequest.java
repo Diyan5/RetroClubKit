@@ -20,7 +20,6 @@ public class TshirtAdminRequest {
     private String name;
     private BigDecimal price;
     private String image;
-    private String description;
     private Category category;
     private List<Size> sizes;
     private boolean isAvailable;
