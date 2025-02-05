@@ -38,12 +38,13 @@
             <li><a th:href="@{/my-account}">My Account</a></li>
             <li><a th:href="@{/contact}">Contact</a></li>
         </ul>
-        <form id="searchForm" action="/search/{teamName}" method="GET" class="search-bar">
+        <form th:action="@{/search}" method="get" class="search-bar">
             <label>
-                <input type="text" name="team" placeholder="Search team...">
+                <input type="text" name="team" placeholder="Search team..." required>
             </label>
             <button type="submit">Search</button>
         </form>
+
         <div class="cart">
             <a th:href="@{checkout}">🛒 <span class="cart-count">0</span></a>
         </div>

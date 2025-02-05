@@ -130,4 +130,8 @@ public class TshirtService {
         tshirt.setAvailable(!tshirt.isAvailable()); // ✅ Смяна на наличността
         tshirtRepository.save(tshirt);
     }
+
+    public List<Tshirt> findTshirtsByTeam(String teamName) {
+        return tshirtRepository.findByTeamNameIgnoreCase(teamName);
+    }
 }

@@ -23,4 +23,5 @@ public interface TshirtRepository extends JpaRepository<Tshirt, UUID> {
     List<Tshirt> findByIsAvailableTrue();
     List<Tshirt> findByIsAvailableFalse();
 
+    List<Tshirt> findByTeamNameIgnoreCase(String teamName);
 }
