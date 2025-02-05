@@ -1,0 +1,148 @@
+/* ====== Admin Table Styling ====== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    background: rgba(255, 255, 255, 0.1); /* Slight transparency for a sleek look */
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* Adds depth */
+}
+
+/* Table Header */
+thead {
+    background-color: #222;
+    color: white;
+    text-transform: uppercase;
+}
+
+thead th {
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #444;
+}
+
+/* Table Rows */
+tbody tr {
+    transition: background 0.3s ease-in-out;
+}
+
+tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.05); /* Slightly different background for even rows */
+}
+
+tbody tr:hover {
+    background: rgba(255, 255, 255, 0.15); /* Row hover effect */
+}
+
+/* Table Cells */
+td {
+    padding: 10px;
+    font-size: 14px;
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Image Column */
+td img {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+}
+
+td img:hover {
+    transform: scale(1.1);
+}
+
+/* Actions Buttons */
+td form, td a {
+    display: inline-block;
+    margin: 5px;
+}
+
+td form button, td a button {
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Button Colors */
+td form button {
+    background-color: #dc3545; /* Red for Delete */
+    color: white;
+}
+
+td a button {
+    background-color: #007bff; /* Blue for Edit */
+    color: white;
+}
+
+td form button:hover {
+    background-color: #a71d2a;
+}
+
+td a button:hover {
+    background-color: #0056b3;
+}
+
+/* Availability Toggle Button */
+td form button:nth-child(3) {
+    background-color: #28a745; /* Green for availability toggle */
+}
+
+td form button:nth-child(3):hover {
+    background-color: #1e7e34;
+}
+
+/* Adjust individual column positions */
+
+th:first-child, td:first-child {
+    text-align: center;
+    padding-left: 10px;
+}
+/* Moves the "Name" column slightly left */
+th:nth-child(2), td:nth-child(2) {
+    text-align: center;
+    padding-left: 10px;
+}
+
+/* Moves the "Price" column */
+th:nth-child(3), td:nth-child(3) {
+    text-align: center;
+    padding-left: 15px;
+}
+
+/* Moves the "Category" column */
+th:nth-child(4), td:nth-child(4) {
+    text-align: center;
+    padding-left: 10px;
+}
+
+/* Moves the "Sizes" column */
+th:nth-child(5), td:nth-child(5) {
+    text-align: center;
+    padding-left: 12px;
+}
+
+/* Moves the "Available" column */
+th:nth-child(6), td:nth-child(6) {
+    text-align: center;
+    padding-left: 8px;
+}
+
+/* Moves the "Actions" column to the right */
+th:last-child, td:last-child {
+    text-align: center;
+    padding-right: 20px;
+}
+
+
+

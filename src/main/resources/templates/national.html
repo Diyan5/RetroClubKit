@@ -19,6 +19,14 @@
     </a>
     <div class="nav">
         <ul>
+            <li th:if="${user.role.name() == 'ADMIN'}">
+                <a>Admin</a>
+                <ul>
+                    <li><a th:href="@{/all-users}">Manage Users</a></li>
+                    <li><a th:href="@{/all-tshirts}">Manage Products</a></li>
+                </ul>
+            </li>
+
             <li><a th:href="@{/home}">Home</a></li>
             <li>
                 <a>Category</a>
@@ -31,12 +39,13 @@
             <li><a th:href="@{/my-account}">My Account</a></li>
             <li><a th:href="@{/contact}">Contact</a></li>
         </ul>
-        <form id="searchForm" action="/search/{teamName}" method="GET" class="search-bar">
+        <form th:action="@{/search}" method="get" class="search-bar">
             <label>
-                <input type="text" name="team" placeholder="Search team...">
+                <input type="text" name="team" placeholder="Search team..." required>
             </label>
             <button type="submit">Search</button>
         </form>
+
         <div class="cart">
             <a th:href="@{checkout}">🛒 <span class="cart-count">0</span></a>
         </div>

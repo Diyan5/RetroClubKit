@@ -30,9 +30,6 @@ public class Tshirt {
     @Column
     private String image;
 
-    @Column
-    private String description; // Описание на тениската
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Category category; // Категория на тениската (енумерация: RETRO, LIMITED EDITION)

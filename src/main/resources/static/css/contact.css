@@ -1,35 +1,37 @@
-main {
+main.contact-container {
     max-width: 600px;
     margin: 50px auto;
-    background: rgba(30, 50, 30, 0.9); /* Леко тъмно-зелено, за да контрастира с фона */
+    background: rgba(30, 50, 30, 0.9);
     padding: 25px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     text-align: center;
 }
 
-/* Заглавие */
-h1 {
-    color: white; /* Светло зелено за добра видимост */
+/* Заглавие само в контактната форма */
+main.contact-container h1 {
+    color: white;
     font-size: 1.8rem;
     margin-bottom: 15px;
 }
 
-/* Стил за формата */
-form {
+/* Стил за формата в контактната страница */
+form.contact-form {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-label {
+form.contact-form label {
     font-size: 1rem;
     font-weight: bold;
     margin-top: 10px;
-    color: white; /* Светло зелено */
+    color: white;
 }
 
-input, select, textarea {
+form.contact-form input,
+form.contact-form select,
+form.contact-form textarea {
     width: 100%;
     max-width: 500px;
     padding: 10px;
@@ -41,19 +43,8 @@ input, select, textarea {
     font-size: 1rem;
 }
 
-textarea {
-    resize: none;
-    height: 120px;
-}
-
-input:focus, textarea:focus, select:focus {
-    outline: none;
-    border-color: #00cc66;
-    box-shadow: 0 0 8px rgba(0, 255, 127, 0.8);
-}
-
-/* Бутон */
-button {
+/* Увери се, че бутона в контактната форма не влияе на други бутони */
+form.contact-form button {
     background: #008f4c;
     color: white;
     padding: 10px 15px;
@@ -68,10 +59,9 @@ button {
     max-width: 500px;
 }
 
-button:hover {
+form.contact-form button:hover {
     background: #006f3a;
 }
-
 /* Стил за селект полето */
 select {
     width: 100%;
@@ -86,7 +76,6 @@ select {
     appearance: none; /* Премахва стандартния стил на браузъра */
     cursor: pointer;
 }
-
 /* Ефект при фокус */
 select:focus {
     outline: none;
@@ -108,4 +97,31 @@ option:checked {
     color: white;
 }
 
+main {
+    max-width: 600px;
+    margin: 50px auto;
+    background: rgba(30, 50, 30, 0.9); /* Леко тъмно-зелено, за да контрастира с фона */
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
 
+
+
+ select, textarea {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid rgba(0, 255, 127, 0.5);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+}
+
+textarea {
+    resize: none;
+    height: 120px;
+}

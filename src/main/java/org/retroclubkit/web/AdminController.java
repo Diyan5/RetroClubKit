@@ -1,5 +1,6 @@
 package org.retroclubkit.web;
 
+import jakarta.servlet.http.HttpSession;
 import org.retroclubkit.order.model.Order;
 import org.retroclubkit.order.service.OrderService;
 import org.retroclubkit.team.service.TeamService;
@@ -8,11 +9,10 @@ import org.retroclubkit.tshirt.model.Size;
 import org.retroclubkit.tshirt.model.Tshirt;
 import org.retroclubkit.tshirt.service.TshirtService;
 import org.retroclubkit.user.model.User;
-import org.retroclubkit.user.model.UserRole;
 import org.retroclubkit.user.service.UserService;
+import org.retroclubkit.web.dto.NewTeamRequest;
 import org.retroclubkit.web.dto.TshirtAdminRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -39,11 +39,16 @@ public class AdminController {
     }
 
     @GetMapping("/all-users")
-    public ModelAndView getAllUsers() {
+    public ModelAndView getAllUsers(HttpSession session) {
+
+        UUID userId = (UUID) session.getAttribute("user_id");
+        User user = userService.getById(userId);
 
         List<User> users = userService.getAllUsers();
         ModelAndView modelAndView = new ModelAndView("all-users");
         modelAndView.addObject("users", users);
+        modelAndView.addObject("user", user);
+
         return modelAndView;
     }
 
@@ -58,11 +63,17 @@ public class AdminController {
     }
 
     @GetMapping("/user-orders/{id}")
-    public ModelAndView getUserOrders(@PathVariable UUID id) {
+    public ModelAndView getUserOrders(@PathVariable UUID id, HttpSession session) {
+        //User for header
+        UUID userId = (UUID) session.getAttribute("user_id");
+        User userAdmin = userService.getById(userId);
+
+        //user for view his orders
         User user = userService.getById(id);
         List<Order> orders = orderService.getOrdersByUser(user);
 
         ModelAndView modelAndView = new ModelAndView("user-orders");
+        modelAndView.addObject("userAdmin", userAdmin);
         modelAndView.addObject("user", user);
         modelAndView.addObject("orders", orders);
 
@@ -70,38 +81,60 @@ public class AdminController {
     }
 
     @GetMapping("/admin/order-details/{id}")
-    public ModelAndView getOrderDetails(@PathVariable UUID id) {
+    public ModelAndView getOrderDetails(@PathVariable UUID id, HttpSession session) {
+        UUID userId = (UUID) session.getAttribute("user_id");
+        User user = userService.getById(userId);
+
         Order order = orderService.getById(id);
         ModelAndView modelAndView = new ModelAndView("all-order-details");
         modelAndView.addObject("order", order);
         modelAndView.addObject("user", order.getUser()); // Показваме кой е направил поръчката
         modelAndView.addObject("items", order.getItems()); // Всички артикули в поръчката
         modelAndView.addObject("paymentMethod", order.getPayment().getPaymentMethod());
+        modelAndView.addObject("user", user);
         return modelAndView;
     }
 
     // ✅ Показване на всички тениски
     @GetMapping("/all-tshirts")
-    public ModelAndView getAllProducts() {
+    public ModelAndView getAllProducts(HttpSession session) {
+
+        UUID userId = (UUID) session.getAttribute("user_id");
+        User user = userService.getById(userId);
+
         List<Tshirt> tshirts = tshirtService.getAllTshirts();
         ModelAndView modelAndView = new ModelAndView("all-tshirts");
         modelAndView.addObject("tshirts", tshirts);
+        modelAndView.addObject("user", user);
+
         return modelAndView;
     }
 
     // ✅ Филтриране само на наличните продукти
     @GetMapping("/admin/products/available")
-    public ModelAndView getAvailableProducts() {
+    public ModelAndView getAvailableProducts(HttpSession session) {
+
+        UUID userId = (UUID) session.getAttribute("user_id");
+        User user = userService.getById(userId);
+
         ModelAndView modelAndView = new ModelAndView("all-tshirts");
         modelAndView.addObject("tshirts", tshirtService.getAvailableTshirts());
+        modelAndView.addObject("user", user);
+
         return modelAndView;
     }
 
     // ✅ Филтриране само на неналичните продукти
     @GetMapping("/admin/products/unavailable")
-    public ModelAndView getUnavailableProducts() {
+    public ModelAndView getUnavailableProducts(HttpSession session) {
+
+        UUID userId = (UUID) session.getAttribute("user_id");
+        User user = userService.getById(userId);
+
         ModelAndView modelAndView = new ModelAndView("all-tshirts");
         modelAndView.addObject("tshirts", tshirtService.getUnavailableTshirts());
+        modelAndView.addObject("user", user);
+
         return modelAndView;
     }
 
@@ -113,11 +146,17 @@ public class AdminController {
     }
 
     @GetMapping("/admin/products/edit/{id}")
-    public ModelAndView editTshirtSizes(@PathVariable UUID id) {
+    public ModelAndView editTshirtSizes(@PathVariable UUID id, HttpSession session) {
+
+        UUID userId = (UUID) session.getAttribute("user_id");
+        User user = userService.getById(userId);
+
         Tshirt tshirt = tshirtService.getById(id);
         ModelAndView modelAndView = new ModelAndView("edit-tshirt");
         modelAndView.addObject("tshirt", tshirt);
         modelAndView.addObject("allSizes", Size.values());
+        modelAndView.addObject("user", user);
+
         return modelAndView;
     }
 
@@ -131,20 +170,61 @@ public class AdminController {
         return "redirect:/all-tshirts";
     }
 
-    @GetMapping("/admin/tshirts/add")
-    public ModelAndView showAddTshirtPage() {
-        ModelAndView modelAndView = new ModelAndView("add-tshirt");
-        modelAndView.addObject("tshirt", new TshirtAdminRequest()); // Празен обект за формата
-        modelAndView.addObject("teams", teamService.getAllTeams()); // Подаваме всички отбори
-        modelAndView.addObject("categories", Arrays.asList(Category.values())); // Подаваме категориите
-        modelAndView.addObject("sizes", Arrays.asList(Size.values())); // Подаваме размерите
+    @GetMapping("/admin/add")
+    public ModelAndView showAddPage(HttpSession session) {
+
+        UUID userId = (UUID) session.getAttribute("user_id");
+        User user = userService.getById(userId);
+
+        ModelAndView modelAndView = new ModelAndView("add-tshirt-or-team");
+        modelAndView.addObject("tshirt", new TshirtAdminRequest());
+        modelAndView.addObject("teams", teamService.getAllTeams());
+        modelAndView.addObject("categories", Arrays.asList(Category.values()));
+        modelAndView.addObject("sizes", Arrays.asList(Size.values()));
+
+        modelAndView.addObject("team", new NewTeamRequest());
+
+        modelAndView.addObject("user", user);
+
         return modelAndView;
     }
 
     @PostMapping("/admin/tshirts/save")
-    public String saveNewTshirt(@ModelAttribute TshirtAdminRequest tshirtRequest) {
-        tshirtService.saveTshirt(tshirtRequest); // Изпращаме DTO-то директно
-        return "redirect:/all-tshirts";
+    public ModelAndView  saveNewTshirt(@ModelAttribute TshirtAdminRequest tshirtRequest) {
+        ModelAndView modelAndView = new ModelAndView("add-tshirt-or-team");
+
+        if (tshirtService.existsByName(tshirtRequest.getName())) {
+            modelAndView.addObject("tshirtError", "T-shirt with this name already exists!");
+            modelAndView.addObject("tshirt", new TshirtAdminRequest());
+            modelAndView.addObject("team", new NewTeamRequest());
+            modelAndView.addObject("teams", teamService.getAllTeams());
+            modelAndView.addObject("categories", Arrays.asList(Category.values()));
+            modelAndView.addObject("sizes", Arrays.asList(Size.values()));
+            return modelAndView; // Връща се същата страница с грешката
+        }
+
+        modelAndView.setViewName("all-tshirts");
+        tshirtService.saveTshirt(tshirtRequest);
+        return modelAndView;
+    }
+
+    @PostMapping("/admin/team/save")
+    public ModelAndView saveNewTeam(@ModelAttribute NewTeamRequest newTeamRequest) {
+        ModelAndView modelAndView = new ModelAndView("add-tshirt-or-team");
+
+        if (teamService.existsByName(newTeamRequest.getName())) {
+            modelAndView.addObject("teamError", "Team with this name already exists!");
+            modelAndView.addObject("tshirt", new TshirtAdminRequest());
+            modelAndView.addObject("team", new NewTeamRequest());
+            modelAndView.addObject("teams", teamService.getAllTeams());
+            modelAndView.addObject("categories", Arrays.asList(Category.values()));
+            modelAndView.addObject("sizes", Arrays.asList(Size.values()));
+            return modelAndView; // Връща се същата страница с грешката
+        }
+
+        modelAndView.setViewName("all-tshirts");
+        teamService.saveTeam(newTeamRequest);
+        return modelAndView;
     }
 
     @PostMapping("/admin/products/toggle-availability/{id}")

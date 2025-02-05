@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Tshirt</title>
+    <link rel="stylesheet" type="text/css" href="/css/home.css">
+    <link rel="stylesheet" type="text/css" href="/css/background.css">
+    <link rel="stylesheet" type="text/css" href="/css/add-tshirt-or-team.css">
+</head>
+<body>
+<header>
+    <a th:href="@{/home}" class="logo">
+        <img src="/images/th.png" alt="Retro Football Logo" style="height: 48px;">
+        Retro Football Shirts
+    </a>
+    <div class="nav">
+        <ul>
+            <li th:if="${user.role.name() == 'ADMIN'}">
+                <a>Admin</a>
+                <ul>
+                    <li><a th:href="@{/all-users}">Manage Users</a></li>
+                    <li><a th:href="@{/all-tshirts}">Manage Products</a></li>
+                </ul>
+            </li>
+
+            <li><a th:href="@{/home}">Home</a></li>
+            <li>
+                <a>Category</a>
+                <ul>
+                    <li><a th:href="@{/national}">National</a></li>
+                    <li><a th:href="@{/retro}">Retro</a></li>
+                    <li><a th:href="@{/new}">New</a></li>
+                </ul>
+            </li>
+            <li><a th:href="@{/my-account}">My Account</a></li>
+            <li><a th:href="@{/contact}">Contact</a></li>
+        </ul>
+        <form th:action="@{/search}" method="get" class="search-bar">
+            <label>
+                <input type="text" name="team" placeholder="Search team..." required>
+            </label>
+            <button type="submit">Search</button>
+        </form>
+
+        <div class="cart">
+            <a th:href="@{checkout}">🛒 <span class="cart-count">0</span></a>
+        </div>
+        <a th:href="@{/logout}" class="exit" >Logout</a>
+    </div>
+</header>
+
+<!-- Two forms side by side -->
+<div class="add-container">
+    <!-- TODO logic about exist t-shirt and team-->
+    <div class="add-form">
+        <h2>Add New T-shirt</h2>
+        <form th:action="@{/admin/tshirts/save}" method="post" th:object="${tshirt}">
+
+            <p th:if="${tshirtError}" th:text="${tshirtError}" style="color: red; font-size: 0.9rem;"></p>
+            <label>Name:</label>
+            <input type="text" th:field="*{name}" required>
+
+            <label>Price:</label>
+            <input type="number" th:field="*{price}" step="0.01" required>
+
+            <label>Image URL:</label>
+            <input type="text" th:field="*{image}" required>
+
+            <label for="teamId">Select Team:</label>
+            <select id="teamId" th:field="*{teamId}" required>
+                <option value="">-- Select a Team --</option>
+                <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"></option>
+            </select>
+
+            <label>Category:</label>
+            <select th:field="*{category}">
+                <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}"></option>
+            </select>
+
+            <label>Available Sizes:</label>
+            <div class="sizes-container">
+                <span th:each="size : ${sizes}">
+                    <input type="checkbox" th:field="*{sizes}" th:value="${size}">
+                    <label th:text="${size}"></label>
+                </span>
+            </div>
+
+            <button type="submit">Save T-shirt</button>
+        </form>
+    </div>
+
+    <!-- Дясна форма: Добавяне на отбор -->
+    <div class="add-form">
+        <h2>Add New Team</h2>
+        <form th:action="@{/admin/team/save}" method="post" th:object="${team}">
+
+            <p th:if="${teamError}" th:text="${teamError}" style="color: red; font-size: 0.9rem;"></p>
+            <label>Team Name:</label>
+            <input type="text" th:field="*{name}" required>
+
+            <label>Country:</label>
+            <input type="text" th:field="*{country}" required>
+
+            <label>Trophies:</label>
+            <input type="number" th:field="*{trophies}" required>
+
+            <button type="submit">Save Team</button>
+        </form>
+    </div>
+</div>
+
+
+<footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>
+</body>
+</html>
