@@ -10,25 +10,24 @@
 <style>
     .btn {
         display: inline-block;
-        padding: 8px 16px; /* Увеличава вътрешния отстъп */
-        font-size: 16px; /* Увеличава текста */
-        background-color: #007bff; /* Син цвят */
-        color: white; /* Бял текст */
-        text-decoration: none; /* Премахва подчертаването */
-        border-radius: 5px; /* Закръглени ръбове */
+        padding: 8px 16px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
         border: none;
         cursor: pointer;
         transition: background 0.3s ease-in-out;
     }
 
     .btn:hover {
-        background-color: #0056b3; /* По-тъмен син при hover */
+        background-color: #0056b3;
     }
-
 
     .actions {
         display: flex;
-        gap: 8px; /* Разстояние между бутоните */
+        gap: 8px;
     }
 
     .inline-form {
@@ -48,17 +47,17 @@
     }
 
     .status-btn {
-        background-color: #dc3545; /* Червен бутон за деактивиране */
+        background-color: #dc3545;
         color: white;
     }
 
     .role-btn {
-        background-color: #28a745; /* Зелен бутон за промяна на роля */
+        background-color: #28a745;
         color: white;
     }
 
     .btn-view {
-        background-color: #007bff; /* Син бутон за поръчки */
+        background-color: #007bff;
         color: white;
     }
 
@@ -85,9 +84,10 @@
             <th>Username</th>
             <th>Email</th>
             <th>Status</th>
+            <th>Switch Status</th>
             <th>Role</th>
+            <th>Switch Role</th>
             <th>Orders</th>
-            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -96,30 +96,38 @@
             <td th:text="${user.username}"></td>
             <td th:text="${user.email}"></td>
 
-            <!-- Статус и бутон за активиране/деактивиране -->
+            <!-- Display Current Status -->
             <td>
-                <span th:text="${user.active} ? 'Активен' : 'Деактивиран'"
-                      th:id="'status-' + ${user.id}"></span>
-                <form th:action="@{/toggle-user-status/{id}(id=${user.id})}" method="post" class="status-form">
-                    <button type="submit"
-                            th:text="${user.active} ? 'Деактивирай' : 'Активирай'"
-                            th:attr="data-user-id=${user.id}"
-                            class="status-btn"></button>
+                <p th:text="${user.active} ? 'Active' : 'Inactive'"
+                   th:class="${user.active} ? 'status active' : 'status terminated'"></p>
+            </td>
+
+            <!-- Switch Status Button -->
+            <td>
+                <form th:action="@{'/users/' + ${user.id} + '/status'}" method="post">
+                    <input type="hidden" name="_method" value="put"/>
+                    <button class="btn-small status-btn"
+                            th:text="${user.active} ? 'Deactivate' : 'Activate'">
+                    </button>
                 </form>
             </td>
 
-            <!-- Роля и бутон за промяна -->
+            <!-- Display Current Role -->
             <td>
-                <span th:text="${user.role == 'ADMIN'} ? 'Админ' : 'Потребител'"
-                      th:id="'role-' + ${user.id}"></span>
-                <form th:action="@{/change-user-role/{id}(id=${user.id})}" method="post" class="role-form">
-                    <button type="submit"
-                            th:text="${user.role == 'ADMIN'} ? 'Направи Потребител' : 'Направи Админ'"
-                            th:attr="data-user-id=${user.id}"
-                            class="role-btn"></button>
+                <p th:text="${user.role.name() == 'ADMIN'} ? 'Admin' : 'User'"></p>
+            </td>
+
+            <!-- Switch Role Button -->
+            <td>
+                <form th:action="@{'/users/' + ${user.id} + '/role'}" method="post">
+                    <input type="hidden" name="_method" value="put"/>
+                    <button class="btn-small role-btn"
+                            th:text="${user.role.name() == 'ADMIN'} ? 'Make User' : 'Make Admin'">
+                    </button>
                 </form>
             </td>
 
+            <!-- View Orders -->
             <td>
                 <a th:href="@{/user-orders/{id}(id=${user.id})}" class="btn">View Orders</a>
             </td>
@@ -127,65 +135,6 @@
         </tbody>
     </table>
 </main>
-
-<!-- JavaScript за обновяване без презареждане -->
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll(".status-form").forEach(form => {
-            form.addEventListener("submit", function (event) {
-                event.preventDefault();
-
-                let button = form.querySelector(".status-btn");
-                let userId = button.getAttribute("data-user-id");
-                let statusText = document.getElementById("status-" + userId);
-
-                fetch(form.action, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    }
-                }).then(response => {
-                    if (response.ok) {
-                        if (button.textContent === "Деактивирай") {
-                            button.textContent = "Активирай";
-                            statusText.textContent = "Деактивиран";
-                        } else {
-                            button.textContent = "Деактивирай";
-                            statusText.textContent = "Активен";
-                        }
-                    }
-                });
-            });
-        });
-
-        document.querySelectorAll(".role-form").forEach(form => {
-            form.addEventListener("submit", function (event) {
-                event.preventDefault();
-
-                let button = form.querySelector(".role-btn");
-                let userId = button.getAttribute("data-user-id");
-                let roleText = document.getElementById("role-" + userId);
-
-                fetch(form.action, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    }
-                }).then(response => {
-                    if (response.ok) {
-                        if (button.textContent === "Направи Админ") {
-                            button.textContent = "Направи Потребител";
-                            roleText.textContent = "Админ";
-                        } else {
-                            button.textContent = "Направи Админ";
-                            roleText.textContent = "Потребител";
-                        }
-                    }
-                });
-            });
-        });
-    });
-</script>
 
 </body>
 </html>

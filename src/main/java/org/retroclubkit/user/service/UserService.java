@@ -93,4 +93,35 @@ public class UserService {
     public void save(User user) {
         userRepository.save(user);
     }
+
+    public void switchStatus(UUID userId) {
+
+        User user = getById(userId);
+
+        // НАЧИН 1:
+//        if (user.isActive()){
+//            user.setActive(false);
+//        } else {
+//            user.setActive(true);
+//        }
+
+        // false -> true
+        // true -> false
+        user.setActive(!user.isActive());
+        userRepository.save(user);
+    }
+
+    public void switchRole(UUID userId) {
+
+        User user = getById(userId);
+
+        if (user.getRole() == UserRole.USER) {
+            user.setRole(UserRole.ADMIN);
+        } else {
+            user.setRole(UserRole.USER);
+        }
+
+        userRepository.save(user);
+    }
+
 }
