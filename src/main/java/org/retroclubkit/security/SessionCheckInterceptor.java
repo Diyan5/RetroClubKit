@@ -52,7 +52,7 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
         UUID userId = (UUID) currentUserSession.getAttribute("user_id");
         User user = userService.getById(userId);
 
-        if (!user.isActive()) {
+        if (!user.isActive() || user.getRole() != UserRole.ADMIN) {
 
             currentUserSession.invalidate();
             response.sendRedirect("/");

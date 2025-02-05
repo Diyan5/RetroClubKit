@@ -1,33 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results</title>
     <link rel="stylesheet" type="text/css" href="/css/background.css">
+    <link rel="stylesheet" type="text/css" href="/css/home.css">
+    <link rel="stylesheet" type="text/css" href="/css/category.css">
 </head>
 <body>
-<div class="container">
-    <h1>Резултати от търсенето за: <span th:text="${teamName}">Отбор</span></h1>
 
-    <!-- Грешка, ако няма продукти -->
-    <div th:if="${error}">
-        <div class="no-products" th:text="${error}"></div>
+<header>
+    <a th:href="@{/home}" class="logo">
+        <img src="/images/th.png" alt="Retro Football Logo" style="height: 48px;">
+        Retro Football Shirts
+    </a>
+    <div class="nav">
+        <ul>
+            <li th:if="${user.role.name() == 'ADMIN'}">
+                <a>Admin</a>
+                <ul>
+                    <li><a th:href="@{/all-users}">Manage Users</a></li>
+                    <li><a th:href="@{/all-tshirts}">Manage Products</a></li>
+                </ul>
+            </li>
+
+            <li><a th:href="@{/home}">Home</a></li>
+            <li>
+                <a>Category</a>
+                <ul>
+                    <li><a th:href="@{/national}">National</a></li>
+                    <li><a th:href="@{/retro}">Retro</a></li>
+                    <li><a th:href="@{/new}">New</a></li>
+                </ul>
+            </li>
+            <li><a th:href="@{/my-account}">My Account</a></li>
+            <li><a th:href="@{/contact}">Contact</a></li>
+        </ul>
+        <form th:action="@{/search}" method="get" class="search-bar">
+            <label>
+                <input type="text" name="team" placeholder="Search team..." required>
+            </label>
+            <button type="submit">Search</button>
+        </form>
+
+        <div class="cart">
+            <a th:href="@{checkout}">🛒 <span class="cart-count">0</span></a>
+        </div>
+        <a th:href="@{/logout}" class="exit" >Logout</a>
     </div>
+</header>
 
-    <!-- Показване на продуктите, ако има резултати -->
-    <div th:if="${products}">
-        <h2>Намерени <span th:text="${#lists.size(products)}"></span> продукта:</h2>
-        <div class="products">
-            <div th:each="product : ${products}" class="product-card">
-                <img th:src="@{'/images/' + ${product.image}}" th:alt="${product.name}">
-                <h3 th:text="${product.name}"></h3>
-                <p th:text="'Цена: $' + ${product.price}"></p>
-                <div class="rating">Рейтинг: ⭐⭐⭐⭐☆</div>
-                <a href="#" class="btn">Добави в количка</a>
-            </div>
+<main>
+    <h1>Search Results for "<span th:text="${teamName}"></span>"</h1>
+    <div class="filters-container">
+        <button class="filters-button" onclick="toggleFilters()">Филтри</button>
+        <div class="filters-options" id="filtersOptions">
+            <button onclick="sortProducts('price-asc')">Цена (възходящ)</button>
+            <button onclick="sortProducts('price-desc')">Цена (низходящ)</button>
+            <button onclick="sortProducts('name-asc')">Име (А-Я)</button>
+            <button onclick="sortProducts('name-desc')">Име (Я-А)</button>
         </div>
     </div>
-</div>
+    <div class="product-list">
+        <div th:each="tshirt : ${tshirts}" class="product-card">
+            <img th:src="@{${tshirt.image}}" alt="Product Image">
+            <h3 th:text="${tshirt.name}">Tshirt Name</h3>
+            <p th:text="'Price: ' + ${tshirt.price}">Price</p>
+
+            <!-- Размер (показване само на наличните размери) -->
+            <label for="size">Размер:</label>
+            <select id="size" name="size">
+                <option th:each="size : ${tshirt.sizes}" th:value="${size}" th:text="${size}">Размер</option>
+            </select>
+
+            <!-- Добави в количката Button -->
+            <a class="btn"
+               th:data-id="${tshirt.id}"
+               th:data-name="${tshirt.name}"
+               th:data-price="${tshirt.price}"
+               onclick="addToCart(event)">Добави в количката</a>
+        </div>
+    </div>
+</main>
+
+<footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>
+<script th:src="@{/js/category.js}"></script>
 </body>
 </html>
