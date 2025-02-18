@@ -9,53 +9,15 @@
     <link rel="stylesheet" type="text/css" href="/css/all-tshirts.css">
 </head>
 <body>
-<header>
-    <a th:href="@{/home}" class="logo">
-        <img src="/images/th.png" alt="Retro Football Logo" style="height: 48px;">
-        Retro Football Shirts
-    </a>
-    <div class="nav">
-        <ul>
-            <li th:if="${user.role.name() == 'ADMIN'}">
-                <a>Admin</a>
-                <ul>
-                    <li><a th:href="@{/all-users}">Manage Users</a></li>
-                    <li><a th:href="@{/all-tshirts}">Manage Products</a></li>
-                </ul>
-            </li>
-
-            <li><a th:href="@{/home}">Home</a></li>
-            <li>
-                <a>Category</a>
-                <ul>
-                    <li><a th:href="@{/national}">National</a></li>
-                    <li><a th:href="@{/retro}">Retro</a></li>
-                    <li><a th:href="@{/new}">New</a></li>
-                </ul>
-            </li>
-            <li><a th:href="@{/my-account}">My Account</a></li>
-            <li><a th:href="@{/contact}">Contact</a></li>
-        </ul>
-        <form th:action="@{/search}" method="get" class="search-bar">
-            <label>
-                <input type="text" name="team" placeholder="Search team..." required>
-            </label>
-            <button type="submit">Search</button>
-        </form>
-
-        <div class="cart">
-            <a th:href="@{checkout}">🛒 <span class="cart-count">0</span></a>
-        </div>
-        <a th:href="@{/logout}" class="exit" >Logout</a>
-    </div>
-</header>
+<!-- Включване на хедъра -->
+<div th:replace="~{fragments/header.html}"></div>
 
 <h1>Admin - Products</h1>
 <nav>
-    <a th:href="@{/all-tshirts}">All Products</a>
-    <a href="/admin/products/available">Available</a>
-    <a href="/admin/products/unavailable">Unavailable</a>
-    <a th:href="@{/admin/add}" class="add-button">➕ Add New T-shirt or Team</a>
+    <a href="/tshirts">All Products</a>
+    <a href="/tshirts/available">Available</a>
+    <a href="/tshirts/unavailable">Unavailable</a>
+    <a href="/add" class="add-button">➕ Add New T-shirt or Team</a>
 
 </nav>
 <table>
@@ -80,17 +42,17 @@
         <td th:text="${tshirt.isAvailable ? 'Yes' : 'No'}"></td>
         <td>
             <!-- Бутон за изтриване -->
-            <form th:action="@{/admin/products/delete/{id}(id=${tshirt.id})}" method="post">
+            <form th:action="@{/tshirts/delete/{id}(id=${tshirt.id})}" th:method="DELETE">
                 <button type="submit">Delete</button>
             </form>
 
             <!-- Бутон за редакция на размера -->
-            <a th:href="@{/admin/products/edit/{id}(id=${tshirt.id})}">
+            <a th:href="@{/tshirts/edit/{id}(id=${tshirt.id})}">
                 <button type="button">Edit Sizes</button>
             </a>
 
             <!-- Бутон за промяна на наличността -->
-            <form th:action="@{/admin/products/toggle-availability/{id}(id=${tshirt.id})}" method="post">
+            <form th:action="@{/tshirts/availability/{id}(id=${tshirt.id})}" th:method="POST">
                 <button type="submit" th:text="${tshirt.isAvailable ? 'Set Unavailable' : 'Set Available'}"></button>
             </form>
         </td>

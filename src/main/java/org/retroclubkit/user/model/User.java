@@ -47,4 +47,9 @@ public class User {
 
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "user")
     private List<Order> orders;
+
+    // ✅ Методи за сетване на датата
+    public void updateLastLogin() {
+        this.updatedOn = LocalDateTime.now();
+    }
 }

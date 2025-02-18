@@ -2,69 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Tshirt</title>
     <link rel="stylesheet" type="text/css" href="/css/home.css">
     <link rel="stylesheet" type="text/css" href="/css/background.css">
     <link rel="stylesheet" type="text/css" href="/css/add-tshirt-or-team.css">
 </head>
 <body>
-<header>
-    <a th:href="@{/home}" class="logo">
-        <img src="/images/th.png" alt="Retro Football Logo" style="height: 48px;">
-        Retro Football Shirts
-    </a>
-    <div class="nav">
-        <ul>
-            <li th:if="${user.role.name() == 'ADMIN'}">
-                <a>Admin</a>
-                <ul>
-                    <li><a th:href="@{/all-users}">Manage Users</a></li>
-                    <li><a th:href="@{/all-tshirts}">Manage Products</a></li>
-                </ul>
-            </li>
+<!-- Включване на хедъра -->
+<div th:replace="~{fragments/header.html}"></div>
 
-            <li><a th:href="@{/home}">Home</a></li>
-            <li>
-                <a>Category</a>
-                <ul>
-                    <li><a th:href="@{/national}">National</a></li>
-                    <li><a th:href="@{/retro}">Retro</a></li>
-                    <li><a th:href="@{/new}">New</a></li>
-                </ul>
-            </li>
-            <li><a th:href="@{/my-account}">My Account</a></li>
-            <li><a th:href="@{/contact}">Contact</a></li>
-        </ul>
-        <form th:action="@{/search}" method="get" class="search-bar">
-            <label>
-                <input type="text" name="team" placeholder="Search team..." required>
-            </label>
-            <button type="submit">Search</button>
-        </form>
 
-        <div class="cart">
-            <a th:href="@{checkout}">🛒 <span class="cart-count">0</span></a>
-        </div>
-        <a th:href="@{/logout}" class="exit" >Logout</a>
-    </div>
-</header>
 
 <!-- Two forms side by side -->
 <div class="add-container">
     <!-- TODO logic about exist t-shirt and team-->
     <div class="add-form">
         <h2>Add New T-shirt</h2>
-        <form th:action="@{/admin/tshirts/save}" method="post" th:object="${tshirt}">
+        <form th:action="@{/tshirts/add}" th:method="POST" th:object="${tshirt}">
 
-            <p th:if="${tshirtError}" th:text="${tshirtError}" style="color: red; font-size: 0.9rem;"></p>
             <label>Name:</label>
             <input type="text" th:field="*{name}" required>
+            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert-warning"></p>
 
             <label>Price:</label>
             <input type="number" th:field="*{price}" step="0.01" required>
+            <p class="alert-warning" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></p>
 
             <label>Image URL:</label>
             <input type="text" th:field="*{image}" required>
+            <p class="alert-warning" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></p>
 
             <label for="teamId">Select Team:</label>
             <select id="teamId" th:field="*{teamId}" required>
@@ -73,7 +46,7 @@
             </select>
 
             <label>Category:</label>
-            <select th:field="*{category}">
+            <select th:field="*{category}" required>
                 <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}"></option>
             </select>
 
@@ -92,20 +65,23 @@
     <!-- Дясна форма: Добавяне на отбор -->
     <div class="add-form">
         <h2>Add New Team</h2>
-        <form th:action="@{/admin/team/save}" method="post" th:object="${team}">
+        <form th:action="@{/teams/add}" th:method="POST" th:object="${team}">
 
-            <p th:if="${teamError}" th:text="${teamError}" style="color: red; font-size: 0.9rem;"></p>
             <label>Team Name:</label>
             <input type="text" th:field="*{name}" required>
+            <p class="alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
 
             <label>Country:</label>
             <input type="text" th:field="*{country}" required>
+            <p class="alert-warning" th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></p>
 
             <label>Trophies:</label>
             <input type="number" th:field="*{trophies}" required>
+            <p class="alert-warning" th:if="${#fields.hasErrors('trophies')}" th:errors="*{trophies}"></p>
 
             <button type="submit">Save Team</button>
         </form>
+
     </div>
 </div>
 

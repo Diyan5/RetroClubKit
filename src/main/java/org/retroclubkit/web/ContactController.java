@@ -1,25 +1,18 @@
 package org.retroclubkit.web;
 
-import jakarta.servlet.http.HttpSession;
 import org.retroclubkit.contact.service.ContactService;
-import org.retroclubkit.tshirt.model.Tshirt;
+import org.retroclubkit.security.AuthenticationMetadata;
 import org.retroclubkit.user.model.User;
 import org.retroclubkit.web.dto.ContactRequest;
 import org.retroclubkit.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
-import java.util.UUID;
-
-
 @Controller
+@RequestMapping("/contact")
 public class ContactController {
 
     private final UserService userService;
@@ -31,18 +24,16 @@ public class ContactController {
         this.contactService = contactService;
     }
 
-    @GetMapping("/contact")
-    public ModelAndView showContactForm(HttpSession session) {
-        UUID userId = (UUID) session.getAttribute("user_id");
-
-        User user = userService.getById(userId);
+    @GetMapping
+    public ModelAndView showContactForm(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        User user = userService.getById(authenticationMetadata.getUserId());
         ModelAndView modelAndView = new ModelAndView("contact");
         modelAndView.addObject("contactRequest", new ContactRequest());
         modelAndView.addObject("user", user);
         return modelAndView;
     }
 
-    @PostMapping("/contact")
+    @PostMapping
     public String handleContactForm(@ModelAttribute ContactRequest contactRequest) {
         contactService.saveMessage(contactRequest);
         contactService.sendEmail(contactRequest);

@@ -6,7 +6,7 @@ import java.util.UUID;
 
 @Data
 public class TshirtOrderRequest {
-    private UUID id; // ID на тениската
+    private UUID id;
     private int quantity;
     private String size;
 }

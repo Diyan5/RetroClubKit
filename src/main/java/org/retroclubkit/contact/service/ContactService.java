@@ -50,4 +50,17 @@ public class ContactService {
         mailSender.send(mailMessage);
     }
 
+    public void sendUserEmail(String toEmail, String subject, String body) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(toEmail);
+        mailMessage.setSubject(subject);
+        mailMessage.setText(body);
+
+        try {
+            mailSender.send(mailMessage);
+            System.out.println("Email sent successfully to: " + toEmail);
+        } catch (MailException e) {
+            System.err.println("Failed to send email: " + e.getMessage());
+        }
+    }
 }
