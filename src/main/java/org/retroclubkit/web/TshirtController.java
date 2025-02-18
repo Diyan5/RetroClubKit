@@ -1,36 +1,139 @@
 package org.retroclubkit.web;
 
 import jakarta.servlet.http.HttpSession;
+import org.retroclubkit.security.AuthenticationMetadata;
+import org.retroclubkit.team.service.TeamService;
 import org.retroclubkit.tshirt.model.Category;
+import org.retroclubkit.tshirt.model.Size;
 import org.retroclubkit.tshirt.model.Tshirt;
 import org.retroclubkit.tshirt.service.TshirtService;
 import org.retroclubkit.user.model.User;
 import org.retroclubkit.user.service.UserService;
+import org.retroclubkit.web.dto.CreatedNewTshirt;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/tshirts")
 public class TshirtController {
 
     private final UserService userService;
     private final TshirtService tshirtService;
+    private final TeamService teamService;
 
     @Autowired
-    public TshirtController(UserService userService, TshirtService tshirtService) {
+    public TshirtController(UserService userService, TshirtService tshirtService, TeamService teamService) {
         this.userService = userService;
         this.tshirtService = tshirtService;
+        this.teamService = teamService;
     }
 
-    @GetMapping("/retro")
-    public ModelAndView getRetroTshirts(HttpSession session) {
+    // ✅ Показване на всички тениски admin
+    @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ModelAndView getAllTshirts(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
-        UUID userId = (UUID) session.getAttribute("user_id");
-        User user = userService.getById(userId);
+        User user = userService.getById(authenticationMetadata.getUserId());
+
+        List<Tshirt> tshirts = tshirtService.getAllTshirts();
+        ModelAndView modelAndView = new ModelAndView("all-tshirts");
+        modelAndView.addObject("tshirts", tshirts);
+        modelAndView.addObject("user", user);
+
+        return modelAndView;
+    }
+
+    // ✅ Филтриране само на наличните продукти role
+    @GetMapping("/available")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ModelAndView getAvailableTshirts(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+
+        User user = userService.getById(authenticationMetadata.getUserId());
+
+        ModelAndView modelAndView = new ModelAndView("all-tshirts");
+        modelAndView.addObject("tshirts", tshirtService.getAvailableTshirts());
+        modelAndView.addObject("user", user);
+
+        return modelAndView;
+    }
+
+    // ✅ Филтриране само на неналичните продукти role
+    @GetMapping("/unavailable")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ModelAndView getUnavailableTshirts(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+
+        User user = userService.getById(authenticationMetadata.getUserId());
+
+        ModelAndView modelAndView = new ModelAndView("all-tshirts");
+        modelAndView.addObject("tshirts", tshirtService.getUnavailableTshirts());
+        modelAndView.addObject("user", user);
+
+        return modelAndView;
+    }
+
+    // ✅ Изтриване на продукт
+    @DeleteMapping("/delete/{id}")
+    public ModelAndView deleteTshirt(@PathVariable UUID id) {
+        tshirtService.deleteTshirtById(id);
+        return new ModelAndView("redirect:/tshirts");
+    }
+
+    @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ModelAndView updateTshirt(@PathVariable UUID id, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+
+        User user = userService.getById(authenticationMetadata.getUserId());
+
+        Tshirt tshirt = tshirtService.getById(id);
+        ModelAndView modelAndView = new ModelAndView("edit-tshirt");
+        modelAndView.addObject("tshirt", tshirt);
+        modelAndView.addObject("allSizes", Size.values());
+        modelAndView.addObject("user", user);
+
+        return modelAndView;
+    }
+
+    @PostMapping("/update")
+    public ModelAndView updateTshirt(
+            @RequestParam("id") UUID id,
+            @RequestParam("sizes") List<Size> sizes,
+            @RequestParam("price") BigDecimal price) {
+
+        tshirtService.updateTshirtBySizeAndPrice(id, sizes, price);
+        return new ModelAndView("redirect:/tshirts");
+    }
+
+    @PostMapping("/availability/{id}")
+    public ModelAndView toggleProductAvailability(@PathVariable UUID id) {
+        tshirtService.toggleAvailability(id);
+        return new ModelAndView("redirect:/tshirts");
+    }
+
+
+
+    @PostMapping("/add")
+    public ModelAndView saveNewTshirt(@ModelAttribute CreatedNewTshirt createdNewTshirt, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("redirect:/tshirts/add");
+        }
+        tshirtService.saveTshirt(createdNewTshirt);
+        return new ModelAndView("redirect:/tshirts");
+    }
+
+
+    @GetMapping("/retro")
+    public ModelAndView getRetroTshirts(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+
+        User user = userService.getById(authenticationMetadata.getUserId());
 
         List<Tshirt> retroTshirts = tshirtService.getTshirtsByCategoryAndAvailable(Category.RETRO);
 
@@ -42,10 +145,9 @@ public class TshirtController {
     }
 
     @GetMapping("/national")
-    public ModelAndView getNationalTshirts(HttpSession session) {
+    public ModelAndView getNationalTshirts(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
-        UUID userId = (UUID) session.getAttribute("user_id");
-        User user = userService.getById(userId);
+        User user = userService.getById(authenticationMetadata.getUserId());
 
         List<Tshirt> nationalTshirts = tshirtService.getTshirtsByCategoryAndAvailable(Category.NATIONAL);
 
@@ -57,10 +159,9 @@ public class TshirtController {
     }
 
     @GetMapping("/new")
-    public ModelAndView getNewTshirts(HttpSession session) {
+    public ModelAndView getNewTshirts(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
-        UUID userId = (UUID) session.getAttribute("user_id");
-        User user = userService.getById(userId);
+        User user = userService.getById(authenticationMetadata.getUserId());
 
         List<Tshirt> newTshirts = tshirtService.getTshirtsByCategoryAndAvailable(Category.NEW);
 
@@ -72,10 +173,9 @@ public class TshirtController {
     }
 
     @GetMapping("/search")
-    public ModelAndView searchTshirts(@RequestParam("team") String teamName,HttpSession session) {
+    public ModelAndView searchTshirts(@RequestParam("team") String teamName,@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
-        UUID userId = (UUID) session.getAttribute("user_id");
-        User user = userService.getById(userId);
+        User user = userService.getById(authenticationMetadata.getUserId());
 
         List<Tshirt> tshirts = tshirtService.findTshirtsByTeam(teamName);
 
@@ -86,5 +186,4 @@ public class TshirtController {
 
         return modelAndView;
     }
-
 }

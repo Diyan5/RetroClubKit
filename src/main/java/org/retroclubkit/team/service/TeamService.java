@@ -2,7 +2,8 @@ package org.retroclubkit.team.service;
 
 import org.retroclubkit.team.model.Team;
 import org.retroclubkit.team.repository.TeamRepository;
-import org.retroclubkit.web.dto.NewTeamRequest;
+
+import org.retroclubkit.web.dto.CreatedNewTeam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,17 +28,17 @@ public class TeamService {
         return teamRepository.findAll();
     }
 
-    public void saveTeam(NewTeamRequest newTeamRequest) {
-        Team team = convertToEntity(newTeamRequest);
+    public void saveTeam(CreatedNewTeam createdNewTeam) {
+        Team team = convertToEntity(createdNewTeam);
         teamRepository.save(team);
     }
 
-    private Team convertToEntity(NewTeamRequest newTeamRequest) {
+    private Team convertToEntity(CreatedNewTeam createdNewTeam) {
         return Team.builder()
                 .id(UUID.randomUUID())
-                .name(newTeamRequest.getName())
-                .country(newTeamRequest.getCountry())
-                .trophies(newTeamRequest.getTrophies())
+                .name(createdNewTeam.getName())
+                .country(createdNewTeam.getCountry())
+                .trophies(createdNewTeam.getTrophies())
                 .build();
     }
 

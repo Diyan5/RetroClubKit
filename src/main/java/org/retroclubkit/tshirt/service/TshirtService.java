@@ -7,7 +7,7 @@ import org.retroclubkit.tshirt.model.Category;
 import org.retroclubkit.tshirt.model.Size;
 import org.retroclubkit.tshirt.model.Tshirt;
 import org.retroclubkit.tshirt.repository.TshirtRepository;
-import org.retroclubkit.web.dto.TshirtAdminRequest;
+import org.retroclubkit.web.dto.CreatedNewTshirt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -31,21 +31,21 @@ public class TshirtService {
     }
 
     // Филтрира само наличните тениски
-    public List<TshirtAdminRequest> getAvailableTshirts() {
+    public List<CreatedNewTshirt> getAvailableTshirts() {
         return tshirtRepository.findByIsAvailableTrue().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
     // Филтрира само неналичните тениски
-    public List<TshirtAdminRequest> getUnavailableTshirts() {
+    public List<CreatedNewTshirt> getUnavailableTshirts() {
         return tshirtRepository.findByIsAvailableFalse().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
     // Търси по категория
-    public List<TshirtAdminRequest> getTshirtsByCategory(Category category) {
+    public List<CreatedNewTshirt> getTshirtsByCategory(Category category) {
         return tshirtRepository.findByCategory(category)
                 .stream()
                 .map(tshirt -> convertToDTO((Tshirt) tshirt)) // ✅ Изрично указваме типа
@@ -53,19 +53,19 @@ public class TshirtService {
     }
 
     // Запазване / редактиране на тениска
-    public void saveTshirt(TshirtAdminRequest tshirtAdminRequest) {
-        Tshirt tshirt = convertToEntity(tshirtAdminRequest);
+    public void saveTshirt(CreatedNewTshirt createdNewTshirt) {
+        Tshirt tshirt = convertToEntity(createdNewTshirt);
         tshirtRepository.save(tshirt);
     }
 
     // Изтриване на тениска
-    public void deleteTshirt(UUID id) {
+    public void deleteTshirtById(UUID id) {
         tshirtRepository.deleteById(id);
     }
 
     // Превръща модел в DTO
-    public TshirtAdminRequest convertToDTO(Tshirt tshirt) {
-        return new TshirtAdminRequest(
+    public CreatedNewTshirt convertToDTO(Tshirt tshirt) {
+        return new CreatedNewTshirt(
                 tshirt.getId(),
                 tshirt.getName(),
                 tshirt.getPrice(),
@@ -78,7 +78,7 @@ public class TshirtService {
     }
 
     // Превръща DTO в модел
-    public Tshirt convertToEntity(TshirtAdminRequest dto) {
+    public Tshirt convertToEntity(CreatedNewTshirt dto) {
 
         Team team = teamService.getById(dto.getTeamId());
 

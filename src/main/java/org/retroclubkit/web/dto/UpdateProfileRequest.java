@@ -1,20 +1,26 @@
 package org.retroclubkit.web.dto;
 
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class UpdateProfileRequest {
 
-    @Size(min = 6, message = "Username must be at least 6 characters")
+    @NotBlank(message = "Username name cannot be empty")
+    @NotNull(message = "Username cannot be empty")
     private String username;
 
-    @Size(min = 6, message = "Username must be at least 6 characters")
+    @NotBlank(message = "First name cannot be empty")
+    @NotNull(message = "First name cannot be empty")
     private String firstName;
 
-    @Size(min = 6, message = "Username must be at least 6 characters")
+    @NotBlank(message = "Last name cannot be empty")
+    @NotNull(message = "Last name cannot be empty")
     private String lastName;
 
-    @Size(min = 6, message = "Username must be at least 6 characters")
+    @NotBlank(message = "Email cannot be empty")
+    @Email(message = "Not a valid email format")
     private String email;
 }

@@ -1,0 +1,40 @@
+<header>
+    <a th:href="@{/home}" class="logo">
+        <img src="/images/th.png" alt="Retro Football Logo" style="height: 48px;">
+        Retro Football Shirts
+    </a>
+    <div class="nav">
+        <ul>
+            <li th:if="${user.role.name() == 'ADMIN'}">
+                <a>Admin</a>
+                <ul>
+                    <li><a th:href="@{/users}">Manage Users</a></li>
+                    <li><a th:href="@{/tshirts}">Manage Products</a></li>
+                </ul>
+            </li>
+
+            <li><a th:href="@{/home}">Home</a></li>
+            <li>
+                <a>Category</a>
+                <ul>
+                    <li><a th:href="@{/tshirts/national}">National</a></li>
+                    <li><a th:href="@{/tshirts/retro}">Retro</a></li>
+                    <li><a th:href="@{/tshirts/new}">New</a></li>
+                </ul>
+            </li>
+            <li><a th:href="@{'/users/' + ${user.id} + '/profile'}">My Account</a></li>
+            <li><a th:href="@{/contact}">Contact</a></li>
+        </ul>
+        <form th:action="@{/tshirts/search}" method="get" class="search-bar">
+            <label>
+                <input type="text" name="team" placeholder="Search team..." required>
+            </label>
+            <button type="submit">Search</button>
+        </form>
+
+        <div class="cart">
+            <a th:href="@{/checkout}">🛒 <span class="cart-count">0</span></a>
+        </div>
+        <a th:href="@{/logout}" class="exit" >Logout</a>
+    </div>
+</header>

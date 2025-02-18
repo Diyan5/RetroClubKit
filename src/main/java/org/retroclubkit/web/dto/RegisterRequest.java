@@ -1,24 +1,24 @@
 package org.retroclubkit.web.dto;
 
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-
-
-@Data  // data give setters and getter
+@Data
 public class RegisterRequest {
 
     @Size(min = 6, message = "Username must be at least 6 characters")
     private String username;
 
-    @Size(min = 6, message = "Username must be at least 6 characters")
+    @NotNull(message = "Can not be null")
     private String firstName;
 
-    @Size(min = 6, message = "Username must be at least 6 characters")
+    @NotNull(message = "Can not be null")
     private String lastName;
 
-    @Size(min = 6, message = "Username must be at least 6 characters")
+    @Email(message = "Valid email")
     private String email;
 
     @Size(min = 6, message = "Password must be exactly 6 digits")

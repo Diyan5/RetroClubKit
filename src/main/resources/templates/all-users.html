@@ -70,46 +70,8 @@
 </style>
 <body>
 
-<header>
-    <a th:href="@{/home}" class="logo">
-        <img src="/images/th.png" alt="Retro Football Logo" style="height: 48px;">
-        Retro Football Shirts
-    </a>
-    <div class="nav">
-        <ul>
-            <li th:if="${user.role.name() == 'ADMIN'}">
-                <a>Admin</a>
-                <ul>
-                    <li><a th:href="@{/all-users}">Manage Users</a></li>
-                    <li><a th:href="@{/all-tshirts}">Manage Products</a></li>
-                </ul>
-            </li>
-
-            <li><a th:href="@{/home}">Home</a></li>
-            <li>
-                <a>Category</a>
-                <ul>
-                    <li><a th:href="@{/national}">National</a></li>
-                    <li><a th:href="@{/retro}">Retro</a></li>
-                    <li><a th:href="@{/new}">New</a></li>
-                </ul>
-            </li>
-            <li><a th:href="@{/my-account}">My Account</a></li>
-            <li><a th:href="@{/contact}">Contact</a></li>
-        </ul>
-        <form th:action="@{/search}" method="get" class="search-bar">
-            <label>
-                <input type="text" name="team" placeholder="Search team..." required>
-            </label>
-            <button type="submit">Search</button>
-        </form>
-
-        <div class="cart">
-            <a th:href="@{checkout}">🛒 <span class="cart-count">0</span></a>
-        </div>
-        <a th:href="@{/logout}" class="exit" >Logout</a>
-    </div>
-</header>
+<!-- Включване на хедъра -->
+<div th:replace="~{fragments/header.html}"></div>
 
 <main>
     <h1>All Users</h1>
@@ -140,8 +102,7 @@
 
             <!-- Switch Status Button -->
             <td>
-                <form th:action="@{'/users/' + ${user.id} + '/status'}" method="post">
-                    <input type="hidden" name="_method" value="put"/>
+                <form th:action="@{'/users/' + ${user.id} + '/status'}" th:method="PUT">
                     <button class="btn-small status-btn"
                             th:text="${user.active} ? 'Deactivate' : 'Activate'">
                     </button>
@@ -155,8 +116,7 @@
 
             <!-- Switch Role Button -->
             <td>
-                <form th:action="@{'/users/' + ${user.id} + '/role'}" method="post">
-                    <input type="hidden" name="_method" value="put"/>
+                <form th:action="@{'/users/' + ${user.id} + '/role'}" th:method="PUT">
                     <button class="btn-small role-btn"
                             th:text="${user.role.name() == 'ADMIN'} ? 'Make User' : 'Make Admin'">
                     </button>
@@ -165,7 +125,7 @@
 
             <!-- View Orders -->
             <td>
-                <a th:href="@{/user-orders/{id}(id=${user.id})}" class="btn">View Orders</a>
+                <a th:href="@{/orders/user/{id}(id=${user.id})}" class="btn">View Orders</a>
             </td>
         </tr>
         </tbody>

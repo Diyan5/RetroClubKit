@@ -1,15 +1,21 @@
 package org.retroclubkit.user.service;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.retroclubkit.domainException.DomainException;
+import org.retroclubkit.security.AuthenticationMetadata;
 import org.retroclubkit.user.model.User;
 import org.retroclubkit.user.model.UserRole;
 import org.retroclubkit.user.repository.UserRepository;
 import org.retroclubkit.web.dto.LoginRequest;
 import org.retroclubkit.web.dto.RegisterRequest;
+import org.retroclubkit.web.dto.UpdateProfileRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +26,7 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
 
     private final UserRepository userRepository;
@@ -32,23 +38,6 @@ public class UserService {
 
         this.passwordEncoder = passwordEncoder;
     }
-
-    public User login(LoginRequest loginRequest) {
-
-        Optional<User> optionUser = userRepository.findByUsername(loginRequest.getUsername());
-        if (optionUser.isEmpty()) {
-            throw new DomainException("Username or password are incorrect.");
-        }
-
-        User user = optionUser.get();
-        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new DomainException("Username or password are incorrect.");
-        }
-
-        return user;
-    }
-
-
 
     @Transactional
     public User register(RegisterRequest registerRequest) {
@@ -97,16 +86,6 @@ public class UserService {
     public void switchStatus(UUID userId) {
 
         User user = getById(userId);
-
-        // НАЧИН 1:
-//        if (user.isActive()){
-//            user.setActive(false);
-//        } else {
-//            user.setActive(true);
-//        }
-
-        // false -> true
-        // true -> false
         user.setActive(!user.isActive());
         userRepository.save(user);
     }
@@ -124,4 +103,34 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void updateLastLogin(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.updateLastLogin();
+        userRepository.save(user);
+    }
+
+    public void update( UpdateProfileRequest updateProfileRequest, User user) {
+        Optional<User> optionUser = userRepository.findByUsernameOrEmail(updateProfileRequest.getUsername(), updateProfileRequest.getEmail());
+
+        if (optionUser.isPresent()) {
+            throw new DomainException("Username [%s] or email [%s] already exist.".formatted(updateProfileRequest.getUsername(), updateProfileRequest.getEmail()));
+        }
+
+        user.setUsername(updateProfileRequest.getUsername());
+        user.setFirstName(updateProfileRequest.getFirstName());
+        user.setLastName(updateProfileRequest.getLastName());
+        user.setEmail(updateProfileRequest.getEmail());
+        userRepository.save(user);
+    }
+
+    // Всеки пък, когато потребител се логва, Spring Security ще извиква този метод
+    // за да вземе детайлите на потребителя с този username
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new DomainException("User with this username does not exist."));
+        updateLastLogin(user.getId());
+        return new AuthenticationMetadata(user.getId(), username, user.getPassword(), user.getRole(), user.isActive());
+    }
 }

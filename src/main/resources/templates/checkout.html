@@ -4,66 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/background.css}">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            line-height: 1.6;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        table, th, td {
-            border: 1px solid #ccc;
-        }
-        th, td {
-            padding: 10px;
-            text-align: center;
-        }
-        .total {
-            font-size: 1.5rem;
-            text-align: right;
-            margin-top: 10px;
-            margin-bottom: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        form {
-            margin-top: 20px;
-        }
-        form input, form select {
-            padding: 10px;
-            margin: 5px 0;
-            width: 100%;
-            max-width: 400px;
-            display: block;
-        }
-        form button {
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="/css/background.css">
+    <link rel="stylesheet" type="text/css" href="/css/checkout.css">
+
 </head>
 <body>
 <h1>Checkout</h1>
-<div th:if="${error}" class="alert alert-danger">
-    <p th:text="${error}"></p>
-</div>
 
-<div th:if="${success}" class="alert alert-success">
-    <p th:text="${success}"></p>
-</div>
 <table>
     <thead>
     <tr>
@@ -82,7 +29,7 @@
 <div class="total" id="grandTotal">Total: $0</div>
 <button id="clearCart">Clear Cart</button>
 
-<a th:href="@{/home}">Home</a>
+<a th:href="@{/home}">Back home</a>
 <h2>Delivery Information</h2>
 <form id="deliveryForm">
     <label for="name">Full Name:</label>

@@ -2,18 +2,18 @@ package org.retroclubkit.web;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.retroclubkit.security.AuthenticationMetadata;
 import org.retroclubkit.tshirt.model.Tshirt;
 import org.retroclubkit.tshirt.service.TshirtService;
 import org.retroclubkit.user.model.User;
-import org.retroclubkit.user.model.UserRole;
 import org.retroclubkit.user.service.UserService;
 import org.retroclubkit.web.dto.LoginRequest;
 import org.retroclubkit.web.dto.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -48,18 +48,6 @@ public class IndexController {
         return modelAndView;
     }
 
-    @PostMapping("/login")
-    public ModelAndView login(@Valid @ModelAttribute("loginRequest") LoginRequest loginRequest, BindingResult bindingResult, HttpSession session) {
-
-        if (bindingResult.hasErrors()) {
-            return new ModelAndView("login");
-        }
-
-        User loginUser = userService.login(loginRequest);
-        session.setAttribute("user_id", loginUser.getId());
-
-        return new ModelAndView("redirect:/home");
-    }
 
     @GetMapping("/register")
     public ModelAndView getRegisterPage() {
@@ -83,10 +71,9 @@ public class IndexController {
     }
 
     @GetMapping("/home")
-    public ModelAndView getHomePage(HttpSession session) {
+    public ModelAndView getHomePage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
-        UUID userId = (UUID) session.getAttribute("user_id");
-        User user = userService.getById(userId);
+        User user = userService.getById(authenticationMetadata.getUserId());
 
         List<Tshirt> tshirtsLimit = tshirtService.getAllTshirtsLimitAndAvailableTrue();
 
@@ -99,21 +86,14 @@ public class IndexController {
         return modelAndView;
     }
 
-    @GetMapping("/admin")
-    public ModelAndView getAdminPage(HttpSession session) {
-        UUID userId = (UUID) session.getAttribute("user_id");
-
-        User user = userService.getById(userId);
-        ModelAndView modelAndView = new ModelAndView("admin");
-
-        modelAndView.addObject("user", user);
-        return modelAndView;
-    }
-
-    @GetMapping("/logout")
-    public String getLogout(HttpSession session) {
-
-        session.invalidate();
-        return "redirect:/";
-    }
+//    @GetMapping("/admin")
+//    public ModelAndView getAdminPage(HttpSession session) {
+//        UUID userId = (UUID) session.getAttribute("user_id");
+//
+//        User user = userService.getById(userId);
+//        ModelAndView modelAndView = new ModelAndView("admin");
+//
+//        modelAndView.addObject("user", user);
+//        return modelAndView;
+//    }
 }

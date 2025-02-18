@@ -143,6 +143,65 @@ th:last-child, td:last-child {
     text-align: center;
     padding-right: 20px;
 }
+/* ====== Navigation Styling ====== */
+nav {
+    display: flex;
+    justify-content: center; /* Центрира бутоните */
+    align-items: center;
+    background: #2a6d4f; /* Тъмно зелено, не толкова ярко */
+    padding: 12px 25px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Лека сянка */
+    margin-bottom: 20px;
+    width: 85%; /* Навигацията не заема целия ред */
+    margin: 0 auto; /* Центрира навигацията */
+    transition: all 0.3s ease;
+    gap: 20px; /* Разстояние между бутоните */
+}
+
+/* Линковете в навигацията */
+nav a {
+    color: #ffffff; /* Бял текст */
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: normal; /* Лек шрифт */
+    padding: 8px 15px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+/* Леко ховър състояние */
+nav a:hover, nav a:focus {
+    background: #1d5c40; /* Меко тъмно зелено при ховър */
+    color: white;
+    transform: scale(1.05); /* Леко увеличаване */
+}
+
+/* Специален стил за бутона "Add New T-shirt or Team" */
+.add-button {
+    background-color: #4caf50; /* Меко зелено */
+    font-weight: bold;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.add-button:hover, .add-button:focus {
+    background-color: #388e3c; /* По-тъмно зелено при ховър */
+    transform: scale(1.05);
+}
+
+/* За допълнителни ефекти при ховър на навигационните линкове */
+nav a:not(.add-button):hover {
+    background-color: #1d5c40;
+    transform: scale(1.05);
+}
+
+
 
 
 
