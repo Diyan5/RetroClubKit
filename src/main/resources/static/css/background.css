@@ -1,4 +1,4 @@
-/*fon*/
+/* ====== Page Styling ====== */
 body {
     margin: 0;
     background-size: cover;
@@ -13,16 +13,21 @@ body {
     #0d1a0d 70%,
     #081108 80%,
     #040904 90%,
-    #000000 100%) no-repeat fixed; /* Черен завършек */
-    font-style: normal;
+    #000000 100%) no-repeat fixed;
     font-family: 'Poppins', sans-serif;
     color: #ffffff;
     letter-spacing: 0.5px;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh; /* Осигурява, че контейнерът ще заеме поне височината на екрана */
 }
 
+/* Основен контейнер за съдържание */
+.main-content {
+    flex: 1; /* Оставя футъра да бъде на дъното, независимо от съдържанието */
+}
+
+/* ====== Footer Styling ====== */
 footer {
     text-align: center; /* Центрира текста вътре във футъра */
     width: 100%; /* Задава ширината на футъра, за да покрие цялата страница */
@@ -30,5 +35,5 @@ footer {
     padding: 10px 0; /* Добавя вертикално вътрешно отстояние */
     font-size: 20px; /* Размер на текста */
     font-family: 'Poppins', sans-serif; /* Шрифт */
+    margin-top: auto; /* Това поставя футъра винаги в долната част */
 }
-

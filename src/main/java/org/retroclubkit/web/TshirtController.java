@@ -1,6 +1,5 @@
 package org.retroclubkit.web;
 
-import jakarta.servlet.http.HttpSession;
 import org.retroclubkit.security.AuthenticationMetadata;
 import org.retroclubkit.team.service.TeamService;
 import org.retroclubkit.tshirt.model.Category;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -80,7 +80,7 @@ public class TshirtController {
         return modelAndView;
     }
 
-    // ✅ Изтриване на продукт
+
     @DeleteMapping("/delete/{id}")
     public ModelAndView deleteTshirt(@PathVariable UUID id) {
         tshirtService.deleteTshirtById(id);
@@ -118,7 +118,21 @@ public class TshirtController {
         return new ModelAndView("redirect:/tshirts");
     }
 
+    @GetMapping("/add")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ModelAndView showAddPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
+        User user = userService.getById(authenticationMetadata.getUserId());
+
+        ModelAndView modelAndView = new ModelAndView("add-tshirt");
+        modelAndView.addObject("tshirt", new CreatedNewTshirt());
+        modelAndView.addObject("teams", teamService.getAllTeams());
+        modelAndView.addObject("categories", Arrays.asList(Category.values()));
+        modelAndView.addObject("sizes", Arrays.asList(Size.values()));
+        modelAndView.addObject("user", user);
+
+        return modelAndView;
+    }
 
     @PostMapping("/add")
     public ModelAndView saveNewTshirt(@ModelAttribute CreatedNewTshirt createdNewTshirt, BindingResult bindingResult) {
@@ -128,7 +142,6 @@ public class TshirtController {
         tshirtService.saveTshirt(createdNewTshirt);
         return new ModelAndView("redirect:/tshirts");
     }
-
 
     @GetMapping("/retro")
     public ModelAndView getRetroTshirts(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {

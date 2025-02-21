@@ -7,55 +7,65 @@
     <link rel="stylesheet" type="text/css" href="/css/background.css">
     <link rel="stylesheet" type="text/css" href="/css/checkout.css">
 
+    <meta name="_csrf" content="${_csrf.token}" />
+    <meta name="_csrf_header" content="${_csrf.headerName}" />
 </head>
 <body>
-<h1>Checkout</h1>
+<div class="main-content">
+    <h1>Checkout</h1>
+    <div class="checkout-container">
+        <!-- Ляв контейнер за количката -->
+        <div class="cart-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Product Name</th>
+                    <th>Size</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+                </thead>
+                <tbody id="cartItems">
+                <!-- Продуктите ще бъдат добавени тук -->
+                </tbody>
+            </table>
+            <div class="total" id="grandTotal">Total: $0</div>
+            <button id="clearCart" class="small-btn">Clear Cart</button>
+        </div>
+        <!-- Десен контейнер за форма за доставка -->
+        <div class="delivery-container">
+            <h2>Delivery Information</h2>
+            <form id="deliveryForm">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
 
-<table>
-    <thead>
-    <tr>
-        <th>Image</th>
-        <th>Product Name</th>
-        <th>Size</th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th>Total</th>
-    </tr>
-    </thead>
-    <tbody id="cartItems">
-    <!-- Продуктите ще бъдат добавени тук -->
-    </tbody>
-</table>
-<div class="total" id="grandTotal">Total: $0</div>
-<button id="clearCart">Clear Cart</button>
+                <label for="country">Country:</label>
+                <input type="text" id="country" name="country" placeholder="Enter your country" required>
 
-<a th:href="@{/home}">Back home</a>
-<h2>Delivery Information</h2>
-<form id="deliveryForm">
-    <label for="name">Full Name:</label>
-    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" placeholder="Enter your address" required>
 
-    <label for="country">Country:</label>
-    <input type="text" id="country" name="country" placeholder="Enter your country" required>
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" placeholder="Enter your city" required>
 
-    <label for="address">Address:</label>
-    <input type="text" id="address" name="address" placeholder="Enter your address" required>
+                <label for="phone">Phone Number:</label>
+                <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required>
 
-    <label for="city">City:</label>
-    <input type="text" id="city" name="city" placeholder="Enter your city" required>
+                <label for="paymentMethod">Payment Method:</label>
+                <select id="paymentMethod" name="paymentMethod">
+                    <option value="CREDIT_CARD">Credit Card</option>
+                    <option value="PAYPAL">PayPal</option>
+                    <option value="CASH_ON_DELIVERY">Cash on Delivery</option>
+                </select>
 
-    <label for="phone">Phone Number:</label>
-    <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required>
-
-    <label for="paymentMethod">Payment Method:</label>
-    <select id="paymentMethod" name="paymentMethod">
-        <option value="CREDIT_CARD">Credit Card</option>
-        <option value="PAYPAL">PayPal</option>
-        <option value="CASH_ON_DELIVERY">Cash on Delivery</option>
-    </select>
-
-    <button type="submit">Submit Order</button>
-</form>
+                <button type="submit">Submit Order</button>
+            </form>
+        </div>
+    </div>
+    <a href="/home" class="small-btn">Back home</a>
+</div>
 <footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>
 <script>
 
@@ -158,21 +168,24 @@
         let grandTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
         document.getElementById('grandTotal').textContent = `Total: $${grandTotal.toFixed(2)}`;
     }
-    //поръчки
+
+
+    // Поръчки
     document.getElementById('deliveryForm').addEventListener('submit', async (event) => {
         event.preventDefault(); // Спираме стандартното изпращане на формата
 
+        // Вземаме CSRF токен от мета таговете
+        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+        // Вземаме данните от формата за доставка
+        const formData = new FormData(event.target);
+        const deliveryDetails = Object.fromEntries(formData);
+
+        // Вземаме текущото съдържание на количката от localStorage
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-        if (cart.length === 0) {
-            alert("Your cart is empty!");
-            return;
-        }
-
-        // Вземаме актуалното количество от input полетата
         const updatedCart = cart.map((item, index) => {
             const quantityInput = document.querySelector(`.quantity[data-index="${index}"]`);
-
             return {
                 id: item.id,
                 quantity: parseInt(quantityInput.value, 10) || 1,
@@ -180,11 +193,7 @@
             };
         });
 
-        // Вземаме данните за доставка от формата
-        const formData = new FormData(event.target);
-        const deliveryDetails = Object.fromEntries(formData);
-
-        // Вземаме избрания метод на плащане
+        // Вземаме метода на плащане
         const paymentMethod = document.getElementById('paymentMethod').value;
 
         // Създаваме JSON заявка за поръчката
@@ -194,43 +203,49 @@
             address: deliveryDetails.address,
             city: deliveryDetails.city,
             phone: deliveryDetails.phone,
-            paymentMethod: paymentMethod, // Добавяме метода на плащане
+            paymentMethod: paymentMethod,
             cartItems: updatedCart
         };
 
         try {
-            console.log("Submitting order:", orderData); // Debugging log
-
+            // Изпращаме POST заявката към /checkout с CSRF токен в заглавките
             const response = await fetch('/checkout', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    [csrfHeader]: csrfToken // Добавяме CSRF токен в заглавката
                 },
-                body: JSON.stringify(orderData)
+                body: JSON.stringify(orderData) // Изпращаме поръчката в тялото на заявката
             });
 
+            // Проверяваме отговора от сървъра
             const responseData = await response.json();
 
             if (response.ok && responseData.success) {
-                alert(responseData.success); // Показваме успешното съобщение от бекенда
+                alert(responseData.success); // Показваме съобщение за успешна поръчка
 
+                // Изчистваме количката и брояча в localStorage
                 localStorage.removeItem('cart');
                 localStorage.setItem('cartCount', 0);
 
+                // Променяме брояча в UI
                 const cartCountElement = document.querySelector('.cart-count');
                 if (cartCountElement) {
                     cartCountElement.textContent = "0";
                 }
 
+                // Пренасочваме потребителя към началната страница
                 window.location.href = '/home';
             } else if (responseData.error) {
-                alert(responseData.error); // Ако има грешка, показваме грешката
+                alert(responseData.error); // Показваме грешка, ако има такава
             }
         } catch (error) {
             console.error("Error submitting order:", error);
             alert("There was a problem submitting your order. Please try again.");
         }
     });
+
+
 
 
 </script>

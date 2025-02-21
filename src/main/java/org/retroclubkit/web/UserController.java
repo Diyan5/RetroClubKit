@@ -1,6 +1,5 @@
 package org.retroclubkit.web;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.retroclubkit.security.AuthenticationMetadata;
 import org.retroclubkit.user.model.User;

@@ -3,7 +3,6 @@ package org.retroclubkit.order.service;
 import org.retroclubkit.order.model.Order;
 import org.retroclubkit.orderItem.model.OrderItem;
 import org.retroclubkit.order.model.Status;
-import org.retroclubkit.orderItem.repository.OrderItemRepository;
 import org.retroclubkit.order.repository.OrderRepository;
 import org.retroclubkit.orderItem.service.OrderItemService;
 import org.retroclubkit.tshirt.model.Tshirt;

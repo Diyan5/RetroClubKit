@@ -60,33 +60,7 @@
 </main>
 <footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const form = document.querySelector("#user-info form");
-        const saveButton = document.getElementById("saveChangesButton");
-        const inputs = form.querySelectorAll("input");
-
-        let isEdited = false; // Флаг за промяна на данните
-
-        inputs.forEach(input => {
-            input.addEventListener("input", () => {
-                if (!isEdited) {
-                    isEdited = true;
-                    saveButton.textContent = "Save Changes"; // ✅ Променяме текста на бутона
-                    console.log("User edited a field!"); // 🔹 Дебъгване
-                }
-            });
-        });
-
-        form.addEventListener("submit", (event) => {
-            if (!isEdited) {
-                event.preventDefault(); // ✅ Спираме изпращането, ако няма промени
-                alert("No changes detected!");
-                console.log("Form submission prevented - No changes detected!");
-            }
-        });
-    });
-</script>
+<script th:src="@{/js/counter.js}"></script>
 
 
 </body>

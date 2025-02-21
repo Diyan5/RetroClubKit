@@ -12,7 +12,7 @@
     <title>Add New Tshirt</title>
     <link rel="stylesheet" type="text/css" href="/css/home.css">
     <link rel="stylesheet" type="text/css" href="/css/background.css">
-    <link rel="stylesheet" type="text/css" href="/css/add-tshirt-or-team.css">
+    <link rel="stylesheet" type="text/css" href="/css/add-tshirt.css">
 </head>
 <body>
 <!-- Включване на хедъра -->
@@ -28,7 +28,7 @@
         <form th:action="@{/tshirts/add}" th:method="POST" th:object="${tshirt}">
 
             <label>Name:</label>
-            <input type="text" th:field="*{name}" required>
+            <input type="text" th:field="*{name}" >
             <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert-warning"></p>
 
             <label>Price:</label>
@@ -61,31 +61,10 @@
             <button type="submit">Save T-shirt</button>
         </form>
     </div>
-
-    <!-- Дясна форма: Добавяне на отбор -->
-    <div class="add-form">
-        <h2>Add New Team</h2>
-        <form th:action="@{/teams/add}" th:method="POST" th:object="${team}">
-
-            <label>Team Name:</label>
-            <input type="text" th:field="*{name}" required>
-            <p class="alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
-
-            <label>Country:</label>
-            <input type="text" th:field="*{country}" required>
-            <p class="alert-warning" th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></p>
-
-            <label>Trophies:</label>
-            <input type="number" th:field="*{trophies}" required>
-            <p class="alert-warning" th:if="${#fields.hasErrors('trophies')}" th:errors="*{trophies}"></p>
-
-            <button type="submit">Save Team</button>
-        </form>
-
-    </div>
 </div>
 
 
 <footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>
+<script th:src="@{/js/counter.js}"></script>
 </body>
 </html>

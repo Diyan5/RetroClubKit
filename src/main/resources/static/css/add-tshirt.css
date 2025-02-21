@@ -1,0 +1,119 @@
+
+
+/* Основен контейнер за съдържание */
+.add-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 40px 20px;
+    max-width: 800px;
+    margin: 50px auto;
+    gap: 30px;
+}
+
+/* Формата */
+.add-form {
+    background: rgba(30, 50, 30, 0.9); /* Тъмен зелен фон за формата */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+}
+
+.add-form h2 {
+    text-align: center;
+    color: white;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+/* Лейбъли */
+.add-form label {
+    display: block;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 10px;
+    color: white;
+}
+
+/* Полета за въвеждане */
+.add-form input,
+.add-form select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: 1px solid #1d3d1e;
+    border-radius: 5px;
+    background: rgba(0, 30, 0, 0.8);
+    color: white;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+/* При фокусиране върху полето */
+.add-form input:focus,
+.add-form select:focus {
+    border-color: #4CAF50; /* Светло зелен при фокус */
+    outline: none;
+}
+
+/* Подобрено създаване на категории и отбори */
+.add-form select {
+    appearance: none;
+    background-color: rgba(0, 50, 0, 0.9); /* Тъмно зелен фон за селект */
+    color: white;
+    border: 1px solid rgba(0, 255, 127, 0.5);
+    padding-right: 30px;
+}
+
+/* Списъци с опции */
+.add-form select option {
+    background: #1d3d1e;
+    color: white;
+}
+
+/* Бутони */
+.add-form button {
+    background: #4CAF50; /* Зелена бутона */
+    color: white;
+    padding: 12px 15px;
+    font-weight: bold;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 20px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+/* При преминаване с курсора върху бутона */
+.add-form button:hover {
+    background: #388e3c;
+}
+
+/* Грешки при въвеждане */
+.alert-warning {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    color: #f53b3b;
+    margin-top: 5px;
+}
+
+/* Контейнер за размери с чекбоксове */
+.sizes-container {
+    display: flex;
+    flex-wrap: wrap; /* Позволява на чекбоксовете да се преместват в нов ред при малки екрани */
+    gap: 15px; /* Разстояние между чекбоксовете */
+    margin-top: 10px;
+}
+
+/* Индивидуални чекбоксове */
+.sizes-container input {
+    margin-right: 5px; /* Разстояние между чекбокса и текста */
+}
+

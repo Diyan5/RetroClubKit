@@ -28,7 +28,7 @@
                 <!-- Изображение на продукта -->
                 <img th:src="@{${tshirt.image}}" alt="Product Image">
                 <h3 th:text="${tshirt.name}">Тениска</h3>
-                <p th:text="'Price: ' + ${tshirt.price}">Цена</p>
+                <p th:text="'Price: ' + ${tshirt.price} +  '$'">Цена</p>
 
                 <!-- Размер (показване само на наличните размери) -->
                 <label for="size">Размер:</label>
@@ -49,7 +49,7 @@
 
 <footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>
 <script th:src="@{/js/category.js}"></script>
-
+<script th:src="@{/js/counter.js}"></script>
 
 </body>
 </html>

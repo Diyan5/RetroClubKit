@@ -5,7 +5,7 @@ import org.retroclubkit.security.AuthenticationMetadata;
 import org.retroclubkit.user.model.User;
 import org.retroclubkit.web.dto.ContactRequest;
 import org.retroclubkit.user.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

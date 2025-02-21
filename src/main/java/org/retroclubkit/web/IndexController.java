@@ -1,6 +1,5 @@
 package org.retroclubkit.web;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.retroclubkit.security.AuthenticationMetadata;
 import org.retroclubkit.tshirt.model.Tshirt;
@@ -15,11 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.UUID;
-
 
 @Controller
 public class IndexController {
@@ -40,10 +38,14 @@ public class IndexController {
     }
 
     @GetMapping("/login")
-    public ModelAndView getLoginPage() {
+    public ModelAndView getLoginPage(@RequestParam(value = "error", required = false) String errorParam) {
 
         ModelAndView modelAndView = new ModelAndView("login");
         modelAndView.addObject("loginRequest", new LoginRequest());
+
+        if (errorParam != null) {
+            modelAndView.addObject("errorMessage", "Incorrect username or password!");
+        }
 
         return modelAndView;
     }
@@ -85,15 +87,4 @@ public class IndexController {
 
         return modelAndView;
     }
-
-//    @GetMapping("/admin")
-//    public ModelAndView getAdminPage(HttpSession session) {
-//        UUID userId = (UUID) session.getAttribute("user_id");
-//
-//        User user = userService.getById(userId);
-//        ModelAndView modelAndView = new ModelAndView("admin");
-//
-//        modelAndView.addObject("user", user);
-//        return modelAndView;
-//    }
 }

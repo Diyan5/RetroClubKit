@@ -1,0 +1,87 @@
+
+/* ====== Add Form Styling ====== */
+.add-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 40px 20px;
+    max-width: 800px;
+    margin: 50px auto;
+    gap: 30px;
+}
+
+.add-form {
+    background: rgba(30, 50, 30, 0.9); /* Darker green */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+}
+
+.add-form h2 {
+    text-align: center;
+    color: white;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+/* Labels */
+.add-form label {
+    display: block;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 10px;
+    color: white;
+}
+
+/* Input fields */
+.add-form input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: 1px solid #1d3d1e;
+    border-radius: 5px;
+    background: rgba(0, 30, 0, 0.8);
+    color: white;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+/* Focus effect for inputs */
+.add-form input:focus {
+    border-color: #4CAF50; /* Bright green on focus */
+    outline: none;
+}
+
+/* Submit Button */
+.add-form button {
+    background: #4CAF50; /* Green button */
+    color: white;
+    padding: 12px 15px;
+    font-weight: bold;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 20px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+/* Button Hover */
+.add-form button:hover {
+    background: #388e3c;
+}
+
+/* Form Error Styling */
+.alert-warning {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    color: #f53b3b;
+    margin-top: 5px;
+}
+

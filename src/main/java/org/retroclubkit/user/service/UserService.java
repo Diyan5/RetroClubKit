@@ -43,8 +43,17 @@ public class UserService implements UserDetailsService {
     public User register(RegisterRequest registerRequest) {
 
         Optional<User> optionUser = userRepository.findByUsername(registerRequest.getUsername());
+        Optional<User> byEmail = userRepository.findByEmail(registerRequest.getEmail());
         if (optionUser.isPresent()) {
             throw new DomainException("Username [%s] already exist.".formatted(registerRequest.getUsername()));
+        }
+
+        if (byEmail.isPresent()) {
+            throw new DomainException("Email [%s] already exist.".formatted(registerRequest.getEmail()));
+        }
+
+        if(!registerRequest.getConfirmPassword().equals(registerRequest.getPassword())) {
+            throw new DomainException("Password does not match.");
         }
 
         User user = userRepository.save(initializeUser(registerRequest));

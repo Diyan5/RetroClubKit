@@ -34,6 +34,7 @@
             <label for="username">Username</label>
             <input type="text" name="username" placeholder="Username" id="username" th:field="*{username}" required>
             <p class="alert-warning" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+            <p class="alert-warning" th:if="${errorMessage}" th:text="${errorMessage}"></p>
 
             <label for="firstName">First name</label>
             <input type="text" name="firstName" placeholder="First name" id="firstName" th:field="*{firstName}" required>

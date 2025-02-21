@@ -23,7 +23,7 @@ public class AuthenticationMetadata implements UserDetails {
     private UserRole role;
     private boolean isActive;
 
-    // Този метод се използва от Spring Security за да се разбере какви roles/authorities потребителя има
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
