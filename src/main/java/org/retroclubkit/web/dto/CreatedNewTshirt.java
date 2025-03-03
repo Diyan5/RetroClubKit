@@ -1,5 +1,6 @@
 package org.retroclubkit.web.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -19,18 +20,29 @@ import java.util.UUID;
 @Builder
 public class CreatedNewTshirt {
     private UUID id;
-    @NotNull
+    @NotBlank(message = "Name cannot be empty")
+    @NotNull(message = "Name cannot be empty")
     private String name;
-    @NotNull
+
+    @NotBlank(message = "Price cannot be empty")
+    @NotNull(message = "Price cannot be empty")
     @Positive(message = "Must be positive")
     private BigDecimal price;
-    @NotNull
+
+    @NotBlank(message = "Image cannot be empty")
+    @NotNull(message = "Image cannot be empty")
     private String image;
-    @NotNull
+
+    @NotBlank(message = "Category cannot be empty")
+    @NotNull(message = "Category cannot be empty")
     private Category category;
-    @NotNull
+
+    @NotBlank(message = "Size cannot be empty")
+    @NotNull(message = "Size cannot be empty")
     private List<Size> sizes;
+
     private boolean isAvailable;
+
     private UUID teamId;
 
 

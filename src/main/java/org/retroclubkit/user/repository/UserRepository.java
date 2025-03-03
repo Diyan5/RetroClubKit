@@ -21,4 +21,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     List<User> findByIsActiveTrueAndUpdatedOnBefore(LocalDateTime date);
 
     Optional<User> findByUsernameOrEmail(String username,String email);
+
+    Optional<User> findByEmail(String email);
 }

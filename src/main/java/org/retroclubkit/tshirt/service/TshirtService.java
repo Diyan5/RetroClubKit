@@ -9,11 +9,9 @@ import org.retroclubkit.tshirt.model.Tshirt;
 import org.retroclubkit.tshirt.repository.TshirtRepository;
 import org.retroclubkit.web.dto.CreatedNewTshirt;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -44,23 +42,15 @@ public class TshirtService {
                 .collect(Collectors.toList());
     }
 
-    // Търси по категория
-    public List<CreatedNewTshirt> getTshirtsByCategory(Category category) {
-        return tshirtRepository.findByCategory(category)
-                .stream()
-                .map(tshirt -> convertToDTO((Tshirt) tshirt)) // ✅ Изрично указваме типа
-                .collect(Collectors.toList());
-    }
-
     // Запазване / редактиране на тениска
     public void saveTshirt(CreatedNewTshirt createdNewTshirt) {
         Tshirt tshirt = convertToEntity(createdNewTshirt);
         tshirtRepository.save(tshirt);
     }
 
-    // Изтриване на тениска
     public void deleteTshirtById(UUID id) {
-        tshirtRepository.deleteById(id);
+        Tshirt tshirt = tshirtRepository.findById(id).orElseThrow(() -> new RuntimeException("Tshirt not found"));
+        tshirtRepository.delete(tshirt);
     }
 
     // Превръща модел в DTO
@@ -134,7 +124,4 @@ public class TshirtService {
         return tshirtRepository.findByTeamNameIgnoreCase(teamName);
     }
 
-    public boolean existsByName(String name) {
-        return tshirtRepository.existsByNameIgnoreCase(name);
-    }
 }

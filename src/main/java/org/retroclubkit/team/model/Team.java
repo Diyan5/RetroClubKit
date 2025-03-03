@@ -21,15 +21,11 @@ public class Team {
     private UUID id;
 
     @Column(nullable = false, unique = true)
-    private String name; // Име на отбора (например: Real Madrid, Chelsea)
+    private String name;
 
     @Column(nullable = false)
-    private String country; // Страна на отбора (например: Испания, Англия)
+    private String country;
 
-    @Column(nullable = false)
-    private long trophies;
-
-    @OneToMany(mappedBy = "team",fetch = FetchType.EAGER)
-    private List<Tshirt> tshirts; // Тениски на отбора
-
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    private List<Tshirt> tshirts;
 }

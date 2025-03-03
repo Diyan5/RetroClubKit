@@ -20,21 +20,21 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @OneToOne
-    @JoinColumn(name = "order_id", nullable = false) // Външен ключ за поръчката
-    private Order order; // Връзка към поръчката, за която е извършено плащането
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
     @Column(nullable = false)
-    private BigDecimal amount; // Сума на плащането
+    private BigDecimal amount;
 
     @Column(nullable = false)
-    private PaymentMethod paymentMethod; // Метод на плащане (например: "Credit Card", "Cash on Delivery")
+    private PaymentMethod paymentMethod;
 
     @Column(nullable = false)
-    private boolean isPaid; // Статус на плащането (дали е успешно платено)
+    private boolean isPaid;
 
     @Column(nullable = false)
-    private LocalDateTime paymentDate; // Дата на плащането
+    private LocalDateTime paymentDate;
 
     @Column
-    private String transactionId; // Идентификатор на транзакцията (ако е наличен)
+    private String transactionId;
 }

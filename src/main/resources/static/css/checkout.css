@@ -1,181 +1,93 @@
-/* ====== Global Styling ====== */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f9; /* Светъл фон за цялата страница */
-    margin: 20px;
-    padding: 0;
-    line-height: 1.6;
-    color: #333;
+
+
+/* Основен контейнер за съдържание */
+.main-content {
+    flex: 1;
+    padding: 20px;
 }
 
-h1 {
-    color: #333;
-    font-size: 2.5rem;
-    text-align: center;
-    margin-bottom: 20px;
+/* Контейнер за целия checkout */
+.checkout-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
 }
 
-h2 {
-    color: #333;
-    font-size: 1.8rem;
-    margin-top: 40px;
-    text-align: center;
+/* Контейнер за количката */
+.cart-container, .delivery-container {
+    background-color: rgba(0, 0, 0, 0.6); /* Тъмен фон */
+    padding: 20px;
+    border-radius: 10px;
+    width: 48%;
 }
 
-/* ====== Table Styling ====== */
+/* Стилизиране на таблицата */
 table {
     width: 100%;
-    border-collapse: collapse;
     margin-bottom: 20px;
-    background-color: #fff; /* Бял фон за таблицата */
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Лека сянка за по-модерен изглед */
-}
-
-table, th, td {
-    border: 1px solid #ddd; /* Светлосиви линии */
+    border-collapse: collapse;
 }
 
 th, td {
-    padding: 12px 20px;
-    text-align: center;
-    font-size: 16px;
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #444;
 }
 
-/* Заглавие на таблицата */
 th {
-    background-color: #28a745; /* Зелен фон за заглавията */
-    color: white;
+    background-color: #1d3d1e;
 }
 
-/* Редове за съдържанието */
-tr:nth-child(even) {
-    background-color: #f2f2f2;
+td {
+    background-color: #112311;
 }
 
-tr:hover {
-    background-color: #d4edda; /* Светло зелен при ховър */
-}
-
-.total {
-    font-size: 1.5rem;
-    text-align: right;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    font-weight: bold;
-}
-
-/* ====== Buttons ====== */
-button {
-    padding: 12px 25px;
-    background-color: #007bff; /* Син фон за бутоните */
-    color: white;
+/* Стилизиране на бутоните */
+button, .small-btn {
+    background-color: #333;
+    color: #fff;
     border: none;
-    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 14px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-    font-size: 16px;
-    text-align: center;
-    width: auto;
-    margin-top: 20px;
-    display: inline-block;
-}
-
-button:hover {
-    background-color: #0056b3; /* По-тъмно синьо при ховър */
-    transform: scale(1.05);
-}
-
-/* За бутоните "Clear Cart" и "Submit Order" */
-button#clearCart {
-    background-color: #dc3545; /* Червен за бутона "Clear Cart" */
-}
-
-button#clearCart:hover {
-    background-color: #c82333;
-}
-
-/* ====== Form Styling ====== */
-form {
-    margin-top: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-}
-
-form input, form select {
-    padding: 12px;
-    margin: 10px 0;
-    width: 100%;
-    max-width: 400px;
-    border-radius: 6px;
-    border: 1px solid #ddd;
-    font-size: 16px;
-    background-color: #f9f9f9;
+    border-radius: 5px;
     transition: background-color 0.3s;
 }
 
-form input:focus, form select:focus {
-    background-color: #eaf2ea; /* Леко светлозелено при фокус */
-    border-color: #28a745;
+button:hover, .small-btn:hover {
+    background-color: #444;
 }
 
-/* Submit Button Styling */
+.small-btn {
+    font-size: 12px;
+    padding: 8px 16px;
+}
+
+/* Формата за доставка */
+form label {
+    margin-top: 10px;
+    display: block;
+}
+
+form input, form select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    background-color: #1d3d1e;
+    color: #fff;
+    border: 1px solid #444;
+}
+
 form button {
-    padding: 12px 30px;
-    background-color: #28a745; /* Зелен за бутона "Submit Order" */
-    color: white;
-    border: none;
-    font-size: 18px;
+    background-color: #2b572a;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
 }
 
 form button:hover {
-    background-color: #218838;
-    transform: scale(1.05);
+    background-color: #264e27;
 }
 
-/* ====== Alerts (success & error) ====== */
-.alert {
-    padding: 15px;
-    margin: 20px 0;
-    border-radius: 5px;
-    text-align: center;
-    font-size: 16px;
-}
 
-.alert-danger {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-
-.alert-success {
-    background-color: #d4edda;
-    color: #155724;
-}
-
-/* ====== Back to Home Link ====== */
-a {
-    text-decoration: none;
-    color: #007bff;
-    font-size: 16px;
-    margin-top: 20px;
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #f8f9fa;
-    border-radius: 5px;
-    text-align: center;
-}
-
-a:hover {
-    color: #0056b3;
-    background-color: #e2e6ea;
-    text-decoration: underline;
-}

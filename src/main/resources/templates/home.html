@@ -15,12 +15,11 @@
 <!-- Включване на хедъра -->
 <div th:replace="~{fragments/header.html}"></div>
 
-
 <div class="content">
 
     <!-- Popular Models Section -->
     <section id="popular-models" class="product-section">
-        <h3>Welcome, <span th:text="${user.username}"></span>!</h3>
+        <h3>Welcome, <span id="loggedUser" th:text="${user.username}"></span>!</h3>
         <h2>Great to have you here! Check out the latest updates and get started on your journey.</h2>
         <h2>See the most popular:</h2>
         <div class="product-list">
@@ -28,7 +27,7 @@
                 <!-- Изображение на продукта -->
                 <img th:src="@{${tshirt.image}}" alt="Product Image">
                 <h3 th:text="${tshirt.name}">Тениска</h3>
-                <p th:text="'Price: ' + ${tshirt.price}">Цена</p>
+                <p th:text="'Price: ' + ${tshirt.price} +  '$'">Цена</p>
 
                 <!-- Размер (показване само на наличните размери) -->
                 <label for="size">Размер:</label>
@@ -49,7 +48,7 @@
 
 <footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>
 <script th:src="@{/js/category.js}"></script>
-
+<script th:src="@{/js/counter.js}"></script>
 
 </body>
 </html>

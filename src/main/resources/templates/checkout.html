@@ -7,233 +7,67 @@
     <link rel="stylesheet" type="text/css" href="/css/background.css">
     <link rel="stylesheet" type="text/css" href="/css/checkout.css">
 
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 </head>
 <body>
-<h1>Checkout</h1>
+<div class="main-content">
+    <h1>Checkout</h1>
+    <div class="checkout-container">
+        <!-- Ляв контейнер за количката -->
+        <div class="cart-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Product Name</th>
+                    <th>Size</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+                </thead>
+                <tbody id="cartItems">
+                <!-- Продуктите ще бъдат добавени тук -->
+                </tbody>
+            </table>
+            <div class="total" id="grandTotal">Total: $0</div>
+            <button id="clearCart" class="small-btn">Clear Cart</button>
+        </div>
+        <!-- Десен контейнер за форма за доставка -->
+        <div class="delivery-container">
+            <h2>Delivery Information</h2>
+            <form id="deliveryForm">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
 
-<table>
-    <thead>
-    <tr>
-        <th>Image</th>
-        <th>Product Name</th>
-        <th>Size</th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th>Total</th>
-    </tr>
-    </thead>
-    <tbody id="cartItems">
-    <!-- Продуктите ще бъдат добавени тук -->
-    </tbody>
-</table>
-<div class="total" id="grandTotal">Total: $0</div>
-<button id="clearCart">Clear Cart</button>
+                <label for="country">Country:</label>
+                <input type="text" id="country" name="country" placeholder="Enter your country" required>
 
-<a th:href="@{/home}">Back home</a>
-<h2>Delivery Information</h2>
-<form id="deliveryForm">
-    <label for="name">Full Name:</label>
-    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" placeholder="Enter your address" required>
 
-    <label for="country">Country:</label>
-    <input type="text" id="country" name="country" placeholder="Enter your country" required>
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" placeholder="Enter your city" required>
 
-    <label for="address">Address:</label>
-    <input type="text" id="address" name="address" placeholder="Enter your address" required>
+                <label for="phone">Phone Number:</label>
+                <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required>
 
-    <label for="city">City:</label>
-    <input type="text" id="city" name="city" placeholder="Enter your city" required>
+                <label for="paymentMethod">Payment Method:</label>
+                <select id="paymentMethod" name="paymentMethod">
+                    <option value="CREDIT_CARD">Credit Card</option>
+                    <option value="PAYPAL">PayPal</option>
+                    <option value="CASH_ON_DELIVERY">Cash on Delivery</option>
+                </select>
 
-    <label for="phone">Phone Number:</label>
-    <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required>
-
-    <label for="paymentMethod">Payment Method:</label>
-    <select id="paymentMethod" name="paymentMethod">
-        <option value="CREDIT_CARD">Credit Card</option>
-        <option value="PAYPAL">PayPal</option>
-        <option value="CASH_ON_DELIVERY">Cash on Delivery</option>
-    </select>
-
-    <button type="submit">Submit Order</button>
-</form>
+                <button type="submit">Submit Order</button>
+            </form>
+        </div>
+    </div>
+    <a href="/home" class="small-btn">Back home</a>
+</div>
 <footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>
-<script>
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const cartCount = document.querySelector('.cart-count');
-
-        // Вземаме стойността на cartCount от localStorage (по подразбиране 0, ако няма)
-        const totalItems = localStorage.getItem('cartCount') || 0;
-
-        // Обновяваме брояча в UI
-        if (cartCount) {
-            cartCount.textContent = totalItems;
-        }
-
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const cartItemsContainer = document.getElementById('cartItems');
-        const grandTotalElement = document.getElementById('grandTotal');
-        let grandTotal = 0;
-
-        // Показване на продуктите в таблицата с input за количество и бутон "Remove"
-        cart.forEach((product, index) => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-            <td><img src="${product.img}" alt="${product.name}" style="width: 50px;"></td>
-            <td>${product.name}</td>
-            <td>${product.size}</td>
-            <td>$${product.price}</td>
-            <td>
-                <input type="number" class="quantity" data-index="${index}" value="${product.quantity}" min="1" style="width: 50px;">
-            </td>
-            <td class="total-price">$${(product.price * product.quantity).toFixed(2)}</td>
-            <td>
-                <button class="remove-btn" data-index="${index}" style="background-color: red; color: white; border: none; padding: 5px 10px; cursor: pointer;">Remove</button>
-            </td>
-        `;
-            cartItemsContainer.appendChild(row);
-            grandTotal += product.price * product.quantity;
-        });
-
-        // Обновяване на общата сума
-        grandTotalElement.textContent = `Total: $${grandTotal.toFixed(2)}`;
-    });
-
-    // Функция за премахване на продукт от количката
-    document.addEventListener('click', (event) => {
-        if (event.target.classList.contains('remove-btn')) {
-            const index = event.target.getAttribute('data-index');
-            removeItem(index);
-        }
-    });
-
-    document.getElementById('clearCart').addEventListener('click', () => {
-        localStorage.removeItem('cart'); // Изчистваме количката
-        localStorage.setItem('cartCount', 0); // Нулираме брояча
-
-        // Обновяваме брояча в UI
-        const cartCountElement = document.querySelector('.cart-count');
-        if (cartCountElement) {
-            cartCountElement.textContent = "0";
-        }
-
-        window.location.reload(); // Презареждаме страницата, за да се обнови количката
-    });
-
-    function removeItem(index) {
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-        // Премахваме избрания артикул
-        cart.splice(index, 1);
-
-        // Обновяваме LocalStorage
-        localStorage.setItem('cart', JSON.stringify(cart));
-        localStorage.setItem('cartCount', cart.length);
-
-        // Обновяваме страницата
-        window.location.reload();
-    }
-
-    // Обновяване на цената при промяна на количество
-    document.addEventListener('input', (event) => {
-        if (event.target.classList.contains('quantity')) {
-            const index = event.target.getAttribute('data-index');
-            const newQuantity = parseInt(event.target.value, 10) || 1;
-
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart[index].quantity = newQuantity;
-            localStorage.setItem('cart', JSON.stringify(cart));
-
-            const row = event.target.closest('tr');
-            const priceElement = row.querySelector('.total-price');
-            priceElement.textContent = `$${(cart[index].price * newQuantity).toFixed(2)}`;
-
-            updateGrandTotal();
-        }
-    });
-
-    // Функция за обновяване на общата сума
-    function updateGrandTotal() {
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let grandTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-        document.getElementById('grandTotal').textContent = `Total: $${grandTotal.toFixed(2)}`;
-    }
-    //поръчки
-    document.getElementById('deliveryForm').addEventListener('submit', async (event) => {
-        event.preventDefault(); // Спираме стандартното изпращане на формата
-
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-        if (cart.length === 0) {
-            alert("Your cart is empty!");
-            return;
-        }
-
-        // Вземаме актуалното количество от input полетата
-        const updatedCart = cart.map((item, index) => {
-            const quantityInput = document.querySelector(`.quantity[data-index="${index}"]`);
-
-            return {
-                id: item.id,
-                quantity: parseInt(quantityInput.value, 10) || 1,
-                size: item.size
-            };
-        });
-
-        // Вземаме данните за доставка от формата
-        const formData = new FormData(event.target);
-        const deliveryDetails = Object.fromEntries(formData);
-
-        // Вземаме избрания метод на плащане
-        const paymentMethod = document.getElementById('paymentMethod').value;
-
-        // Създаваме JSON заявка за поръчката
-        const orderData = {
-            name: deliveryDetails.name,
-            country: deliveryDetails.country,
-            address: deliveryDetails.address,
-            city: deliveryDetails.city,
-            phone: deliveryDetails.phone,
-            paymentMethod: paymentMethod, // Добавяме метода на плащане
-            cartItems: updatedCart
-        };
-
-        try {
-            console.log("Submitting order:", orderData); // Debugging log
-
-            const response = await fetch('/checkout', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(orderData)
-            });
-
-            const responseData = await response.json();
-
-            if (response.ok && responseData.success) {
-                alert(responseData.success); // Показваме успешното съобщение от бекенда
-
-                localStorage.removeItem('cart');
-                localStorage.setItem('cartCount', 0);
-
-                const cartCountElement = document.querySelector('.cart-count');
-                if (cartCountElement) {
-                    cartCountElement.textContent = "0";
-                }
-
-                window.location.href = '/home';
-            } else if (responseData.error) {
-                alert(responseData.error); // Ако има грешка, показваме грешката
-            }
-        } catch (error) {
-            console.error("Error submitting order:", error);
-            alert("There was a problem submitting your order. Please try again.");
-        }
-    });
-
-
-</script>
+<script th:src="@{/js/checkout.js}"></script>
 
 </body>
 </html>

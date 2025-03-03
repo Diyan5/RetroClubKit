@@ -1,7 +1,6 @@
 package org.retroclubkit.web;
 
 
-import jakarta.servlet.http.HttpSession;
 import org.retroclubkit.order.model.Order;
 import org.retroclubkit.order.service.OrderService;
 import org.retroclubkit.security.AuthenticationMetadata;
@@ -20,8 +19,8 @@ import java.util.UUID;
 @RequestMapping("/orders")
 public class OrderController {
 
-    private OrderService orderService;
-    private UserService userService;
+    private final OrderService orderService;
+    private final UserService userService;
 
     @Autowired
     public OrderController(OrderService orderService, UserService userService) {

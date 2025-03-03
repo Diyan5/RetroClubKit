@@ -38,11 +38,10 @@ public class TeamService {
                 .id(UUID.randomUUID())
                 .name(createdNewTeam.getName())
                 .country(createdNewTeam.getCountry())
-                .trophies(createdNewTeam.getTrophies())
                 .build();
     }
 
-    public boolean existsByName(String name) {
-        return teamRepository.existsByNameIgnoreCase(name);
+    public void deleteTeamById(UUID id) {
+        teamRepository.deleteById(id);
     }
 }

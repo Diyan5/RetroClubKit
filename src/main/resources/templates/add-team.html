@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Tshirt</title>
+    <link rel="stylesheet" type="text/css" href="/css/home.css">
+    <link rel="stylesheet" type="text/css" href="/css/background.css">
+    <link rel="stylesheet" type="text/css" href="/css/add-team.css">
+</head>
+<body>
+<!-- Включване на хедъра -->
+<div th:replace="~{fragments/header.html}"></div>
+
+
+
+<!-- Two forms side by side -->
+<div class="add-container">
+    <!-- TODO logic about exist t-shirt and team-->
+    <div class="add-form">
+    <!-- Дясна форма: Добавяне на отбор -->
+    <div class="add-form">
+        <h2>Add New Team</h2>
+        <form th:action="@{/teams/add}" th:method="POST" th:object="${team}">
+
+            <label>Team Name:</label>
+            <input type="text" th:field="*{name}" required>
+            <p class="alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+
+            <label>Country:</label>
+            <input type="text" th:field="*{country}" required>
+            <p class="alert-warning" th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></p>
+
+            <button type="submit">Save Team</button>
+        </form>
+
+    </div>
+</div>
+
+
+<footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>
+    <script th:src="@{/js/counter.js}"></script>
+</body>
+</html>
