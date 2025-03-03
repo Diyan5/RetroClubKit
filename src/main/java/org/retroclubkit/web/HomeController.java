@@ -40,17 +40,21 @@ public class HomeController {
 
     //TODO Fix submit orders
     @PostMapping("/checkout")
-    public ResponseEntity<Map<String, String>> submitOrder(@RequestBody OrderRequest orderRequest, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+    public ResponseEntity<Map<String, String>> submitOrder(
+            @RequestBody OrderRequest orderRequest,
+            @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+
         User user = userService.getById(authenticationMetadata.getUserId());
-
-        Map<String, String> response = new HashMap<>();
-
         Order order = orderService.createOrder(user, orderRequest);
         PaymentMethod paymentMethod = PaymentMethod.valueOf(orderRequest.getPaymentMethod());
         paymentService.processPayment(order, paymentMethod);
 
+        Map<String, String> response = new HashMap<>();
         response.put("success", "Your order has been placed successfully!");
+        response.put("redirect", "/home"); // ✅ Добавяме редирект URL за JavaScript
+
         return ResponseEntity.ok(response);
     }
+
 
 }

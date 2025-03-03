@@ -15,12 +15,11 @@
 <!-- Включване на хедъра -->
 <div th:replace="~{fragments/header.html}"></div>
 
-
 <div class="content">
 
     <!-- Popular Models Section -->
     <section id="popular-models" class="product-section">
-        <h3>Welcome, <span th:text="${user.username}"></span>!</h3>
+        <h3>Welcome, <span id="loggedUser" th:text="${user.username}"></span>!</h3>
         <h2>Great to have you here! Check out the latest updates and get started on your journey.</h2>
         <h2>See the most popular:</h2>
         <div class="product-list">

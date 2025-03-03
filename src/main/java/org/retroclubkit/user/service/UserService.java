@@ -1,14 +1,12 @@
 package org.retroclubkit.user.service;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.retroclubkit.domainException.DomainException;
 import org.retroclubkit.security.AuthenticationMetadata;
 import org.retroclubkit.user.model.User;
 import org.retroclubkit.user.model.UserRole;
 import org.retroclubkit.user.repository.UserRepository;
-import org.retroclubkit.web.dto.LoginRequest;
 import org.retroclubkit.web.dto.RegisterRequest;
 import org.retroclubkit.web.dto.UpdateProfileRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,10 +84,6 @@ public class UserService implements UserDetailsService {
     public User getById(UUID id) {
 
         return userRepository.findById(id).orElseThrow(() -> new DomainException("User with id [%s] does not exist.".formatted(id)));
-    }
-
-    public void save(User user) {
-        userRepository.save(user);
     }
 
     public void switchStatus(UUID userId) {
