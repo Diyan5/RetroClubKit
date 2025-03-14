@@ -21,7 +21,7 @@ public class Tshirt {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name; // Име на тениската (например "Real Madrid 2004")
 
     @Column(nullable = false)

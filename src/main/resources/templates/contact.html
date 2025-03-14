@@ -14,9 +14,9 @@
 
 <main class="contact-container">
     <h1>Contact Us</h1>
-    <form th:action="@{/contact}" th:object="${contactRequest}" method="post" class="contact-form">
+    <form th:action="@{/notifications/contact}" th:object="${contactRequest}" method="post" class="contact-form">
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" th:field="*{name}" required>
+        <input type="text" id="name" name="name" th:field="*{username}" required>
 
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" th:field="*{email}" required>

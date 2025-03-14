@@ -29,9 +29,6 @@ public class Order {
     private User user; // Връзка към потребителя, който е направил поръчката
 
     @Column(nullable = false)
-    private String fullName; // Име на получателя
-
-    @Column(nullable = false)
     private String phoneNumber; // Телефон за доставка
 
     @Column(nullable = false)

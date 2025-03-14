@@ -34,7 +34,7 @@
             <label for="username">Username</label>
             <input type="text" name="username" placeholder="Username" id="username" th:field="*{username}" required>
             <p class="alert-warning" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
-            <p class="alert-warning" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+            <p class="alert-warning" th:text="${usernameAlreadyExistMessage}"></p>
 
             <label for="firstName">First name</label>
             <input type="text" name="firstName" placeholder="First name" id="firstName" th:field="*{firstName}" required>
@@ -47,6 +47,7 @@
             <label for="email">Email</label>
             <input type="email" name="email" placeholder="Email" id="email" th:field="*{email}" required>
             <p class="alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+            <p class="alert-warning" th:text="${emailAlreadyExistMessage}"></p>
 
             <label for="password">Password</label>
             <input type="password" name="password" placeholder="Password" id="password" th:field="*{password}" required>
@@ -55,6 +56,7 @@
             <label for="confirmPassword">Confirm password</label>
             <input type="text" name="confirmPassword" placeholder="Confirm password" id="confirmPassword" th:field="*{confirmPassword}" required>
             <p class="alert-warning" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></p>
+            <p class="alert-warning" th:text="${passwordsNotMatch}"></p>
 
             <button>Register</button>
             <p class="form-already">Already have an account? <a href="/login">Login</a>!</p>

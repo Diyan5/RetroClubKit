@@ -1,5 +1,6 @@
 package org.retroclubkit.web;
 
+
 import org.retroclubkit.order.model.Order;
 import org.retroclubkit.order.service.OrderService;
 import org.retroclubkit.payment.model.PaymentMethod;
@@ -9,14 +10,10 @@ import org.retroclubkit.user.model.User;
 import org.retroclubkit.user.service.UserService;
 import org.retroclubkit.web.dto.OrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class HomeController {
@@ -37,10 +34,8 @@ public class HomeController {
         return new ModelAndView("checkout");
     }
 
-
-    //TODO Fix submit orders
     @PostMapping("/checkout")
-    public ResponseEntity<Map<String, String>> submitOrder(
+    public ModelAndView submitOrder(
             @RequestBody OrderRequest orderRequest,
             @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
@@ -49,11 +44,8 @@ public class HomeController {
         PaymentMethod paymentMethod = PaymentMethod.valueOf(orderRequest.getPaymentMethod());
         paymentService.processPayment(order, paymentMethod);
 
-        Map<String, String> response = new HashMap<>();
-        response.put("success", "Your order has been placed successfully!");
-        response.put("redirect", "/home"); // ✅ Добавяме редирект URL за JavaScript
 
-        return ResponseEntity.ok(response);
+        return new ModelAndView("redirect:/home");
     }
 
 

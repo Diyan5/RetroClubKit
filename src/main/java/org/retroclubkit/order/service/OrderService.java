@@ -1,5 +1,6 @@
 package org.retroclubkit.order.service;
 
+import org.retroclubkit.notification.service.NotificationService;
 import org.retroclubkit.order.model.Order;
 import org.retroclubkit.orderItem.model.OrderItem;
 import org.retroclubkit.order.model.Status;
@@ -27,17 +28,16 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final TshirtService tshirtService;
     private final OrderItemService orderItemService;
+    private final NotificationService notificationService;
 
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, TshirtService tshirtService, OrderItemService orderItemService) {
+    public OrderService(OrderRepository orderRepository, TshirtService tshirtService, OrderItemService orderItemService, NotificationService notificationService) {
         this.orderRepository = orderRepository;
         this.tshirtService = tshirtService;
         this.orderItemService = orderItemService;
+        this.notificationService = notificationService;
     }
-
-
-
 
     public Order createOrder(User user, OrderRequest orderRequest) {
         BigDecimal totalPrice = BigDecimal.ZERO;
@@ -60,7 +60,7 @@ public class OrderService {
                     .tshirt(tshirt)
                     .quantity(quantity)
                     .size(size)
-                    .build(); // ❌ НЕ сетваме Order тук (ще го сетнем след Order-а)
+                    .build();
             orderItems.add(orderItem);
         }
 
@@ -69,7 +69,6 @@ public class OrderService {
         // ✅ Първо запазваме Order, без да има items
         Order order = Order.builder()
                 .user(user)
-                .fullName(orderRequest.getName())
                 .phoneNumber(orderRequest.getPhone())
                 .totalPrice(totalPrice)
                 .status(Status.PENDING)
@@ -91,6 +90,15 @@ public class OrderService {
 
         // ✅ Обновяваме Order с OrderItem обектите и го запазваме отново
         savedOrder.setItems(orderItems);
+
+
+        String emailBody = "Dear " + user.getUsername() + ",\n\n" +
+                "Thank you for your purchase! We are happy to confirm that your order has been placed successfully.\n\n" +
+                "Best regards,\n" +
+                "The Retro Club T-shirts Team";
+        notificationService.sendNotification(user.getId(), "New Purchase", emailBody);
+
+
         return orderRepository.save(savedOrder);
     }
 

@@ -1,7 +1,7 @@
 <header>
     <a th:href="@{/home}" class="logo">
         <img src="/images/th.png" alt="Retro Football Logo" style="height: 48px;">
-        Retro Football Shirts
+        Retro Football T-shirts
     </a>
     <div class="nav">
         <ul>
@@ -24,7 +24,8 @@
                 </ul>
             </li>
             <li><a th:href="@{'/users/' + ${user.id} + '/profile'}">My Account</a></li>
-            <li><a th:href="@{/contact}">Contact</a></li>
+            <li><a th:href="@{/notifications/contact}">Contact</a></li>
+            <li><a th:href="@{/notifications}">Notification</a></li>
         </ul>
         <form th:action="@{/tshirts/search}" method="get" class="search-bar">
             <label>

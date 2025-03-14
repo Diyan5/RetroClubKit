@@ -30,6 +30,7 @@
             <label>Name:</label>
             <input type="text" th:field="*{name}" >
             <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert-warning"></p>
+            <p class="alert-warning" th:text="${tshirtAlreadyExistMessage}"></p>
 
             <label>Price:</label>
             <input type="number" th:field="*{price}" step="0.01" required>

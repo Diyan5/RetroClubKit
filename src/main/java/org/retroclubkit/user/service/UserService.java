@@ -3,6 +3,8 @@ package org.retroclubkit.user.service;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.retroclubkit.domainException.DomainException;
+import org.retroclubkit.exception.*;
+import org.retroclubkit.notification.service.NotificationService;
 import org.retroclubkit.security.AuthenticationMetadata;
 import org.retroclubkit.user.model.User;
 import org.retroclubkit.user.model.UserRole;
@@ -29,12 +31,14 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final NotificationService notificationService;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, NotificationService notificationService) {
         this.userRepository = userRepository;
 
         this.passwordEncoder = passwordEncoder;
+        this.notificationService = notificationService;
     }
 
     @Transactional
@@ -43,18 +47,25 @@ public class UserService implements UserDetailsService {
         Optional<User> optionUser = userRepository.findByUsername(registerRequest.getUsername());
         Optional<User> byEmail = userRepository.findByEmail(registerRequest.getEmail());
         if (optionUser.isPresent()) {
-            throw new DomainException("Username [%s] already exist.".formatted(registerRequest.getUsername()));
+            throw new UsernameAlreadyExistException("Username [%s] already exist.".formatted(registerRequest.getUsername()));
         }
 
         if (byEmail.isPresent()) {
-            throw new DomainException("Email [%s] already exist.".formatted(registerRequest.getEmail()));
+            throw new EmailAlreadyExistException("Email [%s] already exist.".formatted(registerRequest.getEmail()));
         }
 
         if(!registerRequest.getConfirmPassword().equals(registerRequest.getPassword())) {
-            throw new DomainException("Password does not match.");
+            throw new PasswordsNotMatchException("Password does not match.");
         }
 
+
+
         User user = userRepository.save(initializeUser(registerRequest));
+
+
+        notificationService.saveNotificationPreference(user.getId(), true, user.getEmail());
+        String emailBody = "You successfully registered!";
+        notificationService.sendNotification(user.getId(), "Successfully register", emailBody);
 
         log.info("Successfully create new user account for username [%s] and id [%s]".formatted(user.getUsername(), user.getId()));
 
@@ -62,11 +73,12 @@ public class UserService implements UserDetailsService {
     }
 
     private User initializeUser(RegisterRequest registerRequest) {
+        UserRole role = userRepository.count() == 0 ? UserRole.ADMIN : UserRole.USER;
 
         return User.builder()
                 .username(registerRequest.getUsername())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .role(UserRole.USER)
+                .role(role)
                 .isActive(true)
                 .email(registerRequest.getEmail())
                 .firstName(registerRequest.getFirstName())
@@ -113,17 +125,17 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public void update( UpdateProfileRequest updateProfileRequest, User user) {
-        Optional<User> optionUser = userRepository.findByUsernameOrEmail(updateProfileRequest.getUsername(), updateProfileRequest.getEmail());
-
-        if (optionUser.isPresent()) {
-            throw new DomainException("Username [%s] or email [%s] already exist.".formatted(updateProfileRequest.getUsername(), updateProfileRequest.getEmail()));
-        }
+    @Transactional
+    public void update(UUID userId, UpdateProfileRequest updateProfileRequest) {
+        User user = getById(userId);
 
         user.setUsername(updateProfileRequest.getUsername());
         user.setFirstName(updateProfileRequest.getFirstName());
         user.setLastName(updateProfileRequest.getLastName());
         user.setEmail(updateProfileRequest.getEmail());
+
+
+
         userRepository.save(user);
     }
 
