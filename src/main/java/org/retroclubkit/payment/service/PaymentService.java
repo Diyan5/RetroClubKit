@@ -20,10 +20,6 @@ public class PaymentService {
         this.paymentRepository = paymentRepository;
     }
 
-    public void save(Payment payment) {
-        paymentRepository.save(payment);
-    }
-
     public Payment processPayment(Order order, PaymentMethod paymentMethod) {
         boolean isPaid = paymentMethod != PaymentMethod.CASH_ON_DELIVERY;
 

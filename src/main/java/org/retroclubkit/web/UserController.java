@@ -1,6 +1,7 @@
 package org.retroclubkit.web;
 
 import jakarta.validation.Valid;
+import org.retroclubkit.notification.service.NotificationService;
 import org.retroclubkit.security.AuthenticationMetadata;
 import org.retroclubkit.user.model.User;
 import org.retroclubkit.user.service.UserService;
@@ -20,10 +21,12 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
+    private final NotificationService notificationService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, NotificationService notificationService) {
 
         this.userService = userService;
+        this.notificationService = notificationService;
     }
 
     @GetMapping
@@ -73,7 +76,16 @@ public class UserController {
             return modelAndView;
         }
 
-        userService.update(updateProfileRequest, user);
+        userService.update(user.getId(), updateProfileRequest);
+        String emailBody = "You successfully edit your profile!";
+        notificationService.sendNotification(user.getId(), "Edit profile", emailBody);
+
+        if (!updateProfileRequest.getEmail().isBlank()) {
+            notificationService.saveNotificationPreference(user.getId(), true, updateProfileRequest.getEmail());
+        } else {
+            notificationService.saveNotificationPreference(user.getId(), false, null);
+        }
+
 
         return new ModelAndView("redirect:/home");
     }

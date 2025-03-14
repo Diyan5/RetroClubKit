@@ -1,6 +1,8 @@
 package org.retroclubkit.tshirt.service;
 
 import jakarta.transaction.Transactional;
+import org.retroclubkit.domainException.DomainException;
+import org.retroclubkit.exception.TshirtAlreadyExistException;
 import org.retroclubkit.team.model.Team;
 import org.retroclubkit.team.service.TeamService;
 import org.retroclubkit.tshirt.model.Category;
@@ -49,7 +51,7 @@ public class TshirtService {
     }
 
     public void deleteTshirtById(UUID id) {
-        Tshirt tshirt = tshirtRepository.findById(id).orElseThrow(() -> new RuntimeException("Tshirt not found"));
+        Tshirt tshirt = tshirtRepository.findById(id).orElseThrow(() -> new DomainException("T-shirt with id [%s] does not exist.".formatted(id)));
         tshirtRepository.delete(tshirt);
     }
 
@@ -71,18 +73,22 @@ public class TshirtService {
     public Tshirt convertToEntity(CreatedNewTshirt dto) {
 
         Team team = teamService.getById(dto.getTeamId());
+        Tshirt tshirt = tshirtRepository.findByName(dto.getName()).orElse(null);
+        if(tshirt!=null) {
+            throw new TshirtAlreadyExistException("T-shirt with name [%s] already exist.".formatted(dto.getName()));
+        }
 
-        return new Tshirt(
-                dto.getId() != null ? dto.getId() : UUID.randomUUID(),
-                dto.getName(),
-                dto.getPrice(),
-                dto.getImage(),
-                dto.getCategory(),
-                dto.getSizes(),
-                dto.isAvailable(),
-                team,
-                null
-        );
+        return Tshirt.builder().
+                name(dto.getName()).
+                price(dto.getPrice()).
+                image(dto.getImage()).
+                category(dto.getCategory()).
+                sizes(dto.getSizes()).
+                isAvailable(dto.isAvailable()).
+                team(team).order(null).
+                build();
+
+
     }
 
     public List<Tshirt> getTshirtsByCategoryAndAvailable(Category category) {

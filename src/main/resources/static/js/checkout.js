@@ -132,7 +132,6 @@ document.getElementById('deliveryForm').addEventListener('submit', async (event)
 
     // Създаваме JSON заявка за поръчката
     const orderData = {
-        name: deliveryDetails.name,
         country: deliveryDetails.country,
         address: deliveryDetails.address,
         city: deliveryDetails.city,

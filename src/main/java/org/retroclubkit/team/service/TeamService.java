@@ -1,8 +1,12 @@
 package org.retroclubkit.team.service;
 
+import org.retroclubkit.domainException.DomainException;
+import org.retroclubkit.exception.TeamAlreadyExistException;
+import org.retroclubkit.exception.TshirtAlreadyExistException;
 import org.retroclubkit.team.model.Team;
 import org.retroclubkit.team.repository.TeamRepository;
 
+import org.retroclubkit.tshirt.model.Tshirt;
 import org.retroclubkit.web.dto.CreatedNewTeam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +25,7 @@ public class TeamService {
     }
 
     public Team getById(UUID teamId) {
-        return teamRepository.findById(teamId).orElse(null);
+        return teamRepository.findById(teamId).orElseThrow(() -> new DomainException("Team with id [%s] does not exist.".formatted(teamId)));
     }
 
     public List<Team> getAllTeams() {
@@ -34,8 +38,11 @@ public class TeamService {
     }
 
     private Team convertToEntity(CreatedNewTeam createdNewTeam) {
+        Team team = teamRepository.findByName(createdNewTeam.getName()).orElse(null);
+        if (team != null) {
+            throw new TeamAlreadyExistException("Team with name [%s] already exist.".formatted(createdNewTeam.getName()));
+        }
         return Team.builder()
-                .id(UUID.randomUUID())
                 .name(createdNewTeam.getName())
                 .country(createdNewTeam.getCountry())
                 .build();

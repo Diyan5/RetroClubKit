@@ -1,0 +1,123 @@
+/* Основен контейнер */
+.home-section {
+    max-width: 1200px;
+    margin: 40px auto;
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Лява част (Форма) */
+.form-box {
+    flex: 1;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-box h2 {
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #333;
+}
+
+/* Полета във формата */
+.form-box input,
+.form-box textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 16px;
+}
+
+/* Бутон */
+.form-box button {
+    width: 100%;
+    padding: 10px;
+    background: #5c6bc0;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.form-box button:hover {
+    background: #3f51b5;
+}
+
+/* Дясна част (История на нотификациите) */
+.notification-history-box {
+    flex: 1;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.notification-history-box h2 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Стил за таблицата */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.styled-table th, .styled-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.styled-table th {
+    background: #eceff1;
+    color: #333;
+}
+
+/* Статуси */
+.status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.status.succeeded {
+    background: #c8e6c9;
+    color: #2e7d32;
+}
+
+.status.failed {
+    background: #ffcdd2;
+    color: #c62828;
+}
+
+/* Responsive дизайн */
+@media (max-width: 768px) {
+    .home-section {
+        flex-direction: column;
+    }
+}
+td {
+    color: black;
+}
+
+/* Override status spans if they have specific colors */
+.status.succeeded,
+.status.failed {
+    color: black;
+}
+
+/* Ensure the notification type text is black */
+.default-label-box p {
+    color: black;
+}
