@@ -83,6 +83,7 @@ public class NotificationService {
             log.warn("Can't update notification preferences for user with id = [%s].".formatted(userId));
         }
     }
+
     public void sendContactMessage(ContactRequest contactRequest) {
         // Извикваме метода от NotificationClient, който изпраща контактното съобщение
         notificationClient.sendContactMessage(contactRequest);

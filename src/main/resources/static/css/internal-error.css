@@ -1,0 +1,85 @@
+/* Main Section */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: white;
+    min-height: 100vh;
+}
+
+/* Home Section Box */
+.home-section {
+    width: 100%;
+    max-width: 800px;
+    background-color: rgba(0, 0, 0, 0.75); /* Slight transparency to blend with background */
+    padding: 30px;
+    border-radius: 8px;
+}
+
+/* Payment Box */
+.payment-box {
+    background-color: #2b572a; /* Matches the background color */
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+/* Payment Header */
+.payment-header h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #fff; /* Keeping the header white for contrast */
+}
+
+/* Payment Description */
+.payment-header p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Details Section */
+.details-section {
+    background-color: #f4f4f4;
+    padding: 15px;
+    border-radius: 8px;
+    color: #333;
+}
+
+.details-section-container {
+    margin-bottom: 10px;
+}
+
+.details-section-container strong {
+    font-weight: bold;
+}
+
+/* Go Back Button - Centered */
+.profile-actions-button {
+    background-color: #2b572a; /* Subtle green */
+    color: white;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 16px;
+    display: inline-block;
+    margin-top: 20px;
+    text-align: center;
+    width: 100%; /* To center it */
+    max-width: 200px; /* Optional: Limit width of button */
+}
+
+.profile-actions-button:hover {
+    background-color: #5b8a4a; /* Darker green on hover */
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 10px;
+    color: white;
+    font-size: 20px;
+    margin-top: -40px;
+}
+
