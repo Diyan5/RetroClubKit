@@ -19,8 +19,6 @@ public class InactiveUserScheduler {
         this.notificationService = notificationService;
     }
 
-//TODO make schedule
-
     @Scheduled(cron = "0 0 0 * * ?")
     public void deactivateInactiveUsers() {
 
