@@ -2,7 +2,8 @@ package org.retroclubkit.user.service;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.retroclubkit.domainException.DomainException;
+
+import org.retroclubkit.exception.DomainException;
 import org.retroclubkit.exception.*;
 import org.retroclubkit.notification.service.NotificationService;
 import org.retroclubkit.security.AuthenticationMetadata;
@@ -58,10 +59,7 @@ public class UserService implements UserDetailsService {
             throw new PasswordsNotMatchException("Password does not match.");
         }
 
-
-
         User user = userRepository.save(initializeUser(registerRequest));
-
 
         notificationService.saveNotificationPreference(user.getId(), true, user.getEmail());
         String emailBody = "You successfully registered!";
@@ -133,8 +131,6 @@ public class UserService implements UserDetailsService {
         user.setFirstName(updateProfileRequest.getFirstName());
         user.setLastName(updateProfileRequest.getLastName());
         user.setEmail(updateProfileRequest.getEmail());
-
-
 
         userRepository.save(user);
     }

@@ -23,9 +23,6 @@ public class NotificationService {
 
     private final NotificationClient notificationClient;
 
-    @Value("${notification-svc.failure-message.clear-history}")
-    private String clearHistoryFailedMessage;
-
     @Autowired
     public NotificationService(NotificationClient notificationClient) {
         this.notificationClient = notificationClient;
@@ -58,14 +55,6 @@ public class NotificationService {
         return httpResponse.getBody();
     }
 
-    public List<Notification> getNotificationHistory(UUID userId) {
-
-        ResponseEntity<List<Notification>> httpResponse = notificationClient.getNotificationHistory(userId);
-
-        System.out.println(httpResponse.getBody());
-        return httpResponse.getBody();
-    }
-
     public void sendNotification(UUID userId, String emailSubject, String emailBody) {
 
         NotificationRequest notificationRequest = NotificationRequest.builder()
@@ -94,28 +83,6 @@ public class NotificationService {
             log.warn("Can't update notification preferences for user with id = [%s].".formatted(userId));
         }
     }
-
-    public void clearHistory(UUID userId) {
-
-        try {
-            notificationClient.clearHistory(userId);
-        } catch (Exception e) {
-            log.error("Unable to call notification-svc for clear notification history.".formatted(userId));
-            throw new NotificationServiceFeignCallException(clearHistoryFailedMessage);
-        }
-    }
-
-    public void retryFailed(UUID userId) {
-
-        try {
-            notificationClient.retryFailedNotifications(userId);
-        } catch (Exception e) {
-            log.error("Unable to call notification-svc for clear notification history.".formatted(userId));
-            throw new NotificationServiceFeignCallException(clearHistoryFailedMessage);
-        }
-    }
-
-
     public void sendContactMessage(ContactRequest contactRequest) {
         // Извикваме метода от NotificationClient, който изпраща контактното съобщение
         notificationClient.sendContactMessage(contactRequest);

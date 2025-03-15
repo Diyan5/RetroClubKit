@@ -1,4 +1,4 @@
-package org.retroclubkit.domainException;
+package org.retroclubkit.exception;
 
 public class DomainException extends RuntimeException{
 

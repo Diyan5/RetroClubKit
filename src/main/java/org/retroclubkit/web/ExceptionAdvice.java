@@ -27,12 +27,6 @@ public class ExceptionAdvice {
     @ExceptionHandler(UsernameAlreadyExistException.class)
     public String handleUsernameAlreadyExist(HttpServletRequest request, RedirectAttributes redirectAttributes, UsernameAlreadyExistException exception) {
 
-        // Option 1
-        //Autowire HttpServletRequest request
-        //String username = request.getParameter("username");
-        //String message = "%s is already in use!".formatted(username);
-
-        // Option 2
         String message = exception.getMessage();
 
         redirectAttributes.addFlashAttribute("usernameAlreadyExistMessage", message);
@@ -42,12 +36,6 @@ public class ExceptionAdvice {
     @ExceptionHandler(EmailAlreadyExistException.class)
     public String handleEmailAlreadyExist(HttpServletRequest request, RedirectAttributes redirectAttributes, EmailAlreadyExistException exception) {
 
-        // Option 1
-        //Autowire HttpServletRequest request
-        //String username = request.getParameter("username");
-        //String message = "%s is already in use!".formatted(username);
-
-        // Option 2
         String message = exception.getMessage();
 
         redirectAttributes.addFlashAttribute("emailAlreadyExistMessage", message);
@@ -57,12 +45,6 @@ public class ExceptionAdvice {
     @ExceptionHandler(PasswordsNotMatchException.class)
     public String handlePasswordsNotMatch(HttpServletRequest request, RedirectAttributes redirectAttributes, PasswordsNotMatchException exception) {
 
-        // Option 1
-        //Autowire HttpServletRequest request
-        //String username = request.getParameter("username");
-        //String message = "%s is already in use!".formatted(username);
-
-        // Option 2
         String message = exception.getMessage();
 
         redirectAttributes.addFlashAttribute("passwordsNotMatch", message);
@@ -72,12 +54,6 @@ public class ExceptionAdvice {
     @ExceptionHandler(TshirtAlreadyExistException.class)
     public String handleTshirtAlreadyExist(HttpServletRequest request, RedirectAttributes redirectAttributes, TshirtAlreadyExistException exception) {
 
-        // Option 1
-        //Autowire HttpServletRequest request
-        //String username = request.getParameter("username");
-        //String message = "%s is already in use!".formatted(username);
-
-        // Option 2
         String message = exception.getMessage();
 
         redirectAttributes.addFlashAttribute("tshirtAlreadyExistMessage", message);
@@ -103,12 +79,6 @@ public class ExceptionAdvice {
     @ExceptionHandler(NotificationServiceFeignCallException.class)
     public String handleNotificationFeignCallException(RedirectAttributes redirectAttributes, NotificationServiceFeignCallException exception) {
 
-        // Option 1
-        //Autowire HttpServletRequest request
-        //String username = request.getParameter("username");
-        //String message = "%s is already in use!".formatted(username);
-
-        // Option 2
         String message = exception.getMessage();
 
         redirectAttributes.addFlashAttribute("clearHistoryErrorMessage", message);
