@@ -1,6 +1,7 @@
 package org.retroclubkit.web;
 
 import jakarta.validation.Valid;
+import org.retroclubkit.notification.client.dto.NotificationPreference;
 import org.retroclubkit.notification.service.NotificationService;
 import org.retroclubkit.security.AuthenticationMetadata;
 import org.retroclubkit.user.model.User;
@@ -58,6 +59,8 @@ public class UserController {
         modelAndView.addObject("user", user);
         modelAndView.addObject("updateProfileRequest", updateProfileRequest);
 
+        NotificationPreference notificationPreference = notificationService.getNotificationPreference(user.getId());
+        modelAndView.addObject("notificationPreference", notificationPreference);
         return modelAndView;
     }
 
@@ -86,11 +89,10 @@ public class UserController {
             notificationService.saveNotificationPreference(user.getId(), false, null);
         }
 
-
         return new ModelAndView("redirect:/home");
     }
 
-    @PutMapping("/{id}/status") // PUT /users/{id}/status
+    @PutMapping("/{id}/status")
     public String switchUserStatus(@PathVariable UUID id) {
 
         userService.switchStatus(id);
@@ -98,7 +100,7 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @PutMapping("/{id}/role") // PUT /users/{id}/role
+    @PutMapping("/{id}/role")
     public String switchUserRole(@PathVariable UUID id) {
 
         userService.switchRole(id);

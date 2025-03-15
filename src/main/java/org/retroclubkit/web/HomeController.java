@@ -44,7 +44,6 @@ public class HomeController {
         PaymentMethod paymentMethod = PaymentMethod.valueOf(orderRequest.getPaymentMethod());
         paymentService.processPayment(order, paymentMethod);
 
-
         return new ModelAndView("redirect:/home");
     }
 

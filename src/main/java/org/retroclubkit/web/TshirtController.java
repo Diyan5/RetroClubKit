@@ -37,7 +37,6 @@ public class TshirtController {
         this.teamService = teamService;
     }
 
-    // ✅ Показване на всички тениски admin
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ModelAndView getAllTshirts(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
@@ -52,7 +51,6 @@ public class TshirtController {
         return modelAndView;
     }
 
-    // ✅ Филтриране само на наличните продукти role
     @GetMapping("/available")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ModelAndView getAvailableTshirts(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
@@ -66,7 +64,6 @@ public class TshirtController {
         return modelAndView;
     }
 
-    // ✅ Филтриране само на неналичните продукти role
     @GetMapping("/unavailable")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ModelAndView getUnavailableTshirts(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
@@ -79,7 +76,6 @@ public class TshirtController {
 
         return modelAndView;
     }
-
 
     @DeleteMapping("/delete/{id}")
     public ModelAndView deleteTshirt(@PathVariable UUID id) {

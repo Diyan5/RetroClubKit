@@ -1,12 +1,10 @@
 package org.retroclubkit.team.service;
 
-import org.retroclubkit.domainException.DomainException;
+import org.retroclubkit.exception.DomainException;
 import org.retroclubkit.exception.TeamAlreadyExistException;
-import org.retroclubkit.exception.TshirtAlreadyExistException;
 import org.retroclubkit.team.model.Team;
 import org.retroclubkit.team.repository.TeamRepository;
 
-import org.retroclubkit.tshirt.model.Tshirt;
 import org.retroclubkit.web.dto.CreatedNewTeam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

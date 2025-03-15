@@ -1,7 +1,7 @@
 package org.retroclubkit.tshirt.service;
 
 import jakarta.transaction.Transactional;
-import org.retroclubkit.domainException.DomainException;
+import org.retroclubkit.exception.DomainException;
 import org.retroclubkit.exception.TshirtAlreadyExistException;
 import org.retroclubkit.team.model.Team;
 import org.retroclubkit.team.service.TeamService;
