@@ -20,7 +20,7 @@ public interface TshirtRepository extends JpaRepository<Tshirt, UUID> {
     @Query("SELECT t FROM Tshirt t WHERE t.category = :category AND t.isAvailable = true AND t.isDeleted = false")
     List<Tshirt> getTshirtsByCategoryAndIsAvailableTrueAndDeletedFalse(Category category);
 
-    @Query("SELECT t FROM Tshirt t WHERE t.isAvailable = true AND t.isDeleted = false")
+    @Query("SELECT t FROM Tshirt t WHERE t.isAvailable = true AND t.isDeleted = false ORDER BY FUNCTION('RAND')")
     List<Tshirt> getAllTshirtsLimitAvailableTrueAndDeletedFalse(@Param("limit") int limit);
 
     @Query("SELECT t FROM Tshirt t WHERE t.isDeleted = false")
@@ -32,7 +32,7 @@ public interface TshirtRepository extends JpaRepository<Tshirt, UUID> {
     @Query("SELECT t FROM Tshirt t WHERE t.isAvailable = false AND t.isDeleted = false ")
     List<Tshirt> findByIsAvailableFalseAndDeletedFalse();
 
-    @Query("SELECT t FROM Tshirt t WHERE LOWER(t.name) = LOWER(:name) AND t.isDeleted = false")
+    @Query("SELECT t FROM Tshirt t WHERE LOWER(t.team.name) = LOWER(:teamName) AND t.isDeleted = false")
     List<Tshirt> findByTeamNameIgnoreCaseAndDeletedFalse(String teamName);
 
     @Query("SELECT t FROM Tshirt t WHERE t.name = :name AND t.isDeleted = false")

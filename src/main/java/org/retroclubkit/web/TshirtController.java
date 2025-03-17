@@ -188,9 +188,24 @@ public class TshirtController {
 
         List<Tshirt> tshirts = tshirtService.findTshirtsByTeam(teamName);
 
+        if(tshirts.isEmpty()) {
+
+            return new ModelAndView("redirect:/tshirts/emptySearch");
+        }
+
         ModelAndView modelAndView = new ModelAndView("search-results");
         modelAndView.addObject("teamName", teamName);
         modelAndView.addObject("tshirts", tshirts);
+        modelAndView.addObject("user", user);
+
+        return modelAndView;
+    }
+    @GetMapping("/emptySearch")
+    public ModelAndView getEmptyPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+
+        User user = userService.getById(authenticationMetadata.getUserId());
+
+        ModelAndView modelAndView = new ModelAndView("empty-team-page");
         modelAndView.addObject("user", user);
 
         return modelAndView;

@@ -12,31 +12,30 @@
     <link rel="stylesheet" type="text/css" href="/css/category.css">
 </head>
 <body>
-<!-- Включване на хедъра -->
+
 <div th:replace="~{fragments/header.html}"></div>
 
 <div class="content">
-    <!-- Ретро Тениски Section -->
     <div class="filters-container">
-        <button class="filters-button" onclick="toggleFilters()">Филтри</button>
+        <button class="filters-button" onclick="toggleFilters()">Filters</button>
         <div class="filters-options" id="filtersOptions">
-            <button onclick="sortProducts('price-asc')">Цена (възходящ)</button>
-            <button onclick="sortProducts('price-desc')">Цена (низходящ)</button>
-            <button onclick="sortProducts('name-asc')">Име (А-Я)</button>
-            <button onclick="sortProducts('name-desc')">Име (Я-А)</button>
+            <button onclick="sortProducts('price-asc')">Price (Asc)</button>
+            <button onclick="sortProducts('price-desc')">Price (Desc)</button>
+            <button onclick="sortProducts('name-asc')">Name (A-Z)</button>
+            <button onclick="sortProducts('name-desc')">Name (Z-A)</button>
         </div>
     </div>
     <section id="retro-shirts" class="product-section">
         <h2>New T-shirt:</h2>
         <div class="product-list">
             <div th:each="tshirt : ${newTshirts}" class="product-card">
-                <!-- Изображение на продукта -->
+
                 <img th:src="@{${tshirt.image}}" alt="Product Image">
                 <h3 th:text="${tshirt.name}">Тениска</h3>
                 <p th:text="'Price: ' + ${tshirt.price} +  '$'">Цена</p>
 
-                <!-- Размер (показване само на наличните размери) -->
-                <label for="size">Размер:</label>
+
+                <label for="size">Size:</label>
                 <select id="size" name="size">
                     <option th:each="size : ${tshirt.sizes}" th:value="${size}" th:text="${size}">Размер</option>
                 </select>
@@ -45,7 +44,7 @@
                    th:data-id="${tshirt.id}"
                    th:data-name="${tshirt.name}"
                    th:data-price="${tshirt.price}"
-                   onclick="addToCart(event)">Добави в количка</a>
+                   onclick="addToCart(event)">Add to cart</a>
 
             </div>
         </div>
@@ -54,6 +53,5 @@
 
 <footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>
 <script th:src="@{/js/category.js}"></script>
-<script th:src="@{/js/counter.js}"></script>
 </body>
 </html>

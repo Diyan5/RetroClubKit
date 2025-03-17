@@ -2,6 +2,7 @@ package org.retroclubkit.tshirt.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.validator.constraints.URL;
 import org.retroclubkit.order.model.Order;
 import org.retroclubkit.team.model.Team;
 
@@ -22,17 +23,18 @@ public class Tshirt {
     private UUID id;
 
     @Column(nullable = false, unique = true)
-    private String name; // Име на тениската (например "Real Madrid 2004")
+    private String name;
 
     @Column(nullable = false)
-    private BigDecimal price; // Цена на тениската
+    private BigDecimal price;
 
-    @Column
+
+    @Column(nullable = false)
     private String image;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Category category; // Категория на тениската (енумерация: RETRO, LIMITED EDITION)
+    private Category category;
 
     private boolean isDeleted = false;
 
@@ -40,14 +42,14 @@ public class Tshirt {
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "tshirt_sizes", joinColumns = @JoinColumn(name = "tshirt_id", referencedColumnName = "id"))
     @Column(name = "size")
-    private List<Size> sizes; // Множество размери на тениската
+    private List<Size> sizes;
 
     @Column(nullable = false)
-    private boolean isAvailable; // Наличност на тениската (дали е в продажба)
+    private boolean isAvailable;
 
     @ManyToOne
     @JoinColumn(name = "team_id", nullable = false)
-    private Team team; // Свързано с отбора, към който принадлежи тениската
+    private Team team;
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = true)

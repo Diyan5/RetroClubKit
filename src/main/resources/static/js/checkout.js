@@ -83,6 +83,8 @@ document.addEventListener('input', (event) => {
         cart[index].quantity = newQuantity;
         localStorage.setItem('cart', JSON.stringify(cart));
 
+
+
         const row = event.target.closest('tr');
         const priceElement = row.querySelector('.total-price');
         priceElement.textContent = `$${(cart[index].price * newQuantity).toFixed(2)}`;
@@ -177,18 +179,16 @@ document.getElementById('deliveryForm').addEventListener('submit', async (event)
         if (responseData.success) {
             alert(responseData.success); // Показваме съобщение за успешна поръчка
 
-            // Изчистваме количката и брояча в localStorage
+            console.log("🚀 Before clearing cart:", localStorage.getItem('cart'));
+
             localStorage.removeItem('cart');
             localStorage.setItem('cartCount', 0);
 
-            // Обновяване на UI брояча
-            const cartCountElement = document.querySelector('.cart-count');
-            if (cartCountElement) {
-                cartCountElement.textContent = "0";
-            }
+            console.log("✅ After clearing cart:", localStorage.getItem('cart'));
 
-            // Пренасочваме потребителя към началната страница
-            window.location.href = responseData.redirect || '/home';
+            setTimeout(() => {
+                window.location.href = responseData.redirect || '/home';
+            }, 500);
         } else {
             alert("❌ Error: " + (responseData.error || "Something went wrong!"));
         }
@@ -199,3 +199,7 @@ document.getElementById('deliveryForm').addEventListener('submit', async (event)
     }
 
 });
+
+function syncCartCount() {
+    localStorage.setItem('cartCount', JSON.parse(localStorage.getItem('cart')).reduce((sum, item) => sum + item.quantity, 0));
+}

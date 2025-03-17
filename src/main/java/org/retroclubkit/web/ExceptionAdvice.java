@@ -4,6 +4,7 @@ import org.retroclubkit.exception.*;
 import org.retroclubkit.user.model.UserRole;
 import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.TypeMismatchException;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.parameters.P;
@@ -90,7 +91,9 @@ public class ExceptionAdvice {
             AccessDeniedException.class, // Когато се опотва да достъпи ендпойнт, до който не му е позволено/нямам достъп
             NoResourceFoundException.class, // Когато се опитва да достъпи невалиден ендпойнт
             MethodArgumentTypeMismatchException.class,
-            MissingRequestValueException.class
+            MissingRequestValueException.class,
+            InvalidDataAccessResourceUsageException.class,
+            DomainException.class,
     })
     public ModelAndView handleNotFoundExceptions(Exception exception) {
 
