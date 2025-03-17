@@ -34,6 +34,7 @@ public class Tshirt {
     @Column(nullable = false)
     private Category category; // Категория на тениската (енумерация: RETRO, LIMITED EDITION)
 
+    private boolean isDeleted = false;
 
     @ElementCollection
     @Enumerated(EnumType.STRING)

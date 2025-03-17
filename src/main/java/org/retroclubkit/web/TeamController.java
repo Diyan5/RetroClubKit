@@ -59,7 +59,7 @@ public class TeamController {
     public ModelAndView showTeams(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         User user = userService.getById(authenticationMetadata.getUserId());
         ModelAndView modelAndView = new ModelAndView("all-teams");
-        modelAndView.addObject("teams", teamService.getAllTeams());
+        modelAndView.addObject("teams", teamService.getAllTeamsWhichIsNotDeleted());
         modelAndView.addObject("user", user);
         return modelAndView;
     }

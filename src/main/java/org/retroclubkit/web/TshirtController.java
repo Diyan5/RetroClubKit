@@ -43,7 +43,7 @@ public class TshirtController {
 
         User user = userService.getById(authenticationMetadata.getUserId());
 
-        List<Tshirt> tshirts = tshirtService.getAllTshirts();
+        List<Tshirt> tshirts = tshirtService.getAllTshirtsWhichIsNotDeleted();
         ModelAndView modelAndView = new ModelAndView("all-tshirts");
         modelAndView.addObject("tshirts", tshirts);
         modelAndView.addObject("user", user);
@@ -122,7 +122,7 @@ public class TshirtController {
 
         ModelAndView modelAndView = new ModelAndView("add-tshirt");
         modelAndView.addObject("tshirt", new CreatedNewTshirt());
-        modelAndView.addObject("teams", teamService.getAllTeams());
+        modelAndView.addObject("teams", teamService.getAllTeamsWhichIsNotDeleted());
         modelAndView.addObject("categories", Arrays.asList(Category.values()));
         modelAndView.addObject("sizes", Arrays.asList(Size.values()));
         modelAndView.addObject("user", user);
