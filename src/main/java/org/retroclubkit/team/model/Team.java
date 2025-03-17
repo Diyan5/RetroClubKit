@@ -28,4 +28,6 @@ public class Team {
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<Tshirt> tshirts;
+
+    private boolean isDeleted = false;
 }

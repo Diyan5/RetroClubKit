@@ -17,16 +17,24 @@ import java.util.UUID;
 @Repository
 public interface TshirtRepository extends JpaRepository<Tshirt, UUID> {
 
-    List<Tshirt> getTshirtsByCategoryAndIsAvailableTrue(Category category);
+    @Query("SELECT t FROM Tshirt t WHERE t.category = :category AND t.isAvailable = true AND t.isDeleted = false")
+    List<Tshirt> getTshirtsByCategoryAndIsAvailableTrueAndDeletedFalse(Category category);
 
-    @Query("SELECT t FROM Tshirt t WHERE t.isAvailable = true ")
-    List<Tshirt> getAllTshirtsLimitAvailableTrue(@Param("limit") int limit);
+    @Query("SELECT t FROM Tshirt t WHERE t.isAvailable = true AND t.isDeleted = false")
+    List<Tshirt> getAllTshirtsLimitAvailableTrueAndDeletedFalse(@Param("limit") int limit);
 
-    List<Tshirt> findByIsAvailableTrue();
+    @Query("SELECT t FROM Tshirt t WHERE t.isDeleted = false")
+    List<Tshirt> getAllTshirtsDeletedFalse();
 
-    List<Tshirt> findByIsAvailableFalse();
+    @Query("SELECT t FROM Tshirt t WHERE t.isAvailable = true AND t.isDeleted = false ")
+    List<Tshirt> findByIsAvailableTrueAndDeletedFalse();
 
-    List<Tshirt> findByTeamNameIgnoreCase(String teamName);
+    @Query("SELECT t FROM Tshirt t WHERE t.isAvailable = false AND t.isDeleted = false ")
+    List<Tshirt> findByIsAvailableFalseAndDeletedFalse();
 
-    Optional<Tshirt> findByName(@NotBlank(message = "Name cannot be empty") @NotNull(message = "Name cannot be empty") String name);
+    @Query("SELECT t FROM Tshirt t WHERE LOWER(t.name) = LOWER(:name) AND t.isDeleted = false")
+    List<Tshirt> findByTeamNameIgnoreCaseAndDeletedFalse(String teamName);
+
+    @Query("SELECT t FROM Tshirt t WHERE t.name = :name AND t.isDeleted = false")
+    Optional<Tshirt> findByNameAndDeletedFalse(@NotBlank(message = "Name cannot be empty") @NotNull(message = "Name cannot be empty") String name);
 }

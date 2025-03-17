@@ -32,14 +32,14 @@ public class TshirtService {
 
     // Филтрира само наличните тениски
     public List<CreatedNewTshirt> getAvailableTshirts() {
-        return tshirtRepository.findByIsAvailableTrue().stream()
+        return tshirtRepository.findByIsAvailableTrueAndDeletedFalse().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
     // Филтрира само неналичните тениски
     public List<CreatedNewTshirt> getUnavailableTshirts() {
-        return tshirtRepository.findByIsAvailableFalse().stream()
+        return tshirtRepository.findByIsAvailableFalseAndDeletedFalse().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
@@ -52,7 +52,8 @@ public class TshirtService {
 
     public void deleteTshirtById(UUID id) {
         Tshirt tshirt = tshirtRepository.findById(id).orElseThrow(() -> new DomainException("T-shirt with id [%s] does not exist.".formatted(id)));
-        tshirtRepository.delete(tshirt);
+        tshirt.setDeleted(true);
+        tshirtRepository.save(tshirt);
     }
 
     // Превръща модел в DTO
@@ -73,7 +74,7 @@ public class TshirtService {
     public Tshirt convertToEntity(CreatedNewTshirt dto) {
 
         Team team = teamService.getById(dto.getTeamId());
-        Tshirt tshirt = tshirtRepository.findByName(dto.getName()).orElse(null);
+        Tshirt tshirt = tshirtRepository.findByNameAndDeletedFalse(dto.getName()).orElse(null);
         if(tshirt!=null) {
             throw new TshirtAlreadyExistException("T-shirt with name [%s] already exist.".formatted(dto.getName()));
         }
@@ -92,15 +93,11 @@ public class TshirtService {
     }
 
     public List<Tshirt> getTshirtsByCategoryAndAvailable(Category category) {
-        return tshirtRepository.getTshirtsByCategoryAndIsAvailableTrue(category);
+        return tshirtRepository.getTshirtsByCategoryAndIsAvailableTrueAndDeletedFalse(category);
     }
 
     public List<Tshirt> getAllTshirtsLimitAndAvailableTrue() {
-        return tshirtRepository.getAllTshirtsLimitAvailableTrue(10);
-    }
-
-    public List<Tshirt> getAllTshirts() {
-        return tshirtRepository.findAll();
+        return tshirtRepository.getAllTshirtsLimitAvailableTrueAndDeletedFalse(20);
     }
 
     public Tshirt getById(UUID id) {
@@ -127,7 +124,10 @@ public class TshirtService {
     }
 
     public List<Tshirt> findTshirtsByTeam(String teamName) {
-        return tshirtRepository.findByTeamNameIgnoreCase(teamName);
+        return tshirtRepository.findByTeamNameIgnoreCaseAndDeletedFalse(teamName);
     }
 
+    public List<Tshirt> getAllTshirtsWhichIsNotDeleted() {
+        return tshirtRepository.getAllTshirtsDeletedFalse();
+    }
 }

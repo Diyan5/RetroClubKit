@@ -5,6 +5,7 @@ import org.retroclubkit.exception.TeamAlreadyExistException;
 import org.retroclubkit.team.model.Team;
 import org.retroclubkit.team.repository.TeamRepository;
 
+import org.retroclubkit.tshirt.model.Tshirt;
 import org.retroclubkit.web.dto.CreatedNewTeam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,8 +27,8 @@ public class TeamService {
         return teamRepository.findById(teamId).orElseThrow(() -> new DomainException("Team with id [%s] does not exist.".formatted(teamId)));
     }
 
-    public List<Team> getAllTeams() {
-        return teamRepository.findAll();
+    public List<Team> getAllTeamsWhichIsNotDeleted() {
+        return teamRepository.findAllByIsDeletedFalse();
     }
 
     public void saveTeam(CreatedNewTeam createdNewTeam) {
@@ -47,6 +48,14 @@ public class TeamService {
     }
 
     public void deleteTeamById(UUID id) {
-        teamRepository.deleteById(id);
+//        teamRepository.deleteById(id);
+        Team team = teamRepository.findById(id).orElseThrow(() -> new DomainException("Team with id [%s] does not exist.".formatted(id)));
+        team.setDeleted(true);
+        List<Tshirt> tshirts = team.getTshirts();
+        for (Tshirt tshirt : tshirts) {
+            tshirt.setDeleted(true);
+            tshirt.setAvailable(false);
+        }
+        teamRepository.save(team);
     }
 }
