@@ -1,6 +1,7 @@
 .filters-container {
     position: relative;
     display: inline-block;
+    margin-bottom: 40px;
 }
 
 .filters-button {
@@ -54,11 +55,11 @@
     margin: 5px 0;
 }
 
-#retro-shirts h2 {
+h1 {
     font-size: 24px; /* Увеличава размера на шрифта */
     font-weight: bold; /* Удебелява текста */
     text-transform: uppercase; /* Всички букви стават главни */
     text-align: center; /* Центрира текста */
-    margin-bottom: 50px; /* Оставя разстояние под заглавието */
-    margin-top: -50px;
+    margin-bottom: -64px; /* Оставя разстояние под заглавието */
+    margin-top: 34px;
 }

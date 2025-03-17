@@ -76,8 +76,7 @@ function addToCart(event) {
     localStorage.setItem('cart', JSON.stringify(cart));
 
     // Обновяване на броя на продуктите в количката
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    localStorage.setItem('cartCount', totalItems);
+    updateCartCount();
 
     // Обновяване на брояча в UI
     const cartCount = document.querySelector('.cart-count');
@@ -95,15 +94,14 @@ document.addEventListener("DOMContentLoaded", async function() {
     const storedUser = localStorage.getItem('loggedUser');
 
     // Ако потребителят се е сменил, изчистваме количката
-    if (storedUser && storedUser !== loggedUsername) {
-        localStorage.removeItem('cart'); // Изчистваме количката
-        localStorage.setItem('cartCount', 0); // Нулираме брояча
+    if (storedUser && loggedUsername && storedUser !== loggedUsername) {
+        localStorage.removeItem('cart');
+        localStorage.setItem('cartCount', 0);
     }
 
-    // Запазваме текущия потребител в localStorage
-    // if (loggedUsername) {
-    //     localStorage.setItem('loggedUser', loggedUsername);
-    // }
+    if (loggedUsername) {
+        localStorage.setItem('loggedUser', loggedUsername);
+    }
 
     // Обновяваме брояча в UI
     const cartCount = document.querySelector('.cart-count');
@@ -113,37 +111,16 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
 });
 
-// document.addEventListener("DOMContentLoaded", async function() {
-//     // Вземаме текущото потребителско име от страницата
-//     const loggedUserElement = document.querySelector("#loggedUser");
-//     const loggedUsername = loggedUserElement ? loggedUserElement.textContent.trim() : null;
-//
-//     if (loggedUsername) {
-//         // Опитваме се да заредим количката за този потребител
-//         const savedCart = localStorage.getItem(`cart_${loggedUsername}`);
-//         const savedCartCount = localStorage.getItem(`cartCount_${loggedUsername}`);
-//
-//         if (savedCart) {
-//             localStorage.setItem('cart', savedCart);
-//             localStorage.setItem('cartCount', savedCartCount || 0);
-//         } else {
-//             // Ако няма количка за този потребител, започваме с празна количка
-//             localStorage.removeItem('cart');
-//             localStorage.setItem('cartCount', 0);
-//         }
-//     }
-//
-//     // Обновяване на брояча в UI
-//     const cartCount = document.querySelector('.cart-count');
-//     if (cartCount) {
-//         const totalItems = localStorage.getItem('cartCount') || 0;
-//         cartCount.textContent = totalItems;
-//     }
-// });
+function updateCartCount() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
+    // Запази стойността в localStorage
+    localStorage.setItem('cartCount', totalItems);
 
-// document.getElementById("logoutButton").addEventListener("click", function() {
-//     localStorage.removeItem("loggedUser"); // Премахваме запазения потребител
-//     window.location.href = "/logout"; // Пренасочване към сървъра за logout
-// });
-
+    // Обнови брояча на количката в UI
+    const cartCountElement = document.querySelector('.cart-count');
+    if (cartCountElement) {
+        cartCountElement.textContent = totalItems;
+    }
+}

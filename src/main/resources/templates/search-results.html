@@ -6,15 +6,14 @@
     <title>Search Results</title>
     <link rel="stylesheet" type="text/css" href="/css/background.css">
     <link rel="stylesheet" type="text/css" href="/css/home.css">
-    <link rel="stylesheet" type="text/css" href="/css/category.css">
+    <link rel="stylesheet" type="text/css" href="/css/search.css">
 </head>
 <body>
 
-<!-- Включване на хедъра -->
 <div th:replace="~{fragments/header.html}"></div>
-
+<h1>Search Results for "<span th:text="${teamName}"></span>"</h1>
 <main>
-    <h1>Search Results for "<span th:text="${teamName}"></span>"</h1>
+
     <div class="filters-container">
         <button class="filters-button" onclick="toggleFilters()">Филтри</button>
         <div class="filters-options" id="filtersOptions">
@@ -30,18 +29,16 @@
             <h3 th:text="${tshirt.name}">Tshirt Name</h3>
             <p th:text="'Price: ' + ${tshirt.price}">Price</p>
 
-            <!-- Размер (показване само на наличните размери) -->
-            <label for="size">Размер:</label>
+            <label for="size">Size:</label>
             <select id="size" name="size">
                 <option th:each="size : ${tshirt.sizes}" th:value="${size}" th:text="${size}">Размер</option>
             </select>
 
-            <!-- Добави в количката Button -->
             <a class="btn"
                th:data-id="${tshirt.id}"
                th:data-name="${tshirt.name}"
                th:data-price="${tshirt.price}"
-               onclick="addToCart(event)">Добави в количката</a>
+               onclick="addToCart(event)">Add to cart</a>
         </div>
     </div>
 </main>

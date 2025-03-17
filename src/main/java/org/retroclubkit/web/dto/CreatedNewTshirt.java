@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.URL;
 import org.retroclubkit.tshirt.model.Category;
 import org.retroclubkit.tshirt.model.Size;
 
@@ -29,8 +30,7 @@ public class CreatedNewTshirt {
     @Positive(message = "Must be positive")
     private BigDecimal price;
 
-    @NotBlank(message = "Image cannot be empty")
-    @NotNull(message = "Image cannot be empty")
+    @URL(message = "Requires correct web link format")
     private String image;
 
     @NotBlank(message = "Category cannot be empty")

@@ -1,0 +1,13 @@
+.no-team-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh; /* Центрира вертикално */
+    text-align: center;
+}
+
+.no-team-message p {
+    font-size: 32px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
