@@ -7,6 +7,7 @@ import org.retroclubkit.security.AuthenticationMetadata;
 import org.retroclubkit.user.model.User;
 import org.retroclubkit.user.service.UserService;
 import org.retroclubkit.web.dto.UpdateProfileRequest;
+import org.retroclubkit.web.mapper.DtoMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -48,16 +49,9 @@ public class UserController {
     public ModelAndView getProfileMenu(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         User user = userService.getById(authenticationMetadata.getUserId());
 
-        // ✅ Създаваме UpdateProfileRequest и попълваме с текущите данни на потребителя
-        UpdateProfileRequest updateProfileRequest = new UpdateProfileRequest();
-        updateProfileRequest.setUsername(user.getUsername());
-        updateProfileRequest.setFirstName(user.getFirstName());
-        updateProfileRequest.setLastName(user.getLastName());
-        updateProfileRequest.setEmail(user.getEmail());
-
         ModelAndView modelAndView = new ModelAndView("my-account");
         modelAndView.addObject("user", user);
-        modelAndView.addObject("updateProfileRequest", updateProfileRequest);
+        modelAndView.addObject("updateProfileRequest", DtoMapper.mapUserToUserEditRequest(user));
 
         NotificationPreference notificationPreference = notificationService.getNotificationPreference(user.getId());
         modelAndView.addObject("notificationPreference", notificationPreference);

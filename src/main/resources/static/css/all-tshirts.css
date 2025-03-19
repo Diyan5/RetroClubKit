@@ -85,21 +85,49 @@ td a button {
     color: white;
 }
 
-td form button:hover {
-    background-color: #a71d2a;
+/* Зелен бутон за "Set Available" */
+.btn-available {
+    background-color: #008000; /* Тъмно зелено */
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.3s ease-in-out;
 }
+
+.btn-available:hover {
+    background-color: #006400; /* Още по-тъмно зелено при hover */
+}
+
+/* Червен бутон за "Set Unavailable" */
+.btn-unavailable {
+    background-color: #dc3545; /* Червено */
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.3s ease-in-out;
+}
+
+.btn-unavailable:hover {
+    background-color: #a71d2a; /* По-тъмно червено при hover */
+}
+
 
 td a button:hover {
     background-color: #0056b3;
 }
 
-/* Availability Toggle Button */
-td form button:nth-child(3) {
-    background-color: #28a745; /* Green for availability toggle */
-}
+
 
 td form button:nth-child(3):hover {
-    background-color: #1e7e34;
+    background-color: #a71d2a;
 }
 
 /* Adjust individual column positions */

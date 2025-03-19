@@ -2,6 +2,7 @@ package org.retroclubkit.tshirt.service;
 
 import jakarta.transaction.Transactional;
 import org.retroclubkit.exception.DomainException;
+import org.retroclubkit.exception.MustBePositiveException;
 import org.retroclubkit.exception.TshirtAlreadyExistException;
 import org.retroclubkit.team.model.Team;
 import org.retroclubkit.team.service.TeamService;
@@ -105,10 +106,16 @@ public class TshirtService {
     }
 
     @Transactional
-    public void updateTshirtBySizeAndPrice(UUID id, List<Size> newSizes, BigDecimal newPrice) {
+    public void updateTshirtBySizeAndPrice(UUID id, String name, String image, List<Size> newSizes, BigDecimal newPrice) {
         Tshirt tshirt = tshirtRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Tshirt not found"));
 
+        if (newPrice.compareTo(BigDecimal.ZERO) < 0) {
+            throw new MustBePositiveException("The price cannot be negative.");
+        }
+
+        tshirt.setName(name);
+        tshirt.setImage(image);
         tshirt.setSizes(newSizes);
         tshirt.setPrice(newPrice);
         tshirtRepository.save(tshirt);
