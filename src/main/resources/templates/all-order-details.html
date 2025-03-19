@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details</title>
     <link rel="stylesheet" type="text/css" href="/css/background.css">
-    <link rel="stylesheet" type="text/css" href="/css/admin.css">
+    <link rel="stylesheet" type="text/css" href="/css/all-order-details.css">
     <link rel="stylesheet" type="text/css" href="/css/home.css">
 </head>
 <body>
@@ -25,7 +25,7 @@
         <p><strong>Payment Method:</strong> <span th:text="${order.payment.paymentMethod}"></span></p>
     </div>
 
-    <h2>Order Items</h2>
+    <h2 class="order-items-title">Order Items</h2>
     <table>
         <thead>
         <tr>
@@ -47,7 +47,9 @@
         </tbody>
     </table>
 
+    <div class="back-to-orders-container">
     <a th:href="@{/orders/user/{id}(id=${user.id})}" class="btn">Back to Orders</a>
+    </div>
 </main>
 
 <footer>&copy; 2025 Retro Club Kit. All Rights Reserved.</footer>

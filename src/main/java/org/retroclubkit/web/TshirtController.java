@@ -98,13 +98,15 @@ public class TshirtController {
         return modelAndView;
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ModelAndView updateTshirt(
             @RequestParam("id") UUID id,
+            @RequestParam("name") String name,
+            @RequestParam("image") String image,
             @RequestParam("sizes") List<Size> sizes,
             @RequestParam("price") BigDecimal price) {
 
-        tshirtService.updateTshirtBySizeAndPrice(id, sizes, price);
+        tshirtService.updateTshirtBySizeAndPrice(id, name, image, sizes, price);
         return new ModelAndView("redirect:/tshirts");
     }
 

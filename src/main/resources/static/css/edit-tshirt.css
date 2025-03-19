@@ -81,3 +81,13 @@
 .edit-tshirt-container button:hover {
     background: #1d6120; /* Darker green on hover */
 }
+
+/* Грешки при въвеждане */
+.alert-warning {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    color: #f53b3b;
+    margin-top: 5px;
+}

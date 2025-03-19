@@ -51,9 +51,11 @@
                 <button type="button">Edit Sizes</button>
             </a>
 
-            <!-- Бутон за промяна на наличността -->
             <form th:action="@{/tshirts/availability/{id}(id=${tshirt.id})}" th:method="POST">
-                <button type="submit" th:text="${tshirt.isAvailable ? 'Set Unavailable' : 'Set Available'}"></button>
+                <button type="submit"
+                        th:text="${tshirt.isAvailable ? 'Set Unavailable' : 'Set Available'}"
+                        th:classappend="${tshirt.isAvailable ? 'btn-unavailable' : 'btn-available'}">
+                </button>
             </form>
         </td>
     </tr>

@@ -66,7 +66,7 @@ public class OrderService {
 
         totalPrice = totalPrice.setScale(2, RoundingMode.HALF_UP);
 
-        // ✅ Първо запазваме Order, без да има items
+        //  Първо запазваме Order, без да има items
         Order order = Order.builder()
                 .user(user)
                 .phoneNumber(orderRequest.getPhone())
@@ -74,21 +74,21 @@ public class OrderService {
                 .status(Status.PENDING)
                 .createdAt(LocalDateTime.now())
                 .deliveryAddress(orderRequest.getAddress() + ", " + orderRequest.getCity() + ", " + orderRequest.getCountry())
-                .items(new ArrayList<>()) // ❌ Празен списък засега
+                .items(new ArrayList<>()) // Празен списък засега
                 .build();
 
-        // ✅ Запазваме Order, за да има ID
+        // Запазваме Order, за да има ID
         Order savedOrder = orderRepository.save(order);
 
-        // ✅ Сега сетваме order_id на OrderItem обектите
+        // Сега сетваме order_id на OrderItem обектите
         for (OrderItem item : orderItems) {
-            item.setOrder(savedOrder); // ✅ Вече има order_id
+            item.setOrder(savedOrder); //  Вече има order_id
         }
 
-        // ✅ Запазваме OrderItem обектите
+        // Запазваме OrderItem обектите
         orderItemService.saveAll(orderItems);
 
-        // ✅ Обновяваме Order с OrderItem обектите и го запазваме отново
+        // Обновяваме Order с OrderItem обектите и го запазваме отново
         savedOrder.setItems(orderItems);
 
 

@@ -4,6 +4,7 @@ import org.retroclubkit.exception.*;
 import org.retroclubkit.user.model.UserRole;
 import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.TypeMismatchException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -76,6 +77,19 @@ public class ExceptionAdvice {
         return "redirect:/teams/add";
     }
 
+    @ExceptionHandler(MustBePositiveException.class)
+    public String getPositiveNumber(HttpServletRequest request, RedirectAttributes redirectAttributes, MustBePositiveException exception) {
+
+        // Извличане на ID от заявката
+        String id = request.getParameter("id");
+
+        // Добавяне на Flash атрибут за съобщението
+        String message = exception.getMessage();
+        redirectAttributes.addFlashAttribute("positiveMessage", message);
+
+        // Редирект към страницата за редактиране на тениската
+        return "redirect:/tshirts/edit/" + id;
+    }
 
     @ExceptionHandler(NotificationServiceFeignCallException.class)
     public String handleNotificationFeignCallException(RedirectAttributes redirectAttributes, NotificationServiceFeignCallException exception) {
@@ -94,6 +108,7 @@ public class ExceptionAdvice {
             MissingRequestValueException.class,
             InvalidDataAccessResourceUsageException.class,
             DomainException.class,
+            DataIntegrityViolationException.class
     })
     public ModelAndView handleNotFoundExceptions(Exception exception) {
 
