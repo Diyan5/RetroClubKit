@@ -48,7 +48,7 @@
 
             <!-- Бутон за редакция на размера -->
             <a th:href="@{/tshirts/edit/{id}(id=${tshirt.id})}">
-                <button type="button">Edit Sizes</button>
+                <button type="button">Edit</button>
             </a>
 
             <form th:action="@{/tshirts/availability/{id}(id=${tshirt.id})}" th:method="POST">

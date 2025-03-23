@@ -8,6 +8,7 @@ import org.retroclubkit.notification.client.NotificationClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,6 +56,7 @@ public class NotificationService {
         return httpResponse.getBody();
     }
 
+    @Async
     public void sendNotification(UUID userId, String emailSubject, String emailBody) {
 
         NotificationRequest notificationRequest = NotificationRequest.builder()

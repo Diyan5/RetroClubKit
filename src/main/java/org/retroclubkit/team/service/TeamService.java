@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -37,10 +38,8 @@ public class TeamService {
     }
 
     private Team convertToEntity(CreatedNewTeam createdNewTeam) {
-        Team team = teamRepository.findByName(createdNewTeam.getName()).orElse(null);
-        if (team != null) {
-            throw new TeamAlreadyExistException("Team with name [%s] already exist.".formatted(createdNewTeam.getName()));
-        }
+        teamRepository.findByName(createdNewTeam.getName()).ifPresent(t ->
+        { throw new TeamAlreadyExistException("Team with name [%s] already exist.".formatted(createdNewTeam.getName())); });
         return Team.builder()
                 .name(createdNewTeam.getName())
                 .country(createdNewTeam.getCountry())
@@ -57,5 +56,10 @@ public class TeamService {
             tshirt.setAvailable(false);
         }
         teamRepository.save(team);
+    }
+
+    public UUID findByName(String name) {
+        Optional<Team> byName = teamRepository.findByName(name);
+        return byName.get().getId();
     }
 }
