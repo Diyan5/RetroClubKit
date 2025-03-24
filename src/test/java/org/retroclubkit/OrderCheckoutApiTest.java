@@ -3,6 +3,7 @@ package org.retroclubkit;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.retroclubkit.notification.service.NotificationService;
 import org.retroclubkit.security.AuthenticationMetadata;
 import org.retroclubkit.team.model.Team;
 import org.retroclubkit.team.repository.TeamRepository;
@@ -21,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -53,6 +55,9 @@ public class OrderCheckoutApiTest {
 
     @Autowired
     private TshirtRepository tshirtRepository;
+
+    @MockitoBean
+    private NotificationService notificationService;
 
     private User testUser;
 
