@@ -44,10 +44,8 @@ public class NotificationController {
 
     @PostMapping("/contact")
     public String submitContactMessage(@ModelAttribute ContactRequest contactRequest, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
-        // Добавяме потребителския ID към заявката
-        contactRequest.setUserId(authenticationMetadata.getUserId());
 
-        // Изпращаме съобщението към NotificationClient
+        contactRequest.setUserId(authenticationMetadata.getUserId());
         notificationService.sendContactMessage(contactRequest);
 
         return "redirect:/home";

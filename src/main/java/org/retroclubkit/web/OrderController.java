@@ -78,8 +78,8 @@ public class OrderController {
         Order order = orderService.getById(id);
         ModelAndView modelAndView = new ModelAndView("all-order-details");
         modelAndView.addObject("order", order);
-        modelAndView.addObject("user", order.getUser()); // Показваме кой е направил поръчката
-        modelAndView.addObject("items", order.getItems()); // Всички артикули в поръчката
+        modelAndView.addObject("user", order.getUser());
+        modelAndView.addObject("items", order.getItems());
         modelAndView.addObject("paymentMethod", order.getPayment().getPaymentMethod());
         modelAndView.addObject("user", user);
         return modelAndView;

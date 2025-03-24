@@ -69,7 +69,9 @@ public class UserController {
         User user = userService.getById(authenticationMetadata.getUserId());
 
         if (bindingResult.hasErrors()) {
+            modelAndView.addObject("user", user);
             modelAndView.addObject("updateProfileRequest", updateProfileRequest);
+            modelAndView.addObject("notificationPreference", notificationService.getNotificationPreference(user.getId())); // важно!
             return modelAndView;
         }
 
