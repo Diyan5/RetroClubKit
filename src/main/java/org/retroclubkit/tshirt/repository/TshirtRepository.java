@@ -32,7 +32,7 @@ public interface TshirtRepository extends JpaRepository<Tshirt, UUID> {
     @Query("SELECT t FROM Tshirt t WHERE t.isAvailable = false AND t.isDeleted = false ")
     List<Tshirt> findByIsAvailableFalseAndDeletedFalse();
 
-    @Query("SELECT t FROM Tshirt t WHERE LOWER(t.team.name) = LOWER(:teamName) AND t.isDeleted = false")
+    @Query("SELECT t FROM Tshirt t WHERE LOWER(t.team.name) = LOWER(:teamName) AND t.isDeleted = false AND t.isAvailable = true")
     List<Tshirt> findByTeamNameIgnoreCaseAndDeletedFalse(String teamName);
 
     @Query("SELECT t FROM Tshirt t WHERE t.name = :name AND t.isDeleted = false")
