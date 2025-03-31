@@ -71,19 +71,19 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             modelAndView.addObject("user", user);
             modelAndView.addObject("updateProfileRequest", updateProfileRequest);
-            modelAndView.addObject("notificationPreference", notificationService.getNotificationPreference(user.getId())); // важно!
+            modelAndView.addObject("notificationPreference", notificationService.getNotificationPreference(user.getId()));
             return modelAndView;
         }
 
         userService.update(user.getId(), updateProfileRequest);
         String emailBody = "You successfully edit your profile!";
-        notificationService.sendNotification(user.getId(), "Edit profile", emailBody);
 
-        if (!updateProfileRequest.getEmail().isBlank()) {
-            notificationService.saveNotificationPreference(user.getId(), true, updateProfileRequest.getEmail());
-        } else {
-            notificationService.saveNotificationPreference(user.getId(), false, null);
-        }
+
+        NotificationPreference notificationPreference = notificationService.getNotificationPreference(user.getId());
+        notificationService.saveNotificationPreference(user.getId(), notificationPreference.isEnabled(), updateProfileRequest.getEmail());
+
+
+        notificationService.sendNotification(user.getId(), "Edit profile", emailBody);
 
         return new ModelAndView("redirect:/home");
     }
