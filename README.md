@@ -11,8 +11,7 @@
 - MySQL
 
 **Front-End:**
-- HTML, CSS, JavaScript (ES6)
-- Responsive Design
+- HTML, CSS, JavaScript 
 
 **Notifications Microservice:**
 - REST API with Spring Boot
@@ -25,7 +24,6 @@
 
 **Deployment:**
 - Maven
-- (Planned) Docker + Cloud deployment
 
 **Architecture:**
 - Monolith + Notification Microservice (transitioning to Microservices)
@@ -69,16 +67,6 @@ RetroClubKit allows users to:
 
 ---
 
-## 🔌 Integrations & Planned Features
-
-🚀 Email service for order confirmation & inactivity  
-🔒 Spring Security for robust account protection  
-🧪 Unit & integration tests with high coverage  
-📥 Admin panel for product and order management *(coming soon)*  
-📦 Docker, CI/CD & public deployment *(in progress)*  
-
----
-
 ## 🌍 Public Area
 
 ### 🏠 Home Page
@@ -110,18 +98,27 @@ RetroClubKit allows users to:
 
 ---
 
-## 📸 Screenshots *(coming soon)*
-- 🖼 Home Page  
-- 🖼 Product Catalog  
-- 🖼 Cart  
-- 🖼 Notification Settings  
+## 📸 Screenshots
+- 🖼 Home Page
+
+
+![Screenshot 2025-04-01 153646](https://github.com/user-attachments/assets/624ef2ea-f8fe-4b21-a2e0-9006a7f7b6a4)
+
+
+- 🖼 Product Catalog
+
+
+![Screenshot 2025-04-01 155905](https://github.com/user-attachments/assets/98722234-602a-474f-ae93-f8b6e3accbde)
+
+
+- 🖼 Cart
+
+  
+![Screenshot 2025-04-01 153846](https://github.com/user-attachments/assets/49b52ac2-2f27-4adc-9b64-e56a8c56f4d4)
+
+
 - 🖼 Contact Form  
 
----
+![Screenshot 2025-04-01 153922](https://github.com/user-attachments/assets/5bddc942-6f0f-469c-b376-a36adeaf41be)
 
-## 🔧 Run Locally
 
-```bash
-git clone https://github.com/Diyan5/RetroClubKit.git
-cd RetroClubKit
-./mvnw spring-boot:run
