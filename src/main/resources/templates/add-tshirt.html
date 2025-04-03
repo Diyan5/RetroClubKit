@@ -25,19 +25,19 @@
 
     <div class="add-form">
         <h2>Add New T-shirt</h2>
-        <form th:action="@{/tshirts/add}" th:method="POST" th:object="${tshirt}">
+        <form th:action="@{/tshirts/add}" th:method="POST" th:object="${createdNewTshirt}">
 
             <label>Name:</label>
             <input type="text" th:field="*{name}" >
-            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert-warning"></p>
+            <p class="alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
             <p class="alert-warning" th:text="${tshirtAlreadyExistMessage}"></p>
 
             <label>Price:</label>
-            <input type="number" th:field="*{price}" step="0.01" required>
+            <input type="number" th:field="*{price}" step="0.01" >
             <p class="alert-warning" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></p>
 
             <label>Image URL:</label>
-            <input type="text" th:field="*{image}" required>
+            <input type="text" th:field="*{image}" >
             <p class="alert-warning" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></p>
 
             <label for="teamId">Select Team:</label>

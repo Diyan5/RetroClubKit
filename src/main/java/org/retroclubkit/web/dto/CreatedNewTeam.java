@@ -16,6 +16,7 @@ import java.util.UUID;
 public class CreatedNewTeam {
 
     private UUID id;
+
     @NotNull(message = "Name name cannot be null!")
     @NotBlank(message = "Name cannot be empty")
     private String name;

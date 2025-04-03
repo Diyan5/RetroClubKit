@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(TeamController.class)
@@ -41,7 +42,6 @@ public class TeamControllerApiTest {
 
     @Test
     void saveNewTeam_ShouldReturnAddTeamViewWithEmptyFormAndUser() throws Exception {
-        // Arrange
         UUID adminId = UUID.randomUUID();
         AuthenticationMetadata principal = new AuthenticationMetadata(adminId, "admin", "adminpass", UserRole.ADMIN, true);
 
@@ -52,20 +52,24 @@ public class TeamControllerApiTest {
 
         when(userService.getById(adminId)).thenReturn(admin);
 
-        // Act & Assert
         mockMvc.perform(get("/teams/add").with(user(principal)))
                 .andExpect(status().isOk())
                 .andExpect(view().name("add-team"))
-                .andExpect(model().attributeExists("team"))
+                .andExpect(model().attributeExists("createdNewTeam"))
                 .andExpect(model().attribute("user", admin));
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void saveNewTeam_WithValidData_ShouldSaveAndRedirect() throws Exception {
+        UUID userId = UUID.randomUUID();
+        AuthenticationMetadata principal = new AuthenticationMetadata(userId, "admin", "password", UserRole.ADMIN, true);
+
+        when(userService.getById(userId)).thenReturn(new User());
+
         mockMvc.perform(post("/teams/add")
                         .param("name", "AC Milan")
                         .param("country", "Italy")
+                        .with(user(principal))
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/teams"));
