@@ -151,7 +151,7 @@ public class UserControllerApiTest {
         when(notificationService.getNotificationPreference(userId)).thenReturn(preference);
 
         // Act & Assert
-        mockMvc.perform(post("/users/{id}/profile", userId)
+        mockMvc.perform(put("/users/{id}/profile", userId)
                         .with(user(principal))
                         .param("email", "")
                         .param("username", "")
@@ -181,7 +181,7 @@ public class UserControllerApiTest {
 
         when(notificationService.getNotificationPreference(userId)).thenReturn(preference);
 
-        mockMvc.perform(post("/users/{id}/profile", userId)
+        mockMvc.perform(put("/users/{id}/profile", userId)
                         .with(user(principal))
                         .param("username", "newusername")
                         .param("firstName", "John")
@@ -195,6 +195,7 @@ public class UserControllerApiTest {
         verify(notificationService).sendNotification(eq(userId), eq("Edit profile"), eq("You successfully edit your profile!"));
         verify(notificationService).saveNotificationPreference(userId, true, "test@example.com");
     }
+
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})

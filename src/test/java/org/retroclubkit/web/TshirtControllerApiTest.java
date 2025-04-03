@@ -283,8 +283,9 @@ public class TshirtControllerApiTest {
                         .with(user(new AuthenticationMetadata(userId, "admin", "123123", UserRole.ADMIN, true))))
                 .andExpect(status().isOk())
                 .andExpect(view().name("edit-tshirt"))
-                .andExpect(model().attributeExists("tshirt"))
+                .andExpect(model().attributeExists("updateTshirtRequest"))
                 .andExpect(model().attributeExists("allSizes"))
                 .andExpect(model().attributeExists("user"));
     }
+
 }
