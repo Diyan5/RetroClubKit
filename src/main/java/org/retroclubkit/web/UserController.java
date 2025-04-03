@@ -58,7 +58,7 @@ public class UserController {
         return modelAndView;
     }
 
-    @PostMapping("/{id}/profile")
+    @PutMapping("/{id}/profile")
     public ModelAndView updateUserProfile(
             @Valid @ModelAttribute("updateProfileRequest") UpdateProfileRequest updateProfileRequest,
             BindingResult bindingResult,

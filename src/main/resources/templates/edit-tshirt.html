@@ -12,28 +12,31 @@
 <div th:replace="~{fragments/header.html}"></div>
 
 <div class="edit-tshirt-container">
-    <form th:action="@{/tshirts/update}" th:method="PUT">
-        <input type="hidden" name="id" th:value="${tshirt.id}">
+    <form th:action="@{/tshirts/update}" th:object="${updateTshirtRequest}" th:method="PUT">
+        <input type="hidden" th:field="*{id}" />
 
         <label>Name:</label>
-        <input type="text" name="name" th:value="${tshirt.name}" required>
-
+        <input type="text" th:field="*{name}" />
+        <p class="alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
 
         <label>Image URL:</label>
-        <input type="text" name="image" th:field="*{tshirt.image}" required>
-
+        <input type="text" th:field="*{image}" />
+        <p class="alert-warning" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></p>
 
         <label>Price:</label>
-        <input type="number" name="price" th:field="*{tshirt.price}" step="0.01" required>
+        <input type="number" th:field="*{price}" step="0.01" />
+        <p class="alert-warning" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></p>
         <p class="alert-warning" th:text="${positiveMessage}"></p>
 
         <label>Available Sizes:</label>
-        <div class="sizes-container">
-            <span th:each="size : ${allSizes}">
-                <input type="checkbox" name="sizes" th:value="${size}" th:checked="${tshirt.sizes.contains(size)}">
-                <label th:text="${size}"></label>
-            </span>
+        <div class="sizes-container" th:object="${updateTshirtRequest}">
+            <div th:each="size : ${allSizes}">
+                <input type="checkbox" th:field="*{sizes}" th:value="${size}" />
+                <label th:for="${#ids.prev('sizes')}" th:text="${size}"></label>
+            </div>
         </div>
+        <p class="alert-warning" th:if="${#fields.hasErrors('sizes')}" th:errors="*{sizes}"></p>
+
 
         <button type="submit">Save Changes</button>
     </form>
