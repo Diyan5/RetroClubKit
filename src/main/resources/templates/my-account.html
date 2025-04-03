@@ -25,29 +25,29 @@
     <section id="user-info">
         <h2>Profile Information</h2>
 
-        <form th:action="@{'/users/' + ${user.id} + '/profile'}" th:object="${updateProfileRequest}" method="post">
+        <form th:action="@{'/users/' + ${user.id} + '/profile'}" th:object="${updateProfileRequest}" th:method="PUT">
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input type="text" name="username" id="username" th:field="*{username}" required>
+                <input type="text" name="username" id="username" th:field="*{username}" >
                 <p class="alert-warning" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
 
             </div>
 
             <div class="form-group">
                 <label for="firstName">First name:</label>
-                <input type="text" name="firstName" id="firstName" th:field="*{firstName}" required>
+                <input type="text" name="firstName" id="firstName" th:field="*{firstName}" >
                 <p class="alert-warning" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></p>
             </div>
 
             <div class="form-group">
                 <label for="lastName">Last name:</label>
-                <input type="text" name="lastName" id="lastName" th:field="*{lastName}" required>
+                <input type="text" name="lastName" id="lastName" th:field="*{lastName}" >
                 <p class="alert-warning" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
             </div>
 
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="text" name="email" id="email" th:field="*{email}" required>
+                <input type="text" name="email" id="email" th:field="*{email}" >
                 <p class="alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
 
             </div>

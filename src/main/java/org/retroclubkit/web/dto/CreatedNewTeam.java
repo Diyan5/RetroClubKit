@@ -1,11 +1,11 @@
 package org.retroclubkit.web.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
@@ -16,8 +16,11 @@ import java.util.UUID;
 public class CreatedNewTeam {
 
     private UUID id;
-    @NotNull(message = "Team name cannot be null!")
+    @NotNull(message = "Name name cannot be null!")
+    @NotBlank(message = "Name cannot be empty")
     private String name;
+
+    @NotBlank(message = "Name cannot be empty")
     @NotNull(message = "Country cannot be null!")
     private String country;
 }

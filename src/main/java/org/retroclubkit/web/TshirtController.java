@@ -1,5 +1,6 @@
 package org.retroclubkit.web;
 
+import jakarta.validation.Valid;
 import org.retroclubkit.security.AuthenticationMetadata;
 import org.retroclubkit.team.service.TeamService;
 import org.retroclubkit.tshirt.model.Category;
@@ -10,6 +11,7 @@ import org.retroclubkit.user.model.User;
 import org.retroclubkit.user.service.UserService;
 import org.retroclubkit.web.dto.CreatedNewTshirt;
 
+import org.retroclubkit.web.dto.UpdateTshirtRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -91,7 +93,7 @@ public class TshirtController {
 
         Tshirt tshirt = tshirtService.getById(id);
         ModelAndView modelAndView = new ModelAndView("edit-tshirt");
-        modelAndView.addObject("tshirt", tshirt);
+        modelAndView.addObject("updateTshirtRequest", tshirt);
         modelAndView.addObject("allSizes", Size.values());
         modelAndView.addObject("user", user);
 
@@ -100,15 +102,31 @@ public class TshirtController {
 
     @PutMapping("/update")
     public ModelAndView updateTshirt(
-            @RequestParam("id") UUID id,
-            @RequestParam("name") String name,
-            @RequestParam("image") String image,
-            @RequestParam("sizes") List<Size> sizes,
-            @RequestParam("price") BigDecimal price) {
+            @Valid @ModelAttribute("updateTshirtRequest") UpdateTshirtRequest updateTshirtRequest,
+            BindingResult bindingResult,
+            @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
-        tshirtService.updateTshirtBySizeAndPrice(id, name, image, sizes, price);
+        ModelAndView modelAndView = new ModelAndView("edit-tshirt");
+        User user = userService.getById(authenticationMetadata.getUserId());
+
+        if (bindingResult.hasErrors()) {
+            modelAndView.addObject("user", user);
+            modelAndView.addObject("updateTshirtRequest", updateTshirtRequest);
+            modelAndView.addObject("allSizes", Size.values());
+            return modelAndView;
+        }
+
+        tshirtService.updateTshirtBySizeAndPrice(
+                updateTshirtRequest.getId(),
+                updateTshirtRequest.getName(),
+                updateTshirtRequest.getImage(),
+                updateTshirtRequest.getSizes(),
+                updateTshirtRequest.getPrice()
+        );
+
         return new ModelAndView("redirect:/tshirts");
     }
+
 
     @PostMapping("/availability/{id}")
     public ModelAndView toggleProductAvailability(@PathVariable UUID id) {
