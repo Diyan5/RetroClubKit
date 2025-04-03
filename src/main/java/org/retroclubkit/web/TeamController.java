@@ -19,7 +19,7 @@ import java.util.UUID;
 
 
 @Controller
-@RequestMapping
+@RequestMapping("/teams")
 public class TeamController {
 
     private final TeamService teamService;
@@ -31,30 +31,37 @@ public class TeamController {
         this.userService = userService;
     }
 
-    @GetMapping("/teams/add")
+    @GetMapping("/add")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ModelAndView saveNewTeam(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         User user = userService.getById(authenticationMetadata.getUserId());
 
         ModelAndView modelAndView = new ModelAndView("add-team");
-        modelAndView.addObject("team", new CreatedNewTeam());
+        modelAndView.addObject("createdNewTeam", new CreatedNewTeam());
         modelAndView.addObject("user", user);
 
         return modelAndView;
     }
 
-    @PostMapping("/teams/add")
+    @PostMapping("/add")
     public ModelAndView saveNewTeam(@Valid CreatedNewTeam createdNewTeam,
-                                    BindingResult bindingResult) {
+                                    BindingResult bindingResult,
+                                    @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+
+        ModelAndView modelAndView = new ModelAndView("add-team");
+
+        User user = userService.getById(authenticationMetadata.getUserId());
 
         if (bindingResult.hasErrors()) {
-            return new ModelAndView("redirect:/teams/add");
+            modelAndView.addObject("user", user);
+            modelAndView.addObject("createdNewTeam", createdNewTeam);
+            return modelAndView;
         }
         teamService.saveTeam(createdNewTeam);
         return new ModelAndView("redirect:/teams");
     }
 
-    @GetMapping("/teams")
+    @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ModelAndView showTeams(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         User user = userService.getById(authenticationMetadata.getUserId());
@@ -64,7 +71,7 @@ public class TeamController {
         return modelAndView;
     }
 
-    @DeleteMapping("/teams/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ModelAndView deleteTshirt(@PathVariable UUID id) {
         teamService.deleteTeamById(id);
         return new ModelAndView("redirect:/teams");

@@ -27,15 +27,15 @@
     <!-- Дясна форма: Добавяне на отбор -->
     <div class="add-form">
         <h2>Add New Team</h2>
-        <form th:action="@{/teams/add}" th:method="POST" th:object="${team}">
+        <form th:action="@{/teams/add}" th:method="POST" th:object="${createdNewTeam}">
 
             <label>Team Name:</label>
-            <input type="text" th:field="*{name}" required>
+            <input type="text" th:field="*{name}" >
             <p class="alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
             <p class="alert-warning" th:text="${teamAlreadyExistMessage}"></p>
 
             <label>Country:</label>
-            <input type="text" th:field="*{country}" required>
+            <input type="text" th:field="*{country}" >
             <p class="alert-warning" th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></p>
 
             <button type="submit">Save Team</button>

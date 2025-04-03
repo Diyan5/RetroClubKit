@@ -141,7 +141,7 @@ public class TshirtController {
         User user = userService.getById(authenticationMetadata.getUserId());
 
         ModelAndView modelAndView = new ModelAndView("add-tshirt");
-        modelAndView.addObject("tshirt", new CreatedNewTshirt());
+        modelAndView.addObject("createdNewTshirt", new CreatedNewTshirt());
         modelAndView.addObject("teams", teamService.getAllTeamsWhichIsNotDeleted());
         modelAndView.addObject("categories", Arrays.asList(Category.values()));
         modelAndView.addObject("sizes", Arrays.asList(Size.values()));
@@ -151,9 +151,20 @@ public class TshirtController {
     }
 
     @PostMapping("/add")
-    public ModelAndView saveNewTshirt(@ModelAttribute CreatedNewTshirt createdNewTshirt, BindingResult bindingResult) {
+    public ModelAndView saveNewTshirt(@Valid CreatedNewTshirt createdNewTshirt,
+                                      BindingResult bindingResult,
+                                      @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        ModelAndView modelAndView = new ModelAndView("add-tshirt");
+
+        User user = userService.getById(authenticationMetadata.getUserId());
+
         if (bindingResult.hasErrors()) {
-            return new ModelAndView("redirect:/tshirts/add");
+            modelAndView.addObject("user", user);
+            modelAndView.addObject("createdNewTshirt", createdNewTshirt);
+            modelAndView.addObject("teams", teamService.getAllTeamsWhichIsNotDeleted());
+            modelAndView.addObject("categories", Arrays.asList(Category.values()));
+            modelAndView.addObject("sizes", Arrays.asList(Size.values()));
+            return modelAndView;
         }
         tshirtService.saveTshirt(createdNewTshirt);
         return new ModelAndView("redirect:/tshirts");

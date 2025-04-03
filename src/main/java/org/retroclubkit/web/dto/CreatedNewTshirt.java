@@ -25,20 +25,18 @@ public class CreatedNewTshirt {
     @NotNull(message = "Name cannot be empty")
     private String name;
 
-    @NotBlank(message = "Price cannot be empty")
-    @NotNull(message = "Price cannot be empty")
-    @Positive(message = "Must be positive")
+    @NotNull(message = "Price is required")
+    @Positive(message = "Price must be positive")
     private BigDecimal price;
 
+    @NotBlank(message = "Image URL cannot be empty")
     @URL(message = "Requires correct web link format")
     private String image;
 
-    @NotBlank(message = "Category cannot be empty")
-    @NotNull(message = "Category cannot be empty")
+    @NotNull(message = "Category is required")
     private Category category;
 
-    @NotBlank(message = "Size cannot be empty")
-    @NotNull(message = "Size cannot be empty")
+    @NotNull(message = "Size is required")
     private List<Size> sizes;
 
     private boolean isAvailable;

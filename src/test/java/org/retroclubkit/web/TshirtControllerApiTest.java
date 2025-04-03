@@ -127,12 +127,17 @@ public class TshirtControllerApiTest {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void postAddTshirt_shouldRedirectOnSuccess() throws Exception {
+        UUID userId = UUID.randomUUID();
+        AuthenticationMetadata principal = new AuthenticationMetadata(
+                userId, "admin", "password", UserRole.ADMIN, true
+        );
+
         mockMvc.perform(post("/tshirts/add")
+                        .with(user(principal))
                         .with(csrf())
                         .param("name", "Retro Milan")
-                        .param("image", "milan.jpg")
+                        .param("image", "https://example.com/milan.jpg")
                         .param("price", "49.99")
                         .param("sizes", Size.M.name())
                         .param("teamId", UUID.randomUUID().toString())
