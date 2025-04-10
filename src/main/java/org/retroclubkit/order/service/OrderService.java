@@ -1,5 +1,6 @@
 package org.retroclubkit.order.service;
 
+import jakarta.transaction.Transactional;
 import org.retroclubkit.notification.service.NotificationService;
 import org.retroclubkit.order.model.Order;
 import org.retroclubkit.orderItem.model.OrderItem;
@@ -39,6 +40,7 @@ public class OrderService {
         this.notificationService = notificationService;
     }
 
+    @Transactional
     public Order createOrder(User user, OrderRequest orderRequest) {
         BigDecimal totalPrice = BigDecimal.ZERO;
         List<OrderItem> orderItems = new ArrayList<>();

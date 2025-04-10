@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.retroclubkit.exception.DomainException;
 import org.retroclubkit.exception.*;
+import org.retroclubkit.notification.client.dto.NotificationPreference;
 import org.retroclubkit.notification.service.NotificationService;
 import org.retroclubkit.security.AuthenticationMetadata;
 import org.retroclubkit.user.model.User;

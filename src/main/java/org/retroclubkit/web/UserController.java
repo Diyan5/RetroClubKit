@@ -76,17 +76,15 @@ public class UserController {
         }
 
         userService.update(user.getId(), updateProfileRequest);
+
         String emailBody = "You successfully edit your profile!";
-
-
         NotificationPreference notificationPreference = notificationService.getNotificationPreference(user.getId());
         notificationService.saveNotificationPreference(user.getId(), notificationPreference.isEnabled(), updateProfileRequest.getEmail());
-
-
         notificationService.sendNotification(user.getId(), "Edit profile", emailBody);
 
         return new ModelAndView("redirect:/home");
     }
+
 
     @PutMapping("/{id}/status")
     @PreAuthorize("hasRole('ADMIN')")
